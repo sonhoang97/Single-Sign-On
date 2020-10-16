@@ -1,5 +1,6 @@
 package com.example.demooauth2.service;
 
+import com.example.demooauth2.exception.CommandResult;
 import com.example.demooauth2.model.User;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface UserService {
 
     User findByUsername(String username);
 
-    User registerNewUserAccount(User user);
+    CommandResult registerNewUserAccount(User user);
 }
