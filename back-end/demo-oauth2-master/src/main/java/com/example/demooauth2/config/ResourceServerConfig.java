@@ -31,7 +31,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/oauth/revoke_token").permitAll()
                 .antMatchers("/oauth/authorize").permitAll()
                 .antMatchers("/register").permitAll()
-
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .loginPage("/login")
