@@ -1,4 +1,4 @@
 export const PathController = {
-  Home: 'Home',
-  Admin: 'Admin',
+  Account: 'account',
+  Admin: 'admin',
 };

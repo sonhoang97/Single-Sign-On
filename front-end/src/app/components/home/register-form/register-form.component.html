@@ -8,6 +8,8 @@
           id="defaultRegisterFormFirstName"
           class="form-control"
           placeholder="First name"
+          [(ngModel)]="firstName"
+          name="firstName"
         />
       </div>
       <div class="col">
@@ -16,6 +18,8 @@
           id="defaultRegisterFormLastName"
           class="form-control"
           placeholder="Last name"
+          [(ngModel)]="lastName"
+          name="lastName"
         />
       </div>
     </div>
@@ -24,6 +28,8 @@
       id="defaultRegisterFormEmail"
       class="form-control mb-4"
       placeholder="E-mail"
+      [(ngModel)]="email"
+      name="lastName"
     />
     <input
       type="password"
@@ -31,6 +37,8 @@
       class="form-control"
       placeholder="Password"
       aria-describedby="defaultRegisterFormPasswordHelpBlock"
+      [(ngModel)]="password"
+      name="password"
     />
     <small
       id="defaultRegisterFormPasswordHelpBlock"
@@ -39,11 +47,13 @@
       At least 8 characters and 1 digit
     </small>
     <input
-      type="text"
+      type="number"
       id="defaultRegisterPhonePassword"
       class="form-control"
       placeholder="Phone number"
       aria-describedby="defaultRegisterFormPhoneHelpBlock"
+      [(ngModel)]="phoneNumber"
+      name="phoneNumber"
     />
     <small
       id="defaultRegisterFormPhoneHelpBlock"
@@ -61,7 +71,7 @@
         >Subscribe to our newsletter</label
       >
     </div>
-    <button class="btn btn-info my-4 btn-block cyan" type="submit">
+    <button class="btn btn-info my-4 btn-block cyan" type="submit" (click)= "submitRegiser()">
       Sign in
     </button>
     <p>

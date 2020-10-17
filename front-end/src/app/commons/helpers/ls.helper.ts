@@ -1,38 +1,29 @@
+import { TokenPassword } from 'src/models/token/tokenPassword';
+
 export class LsHelper {
     // todo: create user model
-    private static readonly USER_LOCAL: string = 'user';
+    private static readonly TOKEN_LOCAL: string = 'token';
   
-    public static saveUserToStorage(user: any): void {
-      localStorage.setItem(this.USER_LOCAL, JSON.stringify(user));
+    public static saveTokenToStorage(token: TokenPassword): void {
+      localStorage.setItem(this.TOKEN_LOCAL, JSON.stringify(token));
     }
   
-    public static getUserFromStorage(): any {
-      const currentUser = localStorage.getItem(this.USER_LOCAL);
+    public static getTokenFromStorage(): any {
+      const currentToken = localStorage.getItem(this.TOKEN_LOCAL);
   
-      if (!currentUser || currentUser === '') {
+      if (!currentToken || currentToken === '') {
         return undefined;
       }
   
-      const user: any = JSON.parse(currentUser);
-      const u1: any = JSON.parse(atob(user.token.split('.')[1]));
-  
-      return u1;
+      const token: TokenPassword = JSON.parse(currentToken);
+      return token.access_token;
     }
   
-    public static removeUserStorage(): void {
-      localStorage.removeItem(this.USER_LOCAL);
+    public static removeTokenStorage(): void {
+      localStorage.removeItem(this.TOKEN_LOCAL);
     }
   
-    public static getToken(): any {
-      const currentUser = localStorage.getItem(this.USER_LOCAL);
-  
-      if (!currentUser || currentUser === '') {
-        return undefined;
-      }
-  
-      const user: any = JSON.parse(currentUser);
-      return user.token;
-    }
+    
   }
   
 
