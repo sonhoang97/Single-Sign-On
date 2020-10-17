@@ -13,8 +13,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
+//    @Autowired
+//    private AuthenticationSuccessHandler authenticationSuccessHandler;
 
     private static final String RESOURCE_ID = "inventory";
 
@@ -25,20 +25,17 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+                .csrf()
+                .disable()
                 .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/oauth/revoke_token").permitAll()
-                .antMatchers("/oauth/authorize").permitAll()
-                .antMatchers("/register").permitAll()
+//                .antMatchers("/api/account/login").permitAll()
+                .antMatchers("/api/account/register").permitAll()
+                .antMatchers("/oauth/token").permitAll()
                 .anyRequest().authenticated()
-                .and().formLogin()
-                .loginPage("/login")
-                .successHandler(authenticationSuccessHandler)
-                .permitAll()
-                .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler())
-                .and().httpBasic();
+                .and()
+                .formLogin()
+                .loginPage("/api/account/login");
     }
-
-
 }
