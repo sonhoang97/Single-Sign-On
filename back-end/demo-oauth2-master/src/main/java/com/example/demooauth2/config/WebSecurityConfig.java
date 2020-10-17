@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -55,18 +55,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler())
-                .and().httpBasic();
-
-
-    }
-
-
-
-
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.csrf().disable()
+//                .authorizeRequests()
+//                .anyRequest().authenticated()
+//                .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler())
+//                .and().httpBasic();
+//
+//
+//    }
 }
