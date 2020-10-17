@@ -21,9 +21,9 @@ public class AccountController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User userDTO, HttpServletRequest request){
-        userDTO.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
-        CommandResult result = userService.registerNewUserAccount(userDTO);
+    public ResponseEntity<String> register(@RequestBody User userRegister, HttpServletRequest request){
+        userRegister.setPassword(new BCryptPasswordEncoder().encode(userRegister.getPassword()));
+        CommandResult result = userService.registerNewUserAccount(userRegister);
         return new ResponseEntity<>(result.getMessage(),result.getStatus());
     }
 

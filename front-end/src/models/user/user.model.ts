@@ -1,8 +1,13 @@
 export class User {
-    public id: number;
-    public userName: string;
-    public fullName: string;
-    public shortName: string;
+    public username: string;
+    public password: string;
     public email: string;
-    public department: string;
+    public phonenumber: number;
+    public firstname: string;
+    public lastname: string;
+    public accountNonExpired: boolean = true;
+    public enabled: boolean = true;
+    public credentialsNonExpired: boolean = true;
+    public accountNonLocked: boolean = true;
+    public roles: any[] = [];
 }

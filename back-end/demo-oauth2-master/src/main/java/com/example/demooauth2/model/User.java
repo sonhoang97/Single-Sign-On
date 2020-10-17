@@ -2,6 +2,8 @@ package com.example.demooauth2.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +12,8 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Data
+@Getter
+@Setter
 public class User implements Serializable {
 
     public User() {
@@ -19,6 +23,9 @@ public class User implements Serializable {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.email = user.getEmail();
+        this.firstname = user.getFirstname();
+        this.lastname = user.getLastname();
+        this.phonenumber = user.getPhonenumber();
         this.enabled = user.isEnabled();
         this.accountNonExpired = user.isAccountNonExpired();
         this.credentialsNonExpired = user.isCredentialsNonExpired();
@@ -26,41 +33,6 @@ public class User implements Serializable {
         this.roles = user.getRoles();
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -75,6 +47,15 @@ public class User implements Serializable {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
+
+    @Column(name = "phonenumber")
+    private int phonenumber;
 
     @Column(name = "enabled")
     private boolean enabled;
