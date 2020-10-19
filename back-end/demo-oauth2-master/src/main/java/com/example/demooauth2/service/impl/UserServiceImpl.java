@@ -34,11 +34,11 @@ public class UserServiceImpl implements UserService {
     if(findByUsername(userDto.getUsername())!=null){
         return new CommandResult(HttpStatus.CONFLICT, "Username has existed!");
     }
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
-        user.setEmail(userDto.getEmail());
-        userRepository.save(user);
+//        User user = new User();
+//        user.setUsername(userDto.getUsername());
+//        user.setPassword(userDto.getPassword());
+//        user.setEmail(userDto.getEmail());
+        userRepository.save(userDto);
         return new CommandResult().Succeed();
     }
 }

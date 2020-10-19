@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableResourceServer
@@ -15,6 +16,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 //    @Autowired
 //    private AuthenticationSuccessHandler authenticationSuccessHandler;
+//    @Autowired
+//    private SimpleCORSFilter simpleCORSFilter;
 
     private static final String RESOURCE_ID = "inventory";
 
@@ -34,8 +37,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/api/account/register").permitAll()
                 .antMatchers("/oauth/token").permitAll()
                 .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/api/account/login");
+                .and().httpBasic();
+
+//        http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

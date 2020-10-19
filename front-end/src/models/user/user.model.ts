@@ -9,5 +9,4 @@ export class User {
     public enabled: boolean = true;
     public credentialsNonExpired: boolean = true;
     public accountNonLocked: boolean = true;
-    public roles: any[] = [];
 }

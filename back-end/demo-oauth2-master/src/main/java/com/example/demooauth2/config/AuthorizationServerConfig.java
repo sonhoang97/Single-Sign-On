@@ -58,12 +58,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //        return new JdbcAuthorizationCodeServices(dataSource);
 //    }
 
-    //    @Override
-//    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-//        security.checkTokenAccess("isAuthenticated()")
-//                .tokenKeyAccess("permitAll()")
-//                .passwordEncoder(passwordEncoder);
-//    }
+        @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        security.checkTokenAccess("isAuthenticated()")
+                .tokenKeyAccess("permitAll()")
+                .passwordEncoder(passwordEncoder);
+    }
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager);
