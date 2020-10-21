@@ -1,49 +1,35 @@
 package com.example.demooauth2.controller.server;
 
 import com.example.demooauth2.exception.CommandResult;
-import com.example.demooauth2.model.Test;
 import com.example.demooauth2.model.User;
 import com.example.demooauth2.service.UserService;
-import org.codehaus.jackson.map.util.JSONPObject;
+import com.example.demooauth2.service.impl.ClientDetailsSeviceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.BaseClientDetails;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/account")
+@RequestMapping("/account")
 public class AccountController {
     @Autowired
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User userRegister, HttpServletRequest request){
+    public ResponseEntity<Object> register(@RequestBody User userRegister, HttpServletRequest request){
         userRegister.setPassword(new BCryptPasswordEncoder().encode(userRegister.getPassword()));
         CommandResult result = userService.registerNewUserAccount(userRegister);
-        return new ResponseEntity<>(result.getMessage(),result.getStatus());
+        return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(@RequestBody User userDTO, HttpServletRequest request){
-//
-//        return new ResponseEntity<>("Login", HttpStatus.OK);
-//    }
-
-    @PostMapping("/admin")
-    public ResponseEntity<String> main(@RequestBody User userDTO, HttpServletRequest request){
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PostMapping("/home")
-    public ResponseEntity<Test> home(HttpSession httpSession){
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }
