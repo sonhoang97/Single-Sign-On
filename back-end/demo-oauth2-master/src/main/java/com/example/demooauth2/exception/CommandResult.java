@@ -14,12 +14,13 @@ public class CommandResult {
     private HttpStatus status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
-    private String message;
+    private Object data;
     private String debugMessage;
     private List<ApiSubErrorViewModel> subErrors;
 
     public CommandResult() {
         timestamp = LocalDateTime.now();
+        data = null;
     }
 
     public CommandResult(HttpStatus status) {
@@ -30,21 +31,20 @@ public class CommandResult {
     public CommandResult(HttpStatus status, Throwable ex) {
         this();
         this.status = status;
-        this.message = "Unexpected error";
         this.debugMessage = ex.getLocalizedMessage();
     }
 
-    public CommandResult(HttpStatus status, String message) {
+    public CommandResult(HttpStatus status, Object data) {
         this();
         this.status = status;
-        this.message = message;
+        this.data = data;
     }
 
     public CommandResult Succeed() {
         return new CommandResult(HttpStatus.OK);
     }
 
-    public CommandResult SucceedWithData(String message) {
-        return new CommandResult(HttpStatus.OK, message);
+    public CommandResult SucceedWithData(Object data) {
+        return new CommandResult(HttpStatus.OK, data);
     }
 }
