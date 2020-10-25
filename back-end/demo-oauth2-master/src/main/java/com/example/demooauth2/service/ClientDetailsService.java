@@ -12,4 +12,6 @@ public interface ClientDetailsService {
     CommandResult updateClientSecret(String clientId);
 
     CommandResult updateRedirectUri(String clientId, String redirectUri);
+
+    CommandResult removeClientDetail(String clientId);
 }

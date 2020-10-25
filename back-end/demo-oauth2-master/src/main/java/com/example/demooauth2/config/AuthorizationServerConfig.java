@@ -79,9 +79,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer enpoints) throws Exception {
         enpoints.tokenStore(jdbcTokenStore())
-                .approvalStore(approvalStore())
                 .authorizationCodeServices(authorizationCodeServices())
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService);
+                .userDetailsService(userDetailsService)
+                .approvalStore(approvalStore());
     }
 }
