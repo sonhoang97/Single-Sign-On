@@ -38,7 +38,7 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
         try {
             return jdbcClientDetailsService.loadClientByClientId(clientId);
         } catch (NoSuchClientException ex) {
-            throw new NoSuchClientException("No client with requested id: " + clientId);
+            return null;
         }
     }
 
@@ -93,6 +93,19 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
             return new CommandResult().Succeed();
         } catch (NoSuchClientException ex) {
             return new CommandResult(HttpStatus.NOT_FOUND, "No client with requested id: " + clientId);
+        }
+    }
+
+    @Override
+    public CommandResult removeClientDetail(String clientId){
+        try{
+            if (clientId == null || clientId.isEmpty()) {
+                return new CommandResult(HttpStatus.NO_CONTENT, Messages.NO_CONTENT);
+            }
+            jdbcClientDetailsService.removeClientDetails(clientId);
+            return new CommandResult().Succeed();
+        }catch(NoSuchClientException ex){
+            return new CommandResult(HttpStatus.NOT_FOUND, "No client found with id = " + clientId);
         }
     }
 }
