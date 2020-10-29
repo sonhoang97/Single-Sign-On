@@ -41,11 +41,13 @@ export class AuthService {
 
     let headers = new HttpHeaders({
       'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      Authorization: 'Basic ' + btoa('javainuse-client:javainuse-secret'),
+      Authorization: 'Basic ' + btoa('admin:admin'),
     });
 
     return this.http
-      .post('http://localhost:8083/oauth/token', body.toString(), { headers: headers })
+      .post('http://localhost:8083/oauth/token', body.toString(), {
+        headers: headers,
+      })
       .pipe(
         map((res: TokenPassword) => {
           LsHelper.saveTokenToStorage(res);
@@ -54,29 +56,52 @@ export class AuthService {
       );
   }
 
-  public logout(): Observable<boolean> {
-    return this.http.get(this.apiURL + '/logout').pipe(
-      map((res: boolean) => {
-        LsHelper.removeTokenStorage();
-        return true;
+  public logout(): Observable<any> {
+    let headers = new HttpHeaders({
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
+    const refresh_token = LsHelper.getRefreshTokenFromStorage();
+    return this.http
+      .delete(this.apiURL + '/log_out?refresh_token=' + refresh_token, {
+        headers: headers,
       })
-    );
+      .pipe(
+        map((res: any) => {
+          LsHelper.removeTokenStorage();
+          LsHelper.removeUserStorage();
+          return res;
+        })
+      );
   }
-public home(): Observable<any> {
-  let headers = new HttpHeaders({
-    Authorization: 'bearer ' +LsHelper.getTokenFromStorage(),
-  });
-  const a = "abc";
-    return this.http.post(this.apiURL + '/home',null, {headers: headers}).pipe(
+
+  public getTokenByRefreshToken(): Observable<TokenPassword> {
+    let body = new URLSearchParams();
+    body.append('grant_type', 'refresh_token');
+    body.append('refresh_token', LsHelper.getRefreshTokenFromStorage());
+
+    let headers = new HttpHeaders({
+      'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+      Authorization: 'Basic ' + btoa('admin:admin'),
+    });
+
+    return this.http
+      .post('http://localhost:8083/oauth/token', body.toString(), {
+        headers: headers,
+      })
+      .pipe(
+        map((res: TokenPassword) => {
+          return res;
+        })
+      );
+  }
+
+  public isAuthenticated(): Observable<any> {
+    const token = LsHelper.getTokenFromStorage();
+    let headers = new HttpHeaders({
+      Authorization: 'Bearer ' + token
+    });
+    return this.http.get(this.apiURL + '/isAuthenticated',{headers: headers}).pipe(
       map((res: any) => {
-        return res;
-      })
-    );
-  }
-  public authenticate(): Observable<TokenPassword> {
-    return this.http.get(this.apiURL + '/authenticate').pipe(
-      map((res: TokenPassword) => {
-        LsHelper.saveTokenToStorage(res);
         return res;
       })
     );

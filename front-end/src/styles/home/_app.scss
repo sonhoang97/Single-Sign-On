@@ -1,13 +1,4 @@
 app-root{
-    .page-wrap {
-        min-height: 100%;
-        /* equal to footer height */
-      }
-      .page-wrap:after {
-        display: block;
-      }
-      .site-footer, .page-wrap:after {
-        /* .push must be the same height as footer */
-      }
+    
 
 }

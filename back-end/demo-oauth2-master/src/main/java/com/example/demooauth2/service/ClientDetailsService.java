@@ -1,7 +1,6 @@
 package com.example.demooauth2.service;
 
-import com.example.demooauth2.exception.CommandResult;
-import com.example.demooauth2.model.User;
+import com.example.demooauth2.responseModel.CommandResult;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
 public interface ClientDetailsService {

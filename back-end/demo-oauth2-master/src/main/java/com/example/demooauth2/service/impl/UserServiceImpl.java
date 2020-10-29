@@ -1,6 +1,6 @@
 package com.example.demooauth2.service.impl;
 
-import com.example.demooauth2.exception.CommandResult;
+import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.model.User;
 import com.example.demooauth2.repository.UserRepository;
 import com.example.demooauth2.service.UserService;
@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service

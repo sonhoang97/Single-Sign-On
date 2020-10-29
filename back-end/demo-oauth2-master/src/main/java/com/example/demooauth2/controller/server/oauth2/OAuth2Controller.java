@@ -1,6 +1,5 @@
 package com.example.demooauth2.controller.server.oauth2;
 
-import com.example.demooauth2.modelsEndPoint.ApprovalEndPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
@@ -24,9 +23,6 @@ public class OAuth2Controller {
 
     @Autowired
     private WhitelabelApprovalEndpoint approvalEndPoint;
-
-//    @Autowired
-//    private ApprovalEndPoint approvalEndPoint;
 
     @Autowired
     private WhitelabelErrorEndpoint whitelabelErrorEndpoint;

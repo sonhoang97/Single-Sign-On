@@ -17,6 +17,7 @@ const APP_COMPONENTS: any[] = [
   fromApp.LoginFormComponent,
   fromApp.RegisterFormComponent,
   fromApp.HomeMenuComponent,
+  fromApp.RegistClientDetailComponent
 ];
 
 const APP_POPUP_COMPONENTS: any[] = [];
