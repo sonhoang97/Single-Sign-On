@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    @PreAuthorize("hasAuthority('read_profile')")
+//    @PreAuthorize("hasAuthority('read_profile')")
     public ResponseEntity getProfile(Authentication authentication) {
         String username = authentication.getName();
         return ResponseEntity.ok(userService.findByUsername(username));

@@ -1,4 +1,4 @@
-package com.example.demooauth2.exception;
+package com.example.demooauth2.responseModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

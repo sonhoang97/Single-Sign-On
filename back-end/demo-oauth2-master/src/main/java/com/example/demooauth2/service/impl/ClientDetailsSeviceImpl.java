@@ -2,10 +2,10 @@ package com.example.demooauth2.service.impl;
 
 import com.example.demooauth2.commons.ClientDetailValue;
 import com.example.demooauth2.commons.Messages;
-import com.example.demooauth2.exception.CommandResult;
+import com.example.demooauth2.model.clientDetailViewModel.ClientDetailViewModel;
+import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.ClientDetailsService;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,8 +17,6 @@ import org.springframework.security.oauth2.provider.client.JdbcClientDetailsServ
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -56,9 +54,8 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
             clientDetails.setRefreshTokenValiditySeconds(ClientDetailValue.REFRESH_TOKEN_VALIDITY_SECONDS);
             jdbcClientDetailsService.addClientDetails(clientDetails);
 
-            //Hash clientId:clientSecret to response to client
-            String hashClient = Base64.encodeBase64String((clientDetails.getClientId() + ":" + clientSecret).getBytes());
-            return new CommandResult().SucceedWithData(hashClient);
+            ClientDetailViewModel result = new ClientDetailViewModel(clientId,clientSecret,redirectUri);
+            return new CommandResult().SucceedWithData(result);
 
         } catch (ClientAlreadyExistsException ex) {
             return new CommandResult(HttpStatus.CONFLICT, "Client already exists: " + clientId);
