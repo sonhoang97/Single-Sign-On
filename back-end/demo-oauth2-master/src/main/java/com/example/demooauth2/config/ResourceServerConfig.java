@@ -18,6 +18,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     private static final String RESOURCE_ID = "inventory";
 
+
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.resourceId(RESOURCE_ID);
@@ -25,13 +26,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+                .csrf()
+                .disable()
                 .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/oauth/revoke_token").permitAll()
+                .antMatchers("/api/account/register").permitAll()
                 .antMatchers("/oauth/authorize").permitAll()
-                .antMatchers("/register").permitAll()
-
+                .antMatchers("/oauth/token").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .loginPage("/login")
@@ -39,7 +41,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .permitAll()
                 .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler())
                 .and().httpBasic();
+
     }
-
-
 }

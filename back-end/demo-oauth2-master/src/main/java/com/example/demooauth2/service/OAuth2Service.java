@@ -1,8 +1,8 @@
 package com.example.demooauth2.service;
 
-import com.example.demooauth2.model.AccessToken;
+import com.example.demooauth2.responseModel.CommandResult;
 
 public interface OAuth2Service {
 
-    AccessToken getAccessToken(String clientId, String clientSecret, String redirectUri, String code, String state);
+    CommandResult revokeToken(String token, String refreshToken);
 }

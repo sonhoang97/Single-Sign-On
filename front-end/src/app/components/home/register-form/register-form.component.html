@@ -1,0 +1,161 @@
+<div class="container">
+  <form class="text-center p-5 mx-auto w-50 mt-3" action="#!">
+    <p class="h4 mb-4">Sign up</p>
+    <div class="row mb-3" [class.mb-5]="!firstName && invalid">
+      <div class="col">
+        <input
+          type="text"
+          id="defaultRegisterFormFirstName"
+          class="form-control"
+          placeholder="First name"
+          [(ngModel)]="firstName"
+          name="firstName"
+          [class.error-field]="!firstName && invalid"
+        />
+        <div *ngIf="!firstName && invalid" class="invalid-tooltip">
+          This fill is required.
+        </div>
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          id="defaultRegisterFormLastName"
+          class="form-control"
+          placeholder="Last name"
+          [(ngModel)]="lastName"
+          name="lastName"
+          [class.error-field]="!lastName && invalid"
+        />
+        <div *ngIf="!firstName && invalid" class="invalid-tooltip">
+          This fill is required.
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3" [class.mb-5]="!username && invalid">
+      <div class="col">
+        <input
+          type="text"
+          id="defaultRegisterFormEmail"
+          class="form-control"
+          placeholder="Username"
+          [(ngModel)]="username"
+          name="username"
+          [class.error-field]="!username && invalid"
+        />
+        <div *ngIf="!username && invalid" class="invalid-tooltip">
+          This fill is required.
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3" [class.mb-5]="!password && invalid">
+      <div class="col">
+        <input
+          type="password"
+          id="defaultRegisterFormPassword"
+          class="form-control"
+          placeholder="Password"
+          aria-describedby="defaultRegisterFormPasswordHelpBlock"
+          [(ngModel)]="password"
+          name="password"
+          [class.error-field]="!password && invalid"
+        />
+        <div *ngIf="!password && invalid" class="invalid-tooltip">
+          This fill is required.
+        </div>
+      </div>
+    </div>
+    <div
+      class="row mb-3"
+      [class.mb-5]="
+        (!passwordConfirm && invalid) ||
+        (password != passwordConfirm && wrongConfirm)
+      "
+    >
+      <div class="col">
+        <input
+          type="password"
+          id="defaultRegisterFormPassword"
+          class="form-control"
+          placeholder="Confirm Password"
+          aria-describedby="defaultRegisterFormPasswordHelpBlock"
+          [(ngModel)]="passwordConfirm"
+          name="passwordConfirm"
+          [class.error-field]="
+            (!passwordConfirm && invalid) ||
+            (password != passwordConfirm && wrongConfirm)
+          "
+        />
+        <div
+          *ngIf="
+            (!passwordConfirm && invalid) ||
+            (password != passwordConfirm && wrongConfirm)
+          "
+          class="invalid-tooltip"
+        >
+          <p class="m-0" *ngIf="!passwordConfirm && invalid">
+            This fill is required.
+          </p>
+          <p class="m-0" *ngIf="password != passwordConfirm && wrongConfirm">
+            Wrong password confirm..
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3" [class.mb-5]="!email && invalid">
+      <div class="col">
+        <input
+          type="email"
+          id="defaultRegisterFormEmail"
+          class="form-control"
+          placeholder="E-mail"
+          [(ngModel)]="email"
+          name="email"
+          [class.error-field]="!email && invalid"
+        />
+        <div *ngIf="!email && invalid" class="invalid-tooltip">
+          This fill is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <input
+          type="number"
+          id="defaultRegisterPhonePassword"
+          class="form-control"
+          placeholder="Phone number"
+          aria-describedby="defaultRegisterFormPhoneHelpBlock"
+          [(ngModel)]="phoneNumber"
+          name="phoneNumber"
+          [class.error-field]="!phoneNumber && invalid"
+        />
+        <div *ngIf="!phoneNumber && invalid" class="invalid-tooltip">
+          This fill is required.
+        </div>
+      </div>
+    </div>
+    <div class="custom-control custom-checkbox">
+      <input
+        type="checkbox"
+        class="custom-control-input"
+        id="defaultRegisterFormNewsletter"
+      />
+      <label class="custom-control-label" for="defaultRegisterFormNewsletter"
+        >Subscribe to our newsletter</label
+      >
+    </div>
+    <button
+      class="btn btn-info my-4 btn-block cyan"
+      type="submit"
+      (click)="submitRegiser()"
+    >
+      Sign in
+    </button>
+    <p>
+      By clicking <em>Sign up</em> you agree to our
+      <a href="" target="_blank">terms of service</a>
+    </p>
+  </form>
+</div>
