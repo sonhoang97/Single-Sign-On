@@ -3,8 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+<<<<<<< Updated upstream
     "start": "ng serve",
     "build": "ng build",
+=======
+    "start": "ng serve ",
+    "build": "ng build --prod",
+>>>>>>> Stashed changes
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
