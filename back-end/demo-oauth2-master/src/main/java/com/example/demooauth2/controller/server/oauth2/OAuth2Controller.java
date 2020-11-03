@@ -1,8 +1,13 @@
 package com.example.demooauth2.controller.server.oauth2;
 
+import com.sun.net.httpserver.Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.WhitelabelApprovalEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.WhitelabelErrorEndpoint;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -14,6 +19,7 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.Map;
 
 @Controller
@@ -29,6 +35,9 @@ public class OAuth2Controller {
 
     @Autowired
     private AuthorizationEndpoint authorizationEndpoint;
+
+    @Autowired
+    private TokenEndpoint abc;
 
     //http://localhost:4200/oauth/authorize?client_id=mobile&response_type=code&redirect_uri=http://localhost:8082/oauth/callback&scope=WRITE&code=..
 
@@ -69,4 +78,13 @@ public class OAuth2Controller {
         // TODO: custom code here
         return whitelabelErrorEndpoint.handleError(request);
     }
+
+//    @RequestMapping(
+//            value = {"/token"},
+//            method = {RequestMethod.POST}
+//    )
+//    public ResponseEntity postAccessToken(Principal principal, @RequestParam Map<String, String> parameters){
+//        String a = "a";
+//        return new ResponseEntity<Authenticator.Success>(HttpStatus.OK);
+//    }
 }
