@@ -6,21 +6,26 @@ import com.example.demooauth2.service.PermissionService;
 import com.example.demooauth2.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/permissions")
+@RequestMapping("/api/roles")
 public class RoleController {
     @Autowired
     private RoleService roleService;
 
     @PostMapping("")
-    public ResponseEntity<Object> CreateNew(@RequestBody Role permission) {
-        CommandResult result = roleService.CreateNew(permission);
+    @PreAuthorize("hasRole('admin')")
+
+    public ResponseEntity<Object> CreateNew(@RequestBody Role role) {
+        CommandResult result = roleService.CreateNew(role);
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('admin')")
+
     public ResponseEntity<Object> Update(@PathVariable(value = "id") int roleId,
                                          @RequestBody Role role) {
         CommandResult result = roleService.Update(roleId, role);
@@ -34,6 +39,8 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('admin')")
+
     public ResponseEntity<Object> Delete(@PathVariable(value = "id") int roleId) {
         CommandResult result = roleService.Delete(roleId);
         return new ResponseEntity<>(result.getData(), result.getStatus());
