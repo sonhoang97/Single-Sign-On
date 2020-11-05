@@ -18,7 +18,8 @@ export class AppComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     if (LsHelper.getTokenFromStorage()) {
-      this.checkAuthenticated();
+      // this.checkAuthenticated();
+      this.getProfile();
     } else {
     }
   }
@@ -26,7 +27,7 @@ export class AppComponent implements OnInit {
   checkAuthenticated(): void {
     this.authService.isAuthenticated().subscribe(
       (res) => {
-        this.getProfile();
+        
       },
       (err) => {
         if (err.status === 401) {
