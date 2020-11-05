@@ -14,13 +14,17 @@ public class PermissionController {
    @Autowired
    private PermissionService permissionService;
 
-  @PostMapping("")
-    public ResponseEntity<Object> CreateNew(@RequestBody Permission permission) {
+  @PostMapping("" )
+  @PreAuthorize("hasRole('admin')")
+
+  public ResponseEntity<Object> CreateNew(@RequestBody Permission permission) {
       CommandResult result = permissionService.CreateNew(permission);
       return new ResponseEntity<>(result.getData(),result.getStatus());
   }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('admin')")
+
     public ResponseEntity<Object> Update(@PathVariable (value = "id") int permissionId,
                                          @RequestBody Permission newPermission) {
         CommandResult result = permissionService.Update(permissionId,newPermission);
@@ -32,6 +36,8 @@ public class PermissionController {
       return  new ResponseEntity<>(result.getData(),result.getStatus());
     }
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('admin')")
+
     public ResponseEntity<Object> Delete(@PathVariable (value = "id" )int permissionId) {
         CommandResult result = permissionService.Delete(permissionId);
         return new ResponseEntity<>(result.getData(), result.getStatus());
