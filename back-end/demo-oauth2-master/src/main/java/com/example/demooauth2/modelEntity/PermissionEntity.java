@@ -1,4 +1,4 @@
-package com.example.demooauth2.model;
+package com.example.demooauth2.modelEntity;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "permission")
 @Data
-public class Permission implements Serializable {
+public class PermissionEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

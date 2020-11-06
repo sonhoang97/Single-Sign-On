@@ -1,6 +1,6 @@
 package com.example.demooauth2.service.impl;
 
-import com.example.demooauth2.model.Permission;
+import com.example.demooauth2.modelEntity.PermissionEntity;
 import com.example.demooauth2.repository.PermissionRepository;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.PermissionService;
@@ -18,26 +18,26 @@ public class PermissionServiceImpl implements PermissionService {
     PermissionRepository permissionRepository;
 
     @Override
-    public CommandResult CreateNew(Permission permission) {
+    public CommandResult CreateNew(PermissionEntity permissionEntity) {
         try {
-            Optional<Permission> per = permissionRepository.findByName(permission.getName());
+            Optional<PermissionEntity> per = permissionRepository.findByName(permissionEntity.getName());
             if (per.isPresent())
-                return new CommandResult(HttpStatus.CONFLICT, "Permission has existed!");
+                return new CommandResult(HttpStatus.CONFLICT, "PermissionEntity has existed!");
 
-            permissionRepository.save(permission);
+            permissionRepository.save(permissionEntity);
             return new CommandResult().SucceedWithData("Create new role successful!");
         } catch (Exception ex) {
-            return new CommandResult(HttpStatus.BAD_REQUEST, "Cannot create new permission!");
+            return new CommandResult(HttpStatus.BAD_REQUEST, "Cannot create new permissionEntity!");
         }
     }
 
     @Override
-    public CommandResult Update(int id, Permission newPermission) {
+    public CommandResult Update(int id, PermissionEntity newPermissionEntity) {
         try {
             if (!permissionRepository.findById(id).isPresent())
                 return new CommandResult(HttpStatus.NOT_FOUND, "Cannot find permission!");
 
-            permissionRepository.save(newPermission);
+            permissionRepository.save(newPermissionEntity);
             return new CommandResult().SucceedWithData("Update permission successful!");
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.BAD_REQUEST, "Cannot update permission!");
@@ -47,7 +47,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public CommandResult getAll() {
         try {
-            List<Permission> data = permissionRepository.findAll();
+            List<PermissionEntity> data = permissionRepository.findAll();
             return new CommandResult().SucceedWithData(data);
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.BAD_REQUEST, "Cannot get all permission!");
@@ -57,7 +57,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public CommandResult Delete(int id) {
         try {
-            Optional<Permission> permission = permissionRepository.findById(id);
+            Optional<PermissionEntity> permission = permissionRepository.findById(id);
             if (!permission.isPresent())
                 return new CommandResult(HttpStatus.NOT_FOUND, "Cannot find permission!");
 

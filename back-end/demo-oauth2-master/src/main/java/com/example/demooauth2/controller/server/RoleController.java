@@ -1,8 +1,7 @@
 package com.example.demooauth2.controller.server;
 
-import com.example.demooauth2.model.Role;
+import com.example.demooauth2.modelEntity.RoleEntity;
 import com.example.demooauth2.responseModel.CommandResult;
-import com.example.demooauth2.service.PermissionService;
 import com.example.demooauth2.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,7 @@ public class RoleController {
     @PostMapping("")
     @PreAuthorize("hasRole('admin')")
 
-    public ResponseEntity<Object> CreateNew(@RequestBody Role role) {
+    public ResponseEntity<Object> CreateNew(@RequestBody RoleEntity role) {
         CommandResult result = roleService.CreateNew(role);
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
@@ -27,7 +26,7 @@ public class RoleController {
     @PreAuthorize("hasRole('admin')")
 
     public ResponseEntity<Object> Update(@PathVariable(value = "id") int roleId,
-                                         @RequestBody Role role) {
+                                         @RequestBody RoleEntity role) {
         CommandResult result = roleService.Update(roleId, role);
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }

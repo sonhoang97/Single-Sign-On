@@ -15,7 +15,7 @@ create table if not exists  oauth_client_details (
   primary key (client_id)
 ) engine=innodb ;
 
-create table if not exists  permission (
+create table if not exists  permissionEntity (
   id int(11) not null auto_increment,
   name varchar(512) default null,
   primary key (id),
@@ -48,7 +48,7 @@ create table  if not exists permission_role (
   role_id int(11) default null,
   key permission_id (permission_id),
   key role_id (role_id),
-  constraint permission_role_ibfk_1 foreign key (permission_id) references permission (id),
+  constraint permission_role_ibfk_1 foreign key (permission_id) references permissionEntity (id),
   constraint permission_role_ibfk_2 foreign key (role_id) references role (id)
 ) engine=innodb ;
 

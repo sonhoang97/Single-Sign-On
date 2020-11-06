@@ -1,4 +1,4 @@
-package com.example.demooauth2.model;
+package com.example.demooauth2.modelEntity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class AuthUserDetails extends User implements UserDetails {
+public class AuthUserDetails extends UserEntity implements UserDetails {
 
-    public AuthUserDetails(User user) {
+    public AuthUserDetails(UserEntity user) {
         super(user);
     }
 
