@@ -1,15 +1,15 @@
 package com.example.demooauth2.service;
 
 import com.example.demooauth2.responseModel.CommandResult;
-import com.example.demooauth2.model.User;
+import com.example.demooauth2.modelEntity.UserEntity;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<User> findAll();
+    List<UserEntity> findAll();
 
-    User findByUsername(String username);
+    UserEntity findByUsername(String username);
 
-    CommandResult registerNewUserAccount(User user);
+    CommandResult registerNewUserAccount(UserEntity user);
 }

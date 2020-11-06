@@ -1,6 +1,6 @@
 package com.example.demooauth2.controller.server;
 
-import com.example.demooauth2.model.Permission;
+import com.example.demooauth2.modelEntity.PermissionEntity;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,8 @@ public class PermissionController {
   @PostMapping("" )
   @PreAuthorize("hasRole('admin')")
 
-  public ResponseEntity<Object> CreateNew(@RequestBody Permission permission) {
-      CommandResult result = permissionService.CreateNew(permission);
+  public ResponseEntity<Object> CreateNew(@RequestBody PermissionEntity permissionEntity) {
+      CommandResult result = permissionService.CreateNew(permissionEntity);
       return new ResponseEntity<>(result.getData(),result.getStatus());
   }
 
@@ -26,8 +26,8 @@ public class PermissionController {
     @PreAuthorize("hasRole('admin')")
 
     public ResponseEntity<Object> Update(@PathVariable (value = "id") int permissionId,
-                                         @RequestBody Permission newPermission) {
-        CommandResult result = permissionService.Update(permissionId,newPermission);
+                                         @RequestBody PermissionEntity newPermissionEntity) {
+        CommandResult result = permissionService.Update(permissionId, newPermissionEntity);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
     @GetMapping("")

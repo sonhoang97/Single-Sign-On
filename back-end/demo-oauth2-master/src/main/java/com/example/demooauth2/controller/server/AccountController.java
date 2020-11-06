@@ -1,7 +1,9 @@
 package com.example.demooauth2.controller.server;
 
+import com.example.demooauth2.modelView.clientDetail.ClientDetailViewModel;
+import com.example.demooauth2.repository.ClientDetailRepository;
 import com.example.demooauth2.responseModel.CommandResult;
-import com.example.demooauth2.model.User;
+import com.example.demooauth2.modelEntity.UserEntity;
 import com.example.demooauth2.service.OAuth2Service;
 import com.example.demooauth2.service.UserService;
 import com.sun.net.httpserver.Authenticator;
@@ -20,9 +22,10 @@ public class AccountController {
     private UserService userService;
     @Autowired
     private OAuth2Service oAuth2Service;
-
+    @Autowired
+    private ClientDetailRepository clientDetailRepository;
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody User userRegister){
+    public ResponseEntity<Object> register(@RequestBody UserEntity userRegister){
         userRegister.setPassword(new BCryptPasswordEncoder().encode(userRegister.getPassword()));
         CommandResult result = userService.registerNewUserAccount(userRegister);
         return new ResponseEntity<>(result.getData(),result.getStatus());
@@ -40,5 +43,13 @@ public class AccountController {
     public ResponseEntity<?> isAuthenticated() {
 
         return new ResponseEntity<Authenticator.Success>(HttpStatus.OK);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<ClientDetailViewModel> test() {
+
+        ClientDetailViewModel test = clientDetailRepository.findByClientId("mobile");
+
+        return new ResponseEntity<>(test,HttpStatus.OK);
     }
 }

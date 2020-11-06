@@ -32,6 +32,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatcher("/**")
                 .authorizeRequests()
                 .antMatchers("/api/account/register").permitAll()
+                .antMatchers("/api/account/test").permitAll()
                 .antMatchers("/oauth/authorize").permitAll()
                 .antMatchers("/oauth/token").permitAll()
                 .anyRequest().authenticated()

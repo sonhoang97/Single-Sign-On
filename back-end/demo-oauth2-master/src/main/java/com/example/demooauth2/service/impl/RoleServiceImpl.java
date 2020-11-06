@@ -1,6 +1,6 @@
 package com.example.demooauth2.service.impl;
 
-import com.example.demooauth2.model.Role;
+import com.example.demooauth2.modelEntity.RoleEntity;
 import com.example.demooauth2.repository.RoleRepository;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.RoleService;
@@ -15,9 +15,9 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     RoleRepository roleRepository;
     @Override
-    public CommandResult CreateNew(Role role) {
+    public CommandResult CreateNew(RoleEntity role) {
         try {
-            Optional<Role> existRole = roleRepository.findByName(role.getName());
+            Optional<RoleEntity> existRole = roleRepository.findByName(role.getName());
             if(existRole.isPresent()) {
                 return new CommandResult(HttpStatus.CONFLICT, "Role name is duplicate");
             }
@@ -29,9 +29,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public CommandResult Update(int id, Role newRole) {
+    public CommandResult Update(int id, RoleEntity newRole) {
         try {
-            Optional<Role> existRole = roleRepository.findById(id);
+            Optional<RoleEntity> existRole = roleRepository.findById(id);
             if(!existRole.isPresent()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
             }
@@ -45,7 +45,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public CommandResult getAll() {
         try {
-            List<Role> data = roleRepository.findAll();
+            List<RoleEntity> data = roleRepository.findAll();
             return  new CommandResult().SucceedWithData(data);
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Get role fail!");
@@ -56,7 +56,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public CommandResult GetSingleById(int id) {
         try {
-           Optional<Role> role = roleRepository.findById(id);
+           Optional<RoleEntity> role = roleRepository.findById(id);
             return  new CommandResult().SucceedWithData(role);
         }
         catch (Exception ex) {
@@ -68,7 +68,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public CommandResult Delete(int id) {
         try {
-            Optional<Role> existRole = roleRepository.findById(id);
+            Optional<RoleEntity> existRole = roleRepository.findById(id);
             if(!existRole.isPresent()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
             }

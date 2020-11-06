@@ -1,7 +1,5 @@
-package com.example.demooauth2.model;
+package com.example.demooauth2.modelEntity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,15 +9,14 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-@Data
 @Getter
 @Setter
-public class User implements Serializable {
+public class UserEntity implements Serializable {
 
-    public User() {
+    public UserEntity() {
     }
 
-    public User(User user) {
+    public UserEntity(UserEntity user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.email = user.getEmail();
@@ -69,12 +66,10 @@ public class User implements Serializable {
     @Column(name = "accountNonLocked")
     private boolean accountNonLocked;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_user", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {
                     @JoinColumn(name = "role_id", referencedColumnName = "id")})
-    private List<Role> roles;
-
+    private List<RoleEntity> roles;
 
 }
