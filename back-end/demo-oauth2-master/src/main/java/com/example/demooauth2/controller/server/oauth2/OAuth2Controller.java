@@ -1,5 +1,6 @@
 package com.example.demooauth2.controller.server.oauth2;
 
+import com.example.demooauth2.service.OAuth2Service;
 import com.sun.net.httpserver.Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,8 @@ public class OAuth2Controller {
     @Autowired
     private TokenEndpoint abc;
 
+    @Autowired
+    private OAuth2Service oAuth2Service;
     //http://localhost:4200/oauth/authorize?client_id=mobile&response_type=code&redirect_uri=http://localhost:8082/oauth/callback&scope=WRITE&code=..
 
     @RequestMapping(value = "/authorize")
@@ -86,7 +89,7 @@ public class OAuth2Controller {
 //            method = {RequestMethod.POST}
 //    )
 //    public ResponseEntity postAccessToken(Principal principal, @RequestParam Map<String, String> parameters){
-//        String a = "a";
+//        oAuth2Service.responseAccessToken(principal,parameters);
 //        return new ResponseEntity<Authenticator.Success>(HttpStatus.OK);
 //    }
 }
