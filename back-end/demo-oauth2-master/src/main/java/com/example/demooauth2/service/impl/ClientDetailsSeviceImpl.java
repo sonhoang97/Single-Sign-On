@@ -2,7 +2,8 @@ package com.example.demooauth2.service.impl;
 
 import com.example.demooauth2.commons.ClientDetailValue;
 import com.example.demooauth2.commons.Messages;
-import com.example.demooauth2.model.clientDetailViewModel.ClientDetailViewModel;
+import com.example.demooauth2.modelView.clientDetail.ClientDetailViewModel;
+import com.example.demooauth2.repository.ClientDetailRepository;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.ClientDetailsService;
 import org.apache.commons.codec.binary.Base64;
@@ -29,8 +30,7 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JdbcTemplate jdbcTemplateObject;
-
+    private ClientDetailRepository clientDetailRepository;
     @Override
     public ClientDetails loadClientByClientId(String clientId) {
         try {
@@ -69,11 +69,10 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
                 return new CommandResult(HttpStatus.NO_CONTENT, Messages.NO_CONTENT);
             }
             String clientSecret = UUID.randomUUID().toString();
-            jdbcClientDetailsService.updateClientSecret(clientId, clientSecret);
+            clientDetailRepository.updateClientSecret(clientId, this.passwordEncoder.encode(clientSecret));
 
-            String hashClient = Base64.encodeBase64String((clientId + ":" + clientSecret).getBytes());
-            return new CommandResult().SucceedWithData(hashClient);
-        } catch (NoSuchClientException ex) {
+            return new CommandResult().SucceedWithData(new ClientDetailViewModel(clientId,clientSecret));
+        } catch (Exception ex) {
             return new CommandResult(HttpStatus.NOT_FOUND, "No client found with id = " + clientId);
         }
     }
@@ -84,11 +83,9 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
             if (clientId == null || clientId.isEmpty() || redirectUri == null || redirectUri.isEmpty()) {
                 return new CommandResult(HttpStatus.NO_CONTENT, Messages.NO_CONTENT);
             }
-            loadClientByClientId(clientId);
-            String updateQuery = "update oauth_client_details set web_server_redirect_uri = ? where client_id = ?";
-            jdbcTemplateObject.update(updateQuery, redirectUri, clientId);
+            clientDetailRepository.updateRedirectUri(clientId,redirectUri);
             return new CommandResult().Succeed();
-        } catch (NoSuchClientException ex) {
+        } catch (Exception ex) {
             return new CommandResult(HttpStatus.NOT_FOUND, "No client with requested id: " + clientId);
         }
     }
@@ -99,9 +96,9 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
             if (clientId == null || clientId.isEmpty()) {
                 return new CommandResult(HttpStatus.NO_CONTENT, Messages.NO_CONTENT);
             }
-            jdbcClientDetailsService.removeClientDetails(clientId);
+            clientDetailRepository.deleteClientDetail(clientId);
             return new CommandResult().Succeed();
-        }catch(NoSuchClientException ex){
+        }catch(Exception ex){
             return new CommandResult(HttpStatus.NOT_FOUND, "No client found with id = " + clientId);
         }
     }

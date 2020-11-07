@@ -1,7 +1,7 @@
 package com.example.demooauth2.service.impl;
 
-import com.example.demooauth2.model.AuthUserDetails;
-import com.example.demooauth2.model.User;
+import com.example.demooauth2.modelEntity.AuthUserDetails;
+import com.example.demooauth2.modelEntity.UserEntity;
 import com.example.demooauth2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
@@ -20,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
+        Optional<UserEntity> optionalUser = userRepository.findByUsername(username);
         if(!optionalUser.isPresent()){
             throw new UsernameNotFoundException(username);
         }

@@ -1,12 +1,12 @@
 package com.example.demooauth2.service;
 
-import com.example.demooauth2.model.Role;
+import com.example.demooauth2.modelEntity.RoleEntity;
 import com.example.demooauth2.responseModel.CommandResult;
 
 public interface RoleService {
-    CommandResult CreateNew(Role permission) ;
+    CommandResult CreateNew(RoleEntity permission) ;
 
-    CommandResult Update(int id, Role newRole);
+    CommandResult Update(int id, RoleEntity newRole);
 
     CommandResult getAll();
 
