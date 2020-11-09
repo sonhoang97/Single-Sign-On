@@ -1,6 +1,7 @@
 package com.example.demooauth2.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
+    @Qualifier("userDetailsService")
+    @Autowired
     private UserDetailsService userDetailService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -31,7 +34,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             String password = authenticate.getCredentials().toString();
             UsernamePasswordAuthenticationToken result = null;
             if (user.getUsername().equals(username) && passwordEncoder.matches(password,user.getPassword())) {
-                result = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), new ArrayList<GrantedAuthority>());
+                result = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
             }
             return result;
         } catch (UsernameNotFoundException e) {

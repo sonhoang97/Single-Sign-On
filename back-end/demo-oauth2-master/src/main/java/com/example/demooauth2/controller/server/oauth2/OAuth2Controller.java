@@ -1,5 +1,7 @@
 package com.example.demooauth2.controller.server.oauth2;
 
+import com.example.demooauth2.modelView.tokens.Oauth2Token;
+import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.OAuth2Service;
 import com.sun.net.httpserver.Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,12 +86,12 @@ public class OAuth2Controller {
         return whitelabelErrorEndpoint.handleError(request);
     }
 
-//    @RequestMapping(
-//            value = {"/token"},
-//            method = {RequestMethod.POST}
-//    )
-//    public ResponseEntity postAccessToken(Principal principal, @RequestParam Map<String, String> parameters){
-//        oAuth2Service.responseAccessToken(principal,parameters);
-//        return new ResponseEntity<Authenticator.Success>(HttpStatus.OK);
-//    }
+    @RequestMapping(
+            value = {"/token"},
+            method = {RequestMethod.POST}
+    )
+    public ResponseEntity<Object> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters){
+        CommandResult result = oAuth2Service.responseAccessToken(principal,parameters);
+        return new ResponseEntity<>(result.getData(),result.getStatus());
+    }
 }

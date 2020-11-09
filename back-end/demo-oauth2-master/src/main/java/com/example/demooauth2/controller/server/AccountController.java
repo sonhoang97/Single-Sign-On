@@ -1,11 +1,16 @@
 package com.example.demooauth2.controller.server;
 
+import com.example.demooauth2.modelEntity.JWTokenEntity;
 import com.example.demooauth2.modelView.clientDetail.ClientDetailViewModel;
+import com.example.demooauth2.modelView.users.UserTokenViewModel;
 import com.example.demooauth2.repository.ClientDetailRepository;
+import com.example.demooauth2.repository.JWTokenRepository;
+import com.example.demooauth2.repository.UserRepository;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.modelEntity.UserEntity;
 import com.example.demooauth2.service.OAuth2Service;
 import com.example.demooauth2.service.UserService;
+import com.example.demooauth2.service.commons.JwtTokenProvider;
 import com.sun.net.httpserver.Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/account")
@@ -24,6 +30,10 @@ public class AccountController {
     private OAuth2Service oAuth2Service;
     @Autowired
     private ClientDetailRepository clientDetailRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private JWTokenRepository jwTokenRepository;
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody UserEntity userRegister){
         userRegister.setPassword(new BCryptPasswordEncoder().encode(userRegister.getPassword()));
@@ -46,10 +56,9 @@ public class AccountController {
     }
 
     @GetMapping("/test")
-    public ResponseEntity<ClientDetailViewModel> test() {
+    public ResponseEntity<UserTokenViewModel> test() {
 
-        ClientDetailViewModel test = clientDetailRepository.findByClientId("mobile");
-
-        return new ResponseEntity<>(test,HttpStatus.OK);
+        UserTokenViewModel u = userRepository.findUserByUsername("krish");
+        return  new ResponseEntity<>(u, HttpStatus.OK);
     }
 }

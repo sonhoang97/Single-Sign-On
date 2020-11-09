@@ -1,6 +1,8 @@
 package com.example.demooauth2.modelEntity;
 
 import com.example.demooauth2.commons.Converter.StringListConverter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -52,8 +54,4 @@ public class ClientDetailEntity implements Serializable {
     @Column(name = "autoapprove")
     @Convert(converter = StringListConverter.class)
     private List<String> autoApprove;
-
-    @OneToMany(mappedBy = "clientDetail", cascade = CascadeType.ALL)
-    private Set<JWTokenEntity> tokens;
-
 }

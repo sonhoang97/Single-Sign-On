@@ -52,7 +52,7 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
             clientDetails.setRefreshTokenValiditySeconds(ClientDetailValue.REFRESH_TOKEN_VALIDITY_SECONDS);
             jdbcClientDetailsService.addClientDetails(clientDetails);
 
-            ClientDetailViewModel result = new ClientDetailViewModel(clientId,clientSecret,redirectUri);
+            ClientDetailViewModel result = new ClientDetailViewModel(clientId,clientSecret);
             return new CommandResult().SucceedWithData(result);
 
         } catch (ClientAlreadyExistsException ex) {
