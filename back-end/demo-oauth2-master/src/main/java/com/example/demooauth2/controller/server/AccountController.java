@@ -1,7 +1,9 @@
 package com.example.demooauth2.controller.server;
 
-import com.example.demooauth2.modelView.clientDetail.ClientDetailViewModel;
+import com.example.demooauth2.modelView.users.UserTokenViewModel;
 import com.example.demooauth2.repository.ClientDetailRepository;
+import com.example.demooauth2.repository.JWTokenRepository;
+import com.example.demooauth2.repository.UserRepository;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.modelEntity.UserEntity;
 import com.example.demooauth2.service.OAuth2Service;
@@ -10,9 +12,11 @@ import com.sun.net.httpserver.Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -24,6 +28,10 @@ public class AccountController {
     private OAuth2Service oAuth2Service;
     @Autowired
     private ClientDetailRepository clientDetailRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private JWTokenRepository jwTokenRepository;
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody UserEntity userRegister){
         userRegister.setPassword(new BCryptPasswordEncoder().encode(userRegister.getPassword()));
@@ -46,10 +54,17 @@ public class AccountController {
     }
 
     @GetMapping("/test")
-    public ResponseEntity<ClientDetailViewModel> test() {
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<UserTokenViewModel> test(Principal principal) {
 
-        ClientDetailViewModel test = clientDetailRepository.findByClientId("mobile");
+        UserTokenViewModel u = userRepository.findUserByUsername("krish");
+        return  new ResponseEntity<>(u, HttpStatus.OK);
+    }
+    @PostMapping("/testPost")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<UserTokenViewModel> testPost(Principal principal) {
 
-        return new ResponseEntity<>(test,HttpStatus.OK);
+        UserTokenViewModel u = userRepository.findUserByUsername("krish");
+        return  new ResponseEntity<>(u, HttpStatus.OK);
     }
 }

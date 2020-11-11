@@ -6,7 +6,6 @@ import com.example.demooauth2.modelView.clientDetail.ClientDetailViewModel;
 import com.example.demooauth2.repository.ClientDetailRepository;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.ClientDetailsService;
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +15,6 @@ import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.stereotype.Service;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.UUID;
 
@@ -54,7 +52,7 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
             clientDetails.setRefreshTokenValiditySeconds(ClientDetailValue.REFRESH_TOKEN_VALIDITY_SECONDS);
             jdbcClientDetailsService.addClientDetails(clientDetails);
 
-            ClientDetailViewModel result = new ClientDetailViewModel(clientId,clientSecret,redirectUri);
+            ClientDetailViewModel result = new ClientDetailViewModel(clientId,clientSecret);
             return new CommandResult().SucceedWithData(result);
 
         } catch (ClientAlreadyExistsException ex) {

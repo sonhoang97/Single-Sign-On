@@ -23,4 +23,11 @@ export class HomeMenuComponent implements OnInit {
     this.isView = !this.isView;
     this.userProfile = LsHelper.getUserFromStorage();
   }
+
+  loginCode() {
+    this.authService.loginCode().subscribe(
+      (res) => {console.log(res)},
+      (err) => {console.log(err)}
+    );
+  }
 }

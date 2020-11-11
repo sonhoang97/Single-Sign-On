@@ -1,6 +1,7 @@
 package com.example.demooauth2.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
+    @Qualifier("userDetailsService")
+    @Autowired
     private UserDetailsService userDetailService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -31,7 +35,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             String password = authenticate.getCredentials().toString();
             UsernamePasswordAuthenticationToken result = null;
             if (user.getUsername().equals(username) && passwordEncoder.matches(password,user.getPassword())) {
-                result = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), new ArrayList<GrantedAuthority>());
+                result = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(result);
             }
             return result;
         } catch (UsernameNotFoundException e) {
