@@ -17,50 +17,14 @@ export class AppComponent implements OnInit {
     private userService: UserService
   ) {}
   ngOnInit(): void {
-    if (LsHelper.getTokenFromStorage()) {
-      // this.checkAuthenticated();
-      this.getProfile();
-    } else {
-    }
+
   }
 
   checkAuthenticated(): void {
-    this.authService.isAuthenticated().subscribe(
-      (res) => {
-        
-      },
-      (err) => {
-        if (err.status === 401) {
-          this.getTokenByRefreshToken();
-        }
-      }
-    );
+    
   }
 
-  getTokenByRefreshToken(): void {
-    this.authService.getTokenByRefreshToken().subscribe(
-      (res) => {
-        LsHelper.saveTokenToStorage(res);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
 
-  getProfile(): void {
-    if (LsHelper.getUserNameFromStorage()) {
-      this.userNameDisplay = LsHelper.getUserNameFromStorage();
-      return;
-    }
-    this.userService.getProfile().subscribe(
-      (res) => {
-        LsHelper.saveUserToStorage(res);
-        this.userNameDisplay = LsHelper.getUserNameFromStorage();
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
+
+
 }
