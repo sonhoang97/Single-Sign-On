@@ -45,7 +45,7 @@ public class AuthenticateService {
         String code = (String)parameters.get("code");
         Authentication userAuth = oauthCodeRepository.getAuthentication(code);
         if(userAuth==null || !userAuth.isAuthenticated()){
-            throw new InvalidGrantException("Could not authenticate user");
+            throw new InvalidGrantException("Could not authenticate user by authorization code grant type");
         }
         oauthCodeRepository.deleteCode(code);
         parameters.remove("code");

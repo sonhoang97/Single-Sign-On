@@ -9,25 +9,16 @@ import com.example.demooauth2.repository.ClientDetailRepository;
 import com.example.demooauth2.repository.JWTokenRepository;
 import com.example.demooauth2.repository.UserRepository;
 import com.example.demooauth2.service.TokenService;
-import com.example.demooauth2.service.commons.JwtTokenProvider;
+import com.example.demooauth2.service.commons.jwtTokenProvider.JwtTokenProvider;
 import com.example.demooauth2.service.commons.Oauth2Authentication;
 import com.example.demooauth2.service.commons.TokenRequest;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.impl.DefaultJwtParser;
 import io.jsonwebtoken.impl.TextCodec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
-import org.springframework.security.oauth2.common.util.SerializationUtils;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.*;
 
 @Service
@@ -39,8 +30,8 @@ public class TokenServiceImpl implements TokenService {
     private JWTokenRepository jwTokenRepository;
     @Autowired
     private ClientDetailRepository clientDetailRepository;
-
-    private final JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public Oauth2Token createToken(Oauth2Authentication oauth2Authentication) {
@@ -62,8 +53,8 @@ public class TokenServiceImpl implements TokenService {
             jwtSecret = this.createJwtSecretAndSave(oauth2Authentication);
         }
 
-        String token = jwtTokenProvider.generateToken(user,tokenRequest.getClientDetail().getTokenExpiration(),jwtSecret);
-        String refreshToken = jwtTokenProvider.generateToken(user,tokenRequest.getClientDetail().getRefreshExpiration(),jwtSecret);
+        String token = jwtTokenProvider.generateToken(user,tokenRequest.getClientDetail().getClientId(),tokenRequest.getClientDetail().getTokenExpiration(),jwtSecret);
+        String refreshToken = jwtTokenProvider.generateToken(user,tokenRequest.getClientDetail().getClientId(),tokenRequest.getClientDetail().getRefreshExpiration(),jwtSecret);
         if(token==null|| refreshToken==null || token.isEmpty() || refreshToken.isEmpty()){
             return null;
         }
@@ -85,13 +76,14 @@ public class TokenServiceImpl implements TokenService {
         }
 
         UserTokenViewModel user = userRepository.findUserByUserId(userId);
-        String token = jwtTokenProvider.generateToken(user,tokenRequest.getClientDetail().getTokenExpiration(),jwtSecret);
+        String token = jwtTokenProvider.generateToken(user,tokenRequest.getClientDetail().getClientId(),tokenRequest.getClientDetail().getTokenExpiration(),jwtSecret);
         if(token==null|| token.isEmpty()){
             return null;
         }
 
         return new Oauth2Token(token,refreshToken,tokenType);
     }
+
     private String createJwtSecretAndSave(Oauth2Authentication oauth2Authentication){
         String jwtSecret;
         jwtSecret = UUID.randomUUID().toString();

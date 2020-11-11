@@ -8,4 +8,5 @@
     <p>phoneNumber: {{ userProfile.phonenumber }}</p>
   </div>
   <h5 *ngIf="isView && !userProfile">Dont have user profile</h5>
+  <div (click)="loginCode()">Login with code</div>
 </div>

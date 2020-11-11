@@ -36,9 +36,6 @@ import java.util.Set;
 
 @Service("OAuth2Service")
 public class OAuth2ServiceImpl implements OAuth2Service {
-
-    @Autowired
-    private TokenStore tokenStore;
     @Autowired
     private ClientDetailRepository clientDetailRepository;
     @Autowired
@@ -76,20 +73,23 @@ public class OAuth2ServiceImpl implements OAuth2Service {
             return new CommandResult(HttpStatus.CONFLICT, ex.getMessage());
         } catch (NoSuchFieldException ex1) {
             return new CommandResult(HttpStatus.NOT_FOUND, ex1.getMessage());
+        } catch (IllegalArgumentException ex2){
+            return new CommandResult(HttpStatus.BAD_REQUEST, ex2.getMessage());
         }
     }
 
     @Override
     public CommandResult revokeToken(String token, String refreshToken) {
-        try {
-            OAuth2AccessToken oAuth2AccessToken = new DefaultOAuth2AccessToken(token);
-            OAuth2RefreshToken oAuth2RefreshToken = new DefaultOAuth2RefreshToken(refreshToken);
-            tokenStore.removeAccessToken(oAuth2AccessToken);
-            tokenStore.removeRefreshToken(oAuth2RefreshToken);
-            return new CommandResult().Succeed();
-        } catch (Exception ex) {
-            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        try {
+//            OAuth2AccessToken oAuth2AccessToken = new DefaultOAuth2AccessToken(token);
+//            OAuth2RefreshToken oAuth2RefreshToken = new DefaultOAuth2RefreshToken(refreshToken);
+//            tokenStore.removeAccessToken(oAuth2AccessToken);
+//            tokenStore.removeRefreshToken(oAuth2RefreshToken);
+//            return new CommandResult().Succeed();
+//        } catch (Exception ex) {
+//            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+        return new CommandResult().Succeed();
     }
 
 

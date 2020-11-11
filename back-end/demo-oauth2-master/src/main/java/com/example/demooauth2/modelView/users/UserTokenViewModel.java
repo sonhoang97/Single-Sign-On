@@ -22,6 +22,8 @@ public class UserTokenViewModel {
     private int phoneNumber;
     private Set<String> authorities;
 
+    public UserTokenViewModel(){};
+
     public UserTokenViewModel(UserEntity userEntity) {
         this.id = userEntity.getId();
         this.username = userEntity.getUsername();
@@ -37,5 +39,9 @@ public class UserTokenViewModel {
                 this.authorities.add(permission.getName());
             });
         });
+    }
+
+    public boolean isValid() {
+        return id != null && username != null;
     }
 }
