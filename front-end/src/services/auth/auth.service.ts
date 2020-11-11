@@ -41,7 +41,7 @@ export class AuthService {
 
     let headers = new HttpHeaders({
       'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      Authorization: 'Basic ' + btoa('admin:admin'),
+      Authorization: 'Basic ' + btoa('mobile:pin'),
     });
 
     return this.http
@@ -91,7 +91,6 @@ export class AuthService {
       .pipe(
         map((res: any) => {
           LsHelper.removeTokenStorage();
-          LsHelper.removeUserStorage();
           return res;
         })
       );
@@ -104,7 +103,7 @@ export class AuthService {
 
     let headers = new HttpHeaders({
       'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      Authorization: 'Basic ' + btoa('admin:admin'),
+      Authorization: 'Basic ' + btoa('mobile:pin'),
     });
 
     return this.http
@@ -116,17 +115,5 @@ export class AuthService {
           return res;
         })
       );
-  }
-
-  public isAuthenticated(): Observable<any> {
-    const token = LsHelper.getTokenFromStorage();
-    let headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token
-    });
-    return this.http.get(this.apiURL + '/isAuthenticated',{headers: headers}).pipe(
-      map((res: any) => {
-        return res;
-      })
-    );
   }
 }

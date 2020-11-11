@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LsHelper } from 'src/app/commons/helpers/ls.helper';
 import { User } from 'src/models/user/user.model';
@@ -10,24 +11,30 @@ import { UserService } from 'src/services/user/user.service';
 })
 export class HomeMenuComponent implements OnInit {
   isView = false;
-  userProfile: User;
+  username: string;
   constructor(
     private userService: UserService,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.username = this.route.snapshot.queryParams['username'];
+  }
 
   viewProfile(): void {
     this.isView = !this.isView;
-    this.userProfile = LsHelper.getUserFromStorage();
   }
 
   loginCode() {
     this.authService.loginCode().subscribe(
-      (res) => {console.log(res)},
-      (err) => {console.log(err)}
+      (res) => {
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+      }
     );
   }
 }

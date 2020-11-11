@@ -28,7 +28,7 @@ export class LoginFormComponent implements OnInit {
     this.authService.login(this.username, this.password).subscribe(
       (res) => {
         this.toastr.success(Messages.SUCCESS.SUCCESS);
-        this.router.navigate(['']);
+        this.router.navigate([''],{queryParams:{username:LsHelper.getUserNameFromStorage()}});
       },
       (err) => {
         if (err.status == 400) this.toastr.warning(Messages.ERROR.LOGIN_WRONG);

@@ -4,15 +4,10 @@ import { User } from 'src/models/user/user.model';
 
 export class LsHelper {
   private static readonly TOKEN_LOCAL: string = 'token';
-  private static readonly USER_LOCAL: string = 'user';
   
   //Save to storage
   public static saveTokenToStorage(token: TokenPassword): void {
     localStorage.setItem(this.TOKEN_LOCAL, JSON.stringify(token));
-  }
-  
-  public static saveUserToStorage(user: User): void {
-    localStorage.setItem(this.USER_LOCAL, JSON.stringify(user));
   }
 
   //Get from Storage
@@ -38,34 +33,20 @@ export class LsHelper {
     return token.refresh_token;
   }
 
-  public static getUserFromStorage(): User {
-    const currentUser = localStorage.getItem(this.USER_LOCAL);
-
-    if (!currentUser || currentUser === '') {
-      return undefined;
-    }
-
-    const user: User = JSON.parse(currentUser);
-    return user;
-  }
-
   public static getUserNameFromStorage(): string {
-    const currentUser = localStorage.getItem(this.USER_LOCAL);
+    const currentToken = this.getTokenFromStorage();
 
-    if (!currentUser || currentUser === '') {
+    if (!currentToken || currentToken === '') {
       return undefined;
     }
 
-    const user: User = JSON.parse(currentUser);
-    return user.username;
+    const payload: string = currentToken.split('.')[1];
+    const username: string = JSON.parse(atob(payload)).user_name;
+    return username;
   }
   //Delete Storage
   public static removeTokenStorage(): void {
     localStorage.removeItem(this.TOKEN_LOCAL);
-  }
-
-  public static removeUserStorage(): void {
-    localStorage.removeItem(this.USER_LOCAL);
   }
 
 }
