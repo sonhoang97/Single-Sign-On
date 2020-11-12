@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: Sample API
+  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+  version: 0.1.9
+servers:
+  - url: http://localhost:8083/api
+    description: Resource server
+  - url: http://localhost:8083/oauth
+    description: Auth server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  # optional, for documentation purposes only
+    oAuth:    # <---- arbitrary name
+      type: oauth2
+      description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
+      flows:
+        authorizationCode:   # <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
+          authorizationUrl: http://localhost:8083/oauth/authorize
+          tokenUrl: http://localhost:8083/oauth/token
+          scopes:
+            read: read your pets
+            write: modify pets in your account
+
+security:
+  - bearerAuth: []
+  - oAuth:
+    - read
+    - write
+paths:
+  /permissions:
+    get:
+      summary: Returns a list of permission.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+      security: 
+        - bearerAuth: []
+      
