@@ -4,4 +4,5 @@ export class TokenPassword{
     expires_in: number;
     scope: string;
     refresh_token: string;
+    jti: String;
 }

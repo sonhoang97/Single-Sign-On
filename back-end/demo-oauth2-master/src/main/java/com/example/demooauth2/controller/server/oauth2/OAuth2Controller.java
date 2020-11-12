@@ -1,5 +1,8 @@
 package com.example.demooauth2.controller.server.oauth2;
 
+import com.example.demooauth2.modelView.tokens.Oauth2Token;
+import com.example.demooauth2.responseModel.CommandResult;
+import com.example.demooauth2.service.OAuth2Service;
 import com.sun.net.httpserver.Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,11 +11,14 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.WhitelabelApprovalEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.WhitelabelErrorEndpoint;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -24,69 +30,14 @@ import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/oauth")
-@SessionAttributes({"authorizationRequest", "org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint.ORIGINAL_AUTHORIZATION_REQUEST"})
 public class OAuth2Controller {
-
     @Autowired
-    private WhitelabelApprovalEndpoint approvalEndPoint;
-
-    @Autowired
-    private WhitelabelErrorEndpoint whitelabelErrorEndpoint;
-
-    @Autowired
-    private AuthorizationEndpoint authorizationEndpoint;
-
-    @Autowired
-    private TokenEndpoint abc;
-
-    //http://localhost:4200/oauth/authorize?client_id=mobile&response_type=code&redirect_uri=http://localhost:8082/oauth/callback&scope=WRITE&code=..
-
+    private OAuth2Service oAuth2Service;
     @RequestMapping(value = "/authorize")
-    public ModelAndView authorize(Map<String, Object> model, @RequestParam Map<String, String> parameters, SessionStatus sessionStatus,
-                                  HttpSession session) {
-        Authentication authentication = (Authentication) session.getAttribute("authentication");
-        if (authentication == null || !authentication.isAuthenticated()) {
-            session.setAttribute("client_id", parameters.getOrDefault("client_id", null));
-            session.setAttribute("response_type", parameters.getOrDefault("response_type", null));
-            session.setAttribute("redirect_uri", parameters.getOrDefault("redirect_uri", null));
-            session.setAttribute("scope", parameters.getOrDefault("scope", null));
-            session.setAttribute("state", parameters.getOrDefault("state", null));
-            return new ModelAndView("redirect:/login");
-        }
-        return authorizationEndpoint.authorize(model, parameters, sessionStatus, authentication);
+    public ResponseEntity<Object> authorize(@RequestParam Map<String, String> approvalParameters, Principal principal) {
+        CommandResult result = oAuth2Service.responseAuthorizationCode(approvalParameters, principal);
+        return new ResponseEntity<>(result.getData(),result.getStatus());
     }
-
-    @RequestMapping(
-            value = {"/authorize"},
-            method = {RequestMethod.POST},
-            params = {"user_oauth_approval"}
-    )
-    public View approveOrDeny(@RequestParam Map<String, String> approvalParameters, Map<String, ?> model, SessionStatus sessionStatus,
-                              HttpSession session) {
-        Authentication authentication = (Authentication) session.getAttribute("authentication");
-        return authorizationEndpoint.approveOrDeny(approvalParameters, model, sessionStatus, authentication);
-    }
-
-    @RequestMapping("/confirm_access")
-    public ModelAndView customConfirmAccessPage(Map<String, Object> model, HttpServletRequest request) throws Exception {
-        // TODO: custom code here
-        return approvalEndPoint.getAccessConfirmation(model, request);
-    }
-
-    @RequestMapping("/error")
-    public ModelAndView customErrorPage(HttpServletRequest request) {
-        // TODO: custom code here
-        return whitelabelErrorEndpoint.handleError(request);
-    }
-
-//    @RequestMapping(
-//            value = {"/token"},
-//            method = {RequestMethod.POST}
-//    )
-//    public ResponseEntity postAccessToken(Principal principal, @RequestParam Map<String, String> parameters){
-//        String a = "a";
-//        return new ResponseEntity<Authenticator.Success>(HttpStatus.OK);
-//    }
 }

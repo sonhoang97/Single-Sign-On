@@ -6,11 +6,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 public interface ClientDetailRepository extends JpaRepository<ClientDetailEntity, Integer> {
-    @Query("SELECT NEW com.example.demooauth2.modelView.clientDetail.ClientDetailViewModel(c.clientId,c.clientSecret,c.redirectUri) FROM ClientDetailEntity c WHERE c.clientId=:client_id")
-    <clientDetailViewModel>
-    clientDetailViewModel findByClientId(String client_id);
+    Optional<ClientDetailEntity> findClientDetailEntitiesByClientId(String clientId);
+
+    @Query(value ="SELECT NEW com.example.demooauth2.modelView.clientDetail.ClientDetailViewModel(c.clientId,c.clientSecret,c.redirectUri,c.tokenValid,c.refreshTokenValid,c.scope) FROM ClientDetailEntity c WHERE c.clientId=:client_id")
+    <ClientDetailViewModel>
+    ClientDetailViewModel findByClientId(String client_id);
 
     @Transactional
     @Modifying

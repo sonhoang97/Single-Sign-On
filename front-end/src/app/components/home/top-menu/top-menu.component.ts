@@ -13,22 +13,11 @@ export class TopMenuComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.setupUserNameDisplay();
-  }
-
-  setupUserNameDisplay(): void {
-    if (!LsHelper.getUserFromStorage()) {
-      this.userNameDisplay = 'Account';
-      this.isAuthenticated = false;
-    } else {
-      this.isAuthenticated = true;
-    }
   }
 
   logOut(): void {
     this.authService.logout().subscribe(
       (res) => {
-        this.setupUserNameDisplay();
         this.refresh();
       },
       (err) => {
