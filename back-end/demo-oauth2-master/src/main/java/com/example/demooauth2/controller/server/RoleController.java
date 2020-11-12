@@ -16,7 +16,6 @@ public class RoleController {
 
     @PostMapping("")
     @PreAuthorize("hasRole('admin')")
-
     public ResponseEntity<Object> CreateNew(@RequestBody RoleEntity role) {
         CommandResult result = roleService.CreateNew(role);
         return new ResponseEntity<>(result.getData(), result.getStatus());
