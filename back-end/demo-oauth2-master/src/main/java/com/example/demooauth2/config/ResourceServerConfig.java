@@ -9,6 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.authentication.TokenExtractor;
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -19,6 +20,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     private static final String ROOT_PATTERN = "/**";
     private static final String RESOURCE_ID = "inventory";
+    @Autowired
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+
+//    @Bean
+//    TokenExtractor tokenExtractor(){
+//        return new CustomExtractor();
+//    };
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
@@ -29,15 +37,20 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf()
                 .disable().antMatcher("/**").authorizeRequests()
-                .antMatchers(HttpMethod.GET, ROOT_PATTERN).access("#oauth2.hasScope('READ')")
-                .antMatchers(HttpMethod.POST, ROOT_PATTERN).access("#oauth2.hasScope('WRITE')")
-                .antMatchers(HttpMethod.PATCH, ROOT_PATTERN).access("#oauth2.hasScope('WRITE')")
-                .antMatchers(HttpMethod.PUT, ROOT_PATTERN).access("#oauth2.hasScope('WRITE')")
-                .antMatchers(HttpMethod.DELETE, ROOT_PATTERN).access("#oauth2.hasScope('WRITE')")
+//                .antMatchers(HttpMethod.GET, ROOT_PATTERN).access("#oauth2.hasScope('READ')")
+//                .antMatchers(HttpMethod.POST, ROOT_PATTERN).access("#oauth2.hasScope('WRITE')")
+//                .antMatchers(HttpMethod.PATCH, ROOT_PATTERN).access("#oauth2.hasScope('WRITE')")
+//                .antMatchers(HttpMethod.PUT, ROOT_PATTERN).access("#oauth2.hasScope('WRITE')")
+//                .antMatchers(HttpMethod.DELETE, ROOT_PATTERN).access("#oauth2.hasScope('WRITE')")
                 .antMatchers("/api/account/register").permitAll()
-                .antMatchers("/oauth/token").permitAll()
-                .antMatchers("/api/doc").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/oauth/authorize").permitAll()
+                .anyRequest().authenticated()
+                .and().formLogin()
+                .loginPage("/login")
+                .successHandler(authenticationSuccessHandler)
+                .permitAll()
+                .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler())
+                .and().httpBasic();
 
     }
 }

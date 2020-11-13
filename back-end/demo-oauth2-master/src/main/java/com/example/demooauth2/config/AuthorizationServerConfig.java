@@ -1,5 +1,7 @@
 package com.example.demooauth2.config;
 
+import com.example.demooauth2.config.customs.CustomTokenEnhancer;
+import com.example.demooauth2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +19,12 @@ import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Configuration
 @EnableAuthorizationServer
@@ -38,6 +40,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private UserRepository userRepository;
     @Bean
     public JwtAccessTokenConverter tokenEnhancer() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
@@ -70,10 +75,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new JdbcTemplate(dataSource);
     }
 
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(List.of(new CustomTokenEnhancer(userRepository), tokenEnhancer()));
         endpoints.authenticationManager(authenticationManager)
                  .tokenStore(tokenStore())
+                 .tokenEnhancer(tokenEnhancerChain)
                  .accessTokenConverter(tokenEnhancer())
                  .approvalStore(approvalStore())
                  .authorizationCodeServices(authorizationCodeServices())
