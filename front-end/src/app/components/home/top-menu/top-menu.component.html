@@ -1,7 +1,7 @@
 <!--Navbar-->
 <mdb-navbar
-  class="auto_scroll"
-  SideClass="navbar navbar-expand-lg navbar-dark cyan"
+  class="auto_scroll "
+  SideClass="navbar navbar-expand-lg navbar-dark bg-bluelight"
   [containerInside]="false"
 >
   <!-- Navbar brand -->
@@ -51,6 +51,8 @@
           <a *ngIf="!isAuthenticated" class="dropdown-item waves-light" mdbWavesEffect href="/register"
             >Register</a
           >
+          <a *ngIf="isAuthenticated" class="dropdown-item waves-light" mdbWavesEffect href="/profile"
+          >Profile</a>
           <a *ngIf="isAuthenticated" class="dropdown-item waves-light" mdbWavesEffect href="/client/regist-client"
           >Regist Client</a>
           <a *ngIf="isAuthenticated" class="dropdown-item waves-light" mdbWavesEffect (click)="logOut()"

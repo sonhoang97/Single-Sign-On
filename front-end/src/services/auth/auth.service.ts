@@ -79,22 +79,22 @@ export class AuthService {
       );
   }
 
-  public logout(): Observable<any> {
-    let headers = new HttpHeaders({
-      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
-    });
-    const refresh_token = LsHelper.getRefreshTokenFromStorage();
-    return this.http
-      .delete(this.apiURL + '/log_out?refresh_token=' + refresh_token, {
-        headers: headers,
-      })
-      .pipe(
-        map((res: any) => {
-          LsHelper.removeTokenStorage();
-          return res;
-        })
-      );
-  }
+  // public logout(): Observable<any> {
+  //   let headers = new HttpHeaders({
+  //     Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+  //   });
+  //   const refresh_token = LsHelper.getRefreshTokenFromStorage();
+  //   return this.http
+  //     .delete(this.apiURL + '/log_out?refresh_token=' + refresh_token, {
+  //       headers: headers,
+  //     })
+  //     .pipe(
+  //       map((res: any) => {
+  //         LsHelper.removeTokenStorage();
+  //         return res;
+  //       })
+  //     );
+  // }
 
   public getTokenByRefreshToken(): Observable<TokenPassword> {
     let body = new URLSearchParams();
