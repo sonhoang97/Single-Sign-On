@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LsHelper } from 'src/app/commons/helpers/ls.helper';
-import { User } from 'src/models/user/user.model';
+import { UserToken } from 'src/models/user/user-token.model';
 import { AuthService } from 'src/services/auth/auth.service';
 import { UserService } from 'src/services/user/user.service';
 @Component({
@@ -11,7 +11,7 @@ import { UserService } from 'src/services/user/user.service';
 })
 export class HomeMenuComponent implements OnInit {
   isView = false;
-  username: string;
+  user: UserToken = new UserToken();
   constructor(
     private userService: UserService,
     private toastr: ToastrService,
@@ -20,7 +20,9 @@ export class HomeMenuComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.username = this.route.snapshot.queryParams['username'];
+    if(LsHelper.getUserFromStorage())
+    this.user = LsHelper.getUserFromStorage();
+    
   }
 
   viewProfile(): void {

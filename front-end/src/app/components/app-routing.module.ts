@@ -6,12 +6,15 @@ import { UserValidGuard } from './guards/user-valid.guard';
 import { HomeMenuComponent } from './home/home-menu/home-menu.component';
 import { RegistClientDetailComponent } from './home/client-detail/regist-client-detail/regist-client-detail.component';
 import { ApiDocComponent } from './docs/api.doc.component';
+import {ProfileComponent} from './home/profile/profile.component'
 const routes: Routes = [
   { path: 'login', component: LoginFormComponent },
   { path: 'register', component: RegisterFormComponent },
   { path: '', component: HomeMenuComponent },
   { path: 'client/regist-client', component: RegistClientDetailComponent },
   { path: 'doc', component: ApiDocComponent },
+  { path: 'profile', component: ProfileComponent },
+
 ];
 
 @NgModule({

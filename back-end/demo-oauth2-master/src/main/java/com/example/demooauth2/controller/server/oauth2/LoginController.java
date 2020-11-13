@@ -12,4 +12,9 @@ public class LoginController {
     public String login() {
         return "login";
     }
+
+    @RequestMapping(value = "/approval", method = RequestMethod.GET)
+    public String approval() {
+        return "approval";
+    }
 }

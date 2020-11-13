@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'loading',
-  templateUrl: './loading.component.html',
+  selector: 'profile',
+  templateUrl: './profile.component.html',
 })
-export class LoadingComponent implements OnInit {
+export class ProfileComponent implements OnInit {
 
   constructor() { }
 

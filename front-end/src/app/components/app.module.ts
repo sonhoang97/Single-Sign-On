@@ -17,7 +17,9 @@ const APP_COMPONENTS: any[] = [
   fromApp.LoginFormComponent,
   fromApp.RegisterFormComponent,
   fromApp.HomeMenuComponent,
-  fromApp.RegistClientDetailComponent
+  fromApp.RegistClientDetailComponent,
+  fromApp.ApiDocComponent,
+  fromApp.ProfileComponent
 ];
 
 const APP_POPUP_COMPONENTS: any[] = [];
@@ -36,6 +38,7 @@ const APP_SHARED_COMPONENTS: any[] = [fromApp.LoadingComponent];
     ToastrModule.forRoot({
       timeOut: 3000,
     }),
+    
   ],
   exports: [APP_POPUP_COMPONENTS],
   entryComponents: [APP_POPUP_COMPONENTS],

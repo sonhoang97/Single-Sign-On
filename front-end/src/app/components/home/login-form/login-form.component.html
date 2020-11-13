@@ -1,6 +1,10 @@
 <!-- Default form login -->
 <div class="container">
-  <form class="text-center p-5 mx-auto w-50 mt-3" action="#!">
+  <form
+    class="text-center p-5 mx-auto w-50 mt-3"
+    action="#!"
+    [class.opacity-loading]="isLoading"
+  >
     <p class="h4 mb-4">Sign in</p>
 
     <!-- Email -->
@@ -44,12 +48,21 @@
     </div>
 
     <!-- Sign in button -->
-    <button class="btn btn-info btn-block my-4 cyan" type="submit" (click)="submitLogin()">Sign in</button>
+    <button
+      class="btn btn-info btn-block my-4 cyan"
+      type="submit"
+      (click)="submitLogin()"
+    >
+      Sign in
+    </button>
 
     <!-- Register -->
     <p>
       Not a member?
       <a href="/register">Register</a>
-    </p>   
+    </p>
   </form>
+  <div class="row">
+    <loading class="mx-auto" *ngIf="isLoading"> </loading>
+  </div>
 </div>

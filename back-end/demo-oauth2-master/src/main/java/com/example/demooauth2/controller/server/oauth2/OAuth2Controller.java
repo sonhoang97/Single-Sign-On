@@ -70,7 +70,8 @@ public class OAuth2Controller {
 
     @RequestMapping("/confirm_access")
     public ModelAndView customConfirmAccessPage(Map<String, Object> model, HttpServletRequest request) throws Exception {
-        // TODO: custom code here
+        // TODO: redirect to approval.jsp
+//        return new ModelAndView("redirect:/approval");
         return whitelabelApprovalEndpoint.getAccessConfirmation(model, request);
     }
 

@@ -1,5 +1,6 @@
 import { ClientDetail } from 'src/models/clientDetail/client-detail';
 import { TokenPassword } from 'src/models/token/tokenPassword';
+import { UserToken } from 'src/models/user/user-token.model';
 import { User } from 'src/models/user/user.model';
 
 export class LsHelper {
@@ -33,7 +34,7 @@ export class LsHelper {
     return token.refresh_token;
   }
 
-  public static getUserNameFromStorage(): string {
+  public static getUserFromStorage(): UserToken {
     const currentToken = this.getTokenFromStorage();
 
     if (!currentToken || currentToken === '') {
@@ -41,9 +42,10 @@ export class LsHelper {
     }
 
     const payload: string = currentToken.split('.')[1];
-    const username: string = JSON.parse(atob(payload)).user_name;
-    return username;
+    const user: UserToken = JSON.parse(atob(payload)).user;
+    return user;
   }
+
   //Delete Storage
   public static removeTokenStorage(): void {
     localStorage.removeItem(this.TOKEN_LOCAL);
