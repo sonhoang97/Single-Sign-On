@@ -43,7 +43,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //                .antMatchers(HttpMethod.PUT, ROOT_PATTERN).access("#oauth2.hasScope('WRITE')")
 //                .antMatchers(HttpMethod.DELETE, ROOT_PATTERN).access("#oauth2.hasScope('WRITE')")
                 .antMatchers("/api/account/register").permitAll()
-//                .antMatchers("/oauth/token").permitAll()
                 .antMatchers("/oauth/authorize").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin()
@@ -52,5 +51,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .permitAll()
                 .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler())
                 .and().httpBasic();
+
     }
 }
