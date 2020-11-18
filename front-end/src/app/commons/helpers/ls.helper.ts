@@ -12,7 +12,7 @@ export class LsHelper {
   }
 
   //Get from Storage
-  public static getTokenFromStorage(): any {
+  public static getTokenFromStorage(): string {
     const currentToken = localStorage.getItem(this.TOKEN_LOCAL);
 
     if (!currentToken || currentToken === '') {
@@ -51,4 +51,26 @@ export class LsHelper {
     localStorage.removeItem(this.TOKEN_LOCAL);
   }
 
+  //Check
+  public static isExpiredToken(): boolean {
+    const currentToken = this.getTokenFromStorage();
+    if(!currentToken){
+      return null;
+    }
+    
+    const payload: string = currentToken.split('.')[1];
+    const expired: number = JSON.parse(atob(payload)).exp;
+    return (Math.floor((new Date).getTime() / 1000)) >= expired;
+  }
+
+  public static isExpiredRefreshToken(): boolean {
+    const currentRefreshToken = this.getRefreshTokenFromStorage();
+    if(!currentRefreshToken){
+      return null;
+    }
+    
+    const payload: string = currentRefreshToken.split('.')[1];
+    const expired: number = JSON.parse(atob(payload)).exp;
+    return (Math.floor((new Date).getTime() / 1000)) >= expired;
+  }
 }

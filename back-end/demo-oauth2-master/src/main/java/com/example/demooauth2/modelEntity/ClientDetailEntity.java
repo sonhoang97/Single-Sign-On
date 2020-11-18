@@ -1,6 +1,8 @@
 package com.example.demooauth2.modelEntity;
 
+import com.example.demooauth2.commons.ClientDetailValue;
 import com.example.demooauth2.commons.Converter.StringListConverter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
@@ -15,6 +17,22 @@ import java.util.Set;
 @Getter
 @Setter
 public class ClientDetailEntity implements Serializable {
+
+    public ClientDetailEntity() {
+
+    }
+    public ClientDetailEntity(String clientId, String clientSecret,String redirectUri,UserEntity user){
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.redirectUri = redirectUri;
+        this.scope = ClientDetailValue.SCOPE_DEFAULT;
+        this.tokenValid = (long)ClientDetailValue.TOKEN_VALIDITY_SECONDS;
+        this.refreshTokenValid = (long)ClientDetailValue.REFRESH_TOKEN_VALIDITY_SECONDS;
+        this.resourceIds = ClientDetailValue.RESOURCE_ID;
+        this.authorizedGrantTypes = ClientDetailValue.AUTHORIZE_DEFAULT;
+        this.user = user;
+    }
+
     @Id
     @Column(name = "client_id")
     private String clientId;
@@ -54,4 +72,11 @@ public class ClientDetailEntity implements Serializable {
     @Column(name = "autoapprove")
     @Convert(converter = StringListConverter.class)
     private List<String> autoApprove;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
+
 }

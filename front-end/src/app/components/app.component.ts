@@ -17,14 +17,29 @@ export class AppComponent implements OnInit {
     private userService: UserService
   ) {}
   ngOnInit(): void {
-
+    const token = LsHelper.getTokenFromStorage();
+    if (token) {
+      this.checkToken();
+    }
   }
 
-  checkAuthenticated(): void {
-    
+  checkToken(): void {
+    if (LsHelper.isExpiredRefreshToken()) {
+      LsHelper.removeTokenStorage();
+      window.location.reload();
+      return;
+    }
+    if (LsHelper.isExpiredToken()) {
+      this.authService.getTokenByRefreshToken().subscribe(
+        (res) => {
+          LsHelper.removeTokenStorage();
+          LsHelper.saveTokenToStorage(res);
+          // window.location.reload();
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }    
   }
-
-
-
-
 }

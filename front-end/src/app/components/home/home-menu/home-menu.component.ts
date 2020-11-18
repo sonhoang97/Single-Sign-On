@@ -30,13 +30,13 @@ export class HomeMenuComponent implements OnInit {
   }
 
   loginCode() {
-    this.authService.loginCode().subscribe(
-      (res) => {
-        console.log(res);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    // this.authService.loginCode().subscribe(
+    //   (res) => {
+    //     console.log(res);
+    //   },
+    //   (err) => {
+    //     console.log(err);
+    //   }
+    // );
   }
 }

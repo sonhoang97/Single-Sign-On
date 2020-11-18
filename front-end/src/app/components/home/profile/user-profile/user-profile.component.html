@@ -1,0 +1,59 @@
+<h3 class="font-weight-bold mb-md-3">User Profile</h3>
+<hr>
+<div class="tab-content profile-tab" id="myTabContent">
+  <div
+    class="tab-pane fade show active"
+    id="home"
+    role="tabpanel"
+    aria-labelledby="home-tab"
+  >
+  <div class="row">
+    <div class="col-md-4">
+      <label>Username: </label>
+    </div>
+    <div class="col-md-8">
+      <p>{{userProfile.username}}</p>
+    </div>
+  </div>
+    <div class="row">
+      <div class="col-md-4">
+        <label>First Name: </label>
+      </div>
+      <div class="col-md-8">
+        <p>{{userProfile.firstname}}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <label>Last Name: </label>
+      </div>
+      <div class="col-md-8">
+        <p>{{userProfile.lastname}}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <label>Email</label>
+      </div>
+      <div class="col-md-8">
+        <p>{{userProfile.email}}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <label>Phone</label>
+      </div>
+      <div class="col-md-8">
+        <p>{{userProfile.phoneNumber}}</p>
+      </div>
+    </div>
+    <div class="row mt-md-3">
+      <div class="col-md-4 ml-auto">
+        <button class="profile-edit-btn">Edit Profile</button>
+      </div>
+    </div>
+  </div>
+</div>
