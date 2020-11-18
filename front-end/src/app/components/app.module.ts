@@ -17,16 +17,21 @@ const APP_COMPONENTS: any[] = [
   fromApp.LoginFormComponent,
   fromApp.RegisterFormComponent,
   fromApp.HomeMenuComponent,
-  fromApp.RegistClientDetailComponent,
   fromApp.ApiDocComponent,
-  fromApp.ProfileComponent
+  fromApp.ProfileComponent,
+  fromApp.UserProfileComponent,
+  fromApp.ClientComponent,
+  fromApp.ClientScopeComponent,
+  fromApp.PasswordComponent,
+  fromApp.SettingsTokenComponent,
+  fromApp.RegistClientComponent,
 ];
 
 const APP_POPUP_COMPONENTS: any[] = [];
 
 const APP_SHARED_COMPONENTS: any[] = [fromApp.LoadingComponent];
 @NgModule({
-  declarations: [APP_COMPONENTS, APP_POPUP_COMPONENTS, APP_SHARED_COMPONENTS],
+  declarations: [APP_COMPONENTS, APP_POPUP_COMPONENTS, APP_SHARED_COMPONENTS ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

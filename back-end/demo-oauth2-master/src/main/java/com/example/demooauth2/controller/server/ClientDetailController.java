@@ -5,11 +5,9 @@ import com.example.demooauth2.service.ClientDetailsService;
 import com.example.demooauth2.service.impl.ClientDetailsSeviceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Map;
 @RestController
 @RequestMapping("/api/client")
@@ -18,8 +16,8 @@ public class ClientDetailController {
     private ClientDetailsService ClientDetailsSevice;
 
     @PostMapping("/createClientDetail")
-    public ResponseEntity<Object> createClientDetail(@RequestBody Map<String, String> clientDetail){
-        CommandResult result = ClientDetailsSevice.createClientDetail(clientDetail.get("clientId"),clientDetail.get("redirectUri"));
+    public ResponseEntity<Object> createClientDetail(@RequestBody Map<String, String> clientDetail, Principal principal){
+        CommandResult result = ClientDetailsSevice.createClientDetail(principal,clientDetail.get("clientId"),clientDetail.get("redirectUri"));
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 
@@ -32,6 +30,12 @@ public class ClientDetailController {
     @PostMapping("/updateClientSecret")
     public ResponseEntity<Object> updateClientSecret(@RequestBody Map<String, String> clientDetail){
         CommandResult result = ClientDetailsSevice.updateClientSecret(clientDetail.get("clientId"));
+        return new ResponseEntity<>(result.getData(),result.getStatus());
+    }
+
+    @GetMapping("/getClientsByUserId")
+    public ResponseEntity<Object> getClientsByUserId(Principal principal){
+        CommandResult result = ClientDetailsSevice.getClientsByUserId(principal);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 }

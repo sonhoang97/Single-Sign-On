@@ -3,6 +3,7 @@ package com.example.demooauth2.service;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.modelEntity.UserEntity;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
@@ -12,4 +13,6 @@ public interface UserService {
     UserEntity findByUsername(String username);
 
     CommandResult registerNewUserAccount(UserEntity user);
+
+    CommandResult getProfile(Principal principal);
 }

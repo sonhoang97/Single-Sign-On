@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { LsHelper } from 'src/app/commons/helpers/ls.helper';
 import { ClientDetail } from 'src/models/clientDetail/client-detail';
 import { ClientDetailService } from 'src/services/client-detail/client-detail.service';
 
 @Component({
-  selector: 'app-regist-client-detail',
-  templateUrl: './regist-client-detail.component.html',
+  selector: 'regist-client',
+  templateUrl: './regist-client.component.html',
 })
-export class RegistClientDetailComponent implements OnInit {
+export class RegistClientComponent implements OnInit {
+
   clientId: string;
   redirectUri: string;
   url: string;
