@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +18,19 @@ import java.util.Set;
 public class UserEntity implements Serializable {
 
     public UserEntity() {
+        this.username = "test";
+        this.password = "test";
+        this.email ="test";
+        this.firstname = "test";
+        this.lastname ="test";
+        this.phonenumber = 0;
+        this.enabled = true;
+        this.accountNonExpired = true;
+        this.credentialsNonExpired =true;
+        this.accountNonLocked = true;
+
+        List<RoleEntity> roles = new ArrayList<>();
+        this.roles = roles;
     }
 
     public UserEntity(UserEntity user) {
