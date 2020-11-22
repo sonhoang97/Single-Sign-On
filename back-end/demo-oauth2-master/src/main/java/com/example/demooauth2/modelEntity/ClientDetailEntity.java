@@ -21,7 +21,7 @@ public class ClientDetailEntity implements Serializable {
     public ClientDetailEntity() {
 
     }
-    public ClientDetailEntity(String clientId, String clientSecret,String redirectUri,UserEntity user){
+    public ClientDetailEntity(String clientId, String clientSecret,List<String> redirectUri,UserEntity user){
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.redirectUri = redirectUri;
@@ -41,7 +41,8 @@ public class ClientDetailEntity implements Serializable {
     private String clientSecret;
 
     @Column(name = "web_server_redirect_uri")
-    private String redirectUri;
+    @Convert(converter = StringListConverter.class)
+    private List<String> redirectUri;
 
     @Column(name = "scope")
     @Convert(converter = StringListConverter.class)

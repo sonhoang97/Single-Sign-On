@@ -1,45 +1,138 @@
 <h3 class="font-weight-bold mb-md-3">Regist Client Detail</h3>
-<hr />
-<div class="row my-2">
-  <div class="col-md-2 m-auto">Client Id <span class="text-danger">*</span></div>
-  <div class="col-md-10">
-    <input
-      type="text"
-      id="defaultLoginFormEmail"
-      class="form-control"
-      placeholder="Client Id"
-      [(ngModel)]="clientId"
-      name="clientId"
-    />
-  </div>
-</div>
-<div class="row my-2">
-  <div class="col-md-2 m-auto">Redirect Uri  <span class="text-danger">*</span></div>
-  <div class="col-md-10">
-    <input
-      type="text"
-      id="defaultLoginFormPassword"
-      class="form-control"
-      placeholder="Redirect Uri"
-      [(ngModel)]="redirectUri"
-      name="redirectUri"
-    />
-  </div>
-</div>
-<div class="row my-2">
-    <div class="custom-control custom-switch mx-3">
-        <input type="checkbox" class="custom-control-input" id="customSwitches">
-        <label class="custom-control-label" for="customSwitches">Toggle this switch element</label>
-      </div>
-</div>
-<div class="row my-2">
-  <div class="col-md-6 mx-auto">
-    <button
-      class="profile-edit-btn"
-      type="submit"
-      (click)="submitRegister()"
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a
+      class="nav-link active font-weight-bold"
+      data-toggle="tab"
+      href="#single"
+      aria-selected="true"
+      >Single</a
     >
-      Submit
-    </button>
+    <a
+      class="nav-link  font-weight-bold"
+      data-toggle="tab"
+      href="#group"
+      aria-selected="false"
+      >Group</a
+    >
   </div>
+</nav>
+<div class="tab-content">
+  <div
+    class="tab-pane fade show active"
+    id="single"
+  >
+    <div class="row my-2">
+      <div class="col-md-2 m-auto">
+        Client Id <span class="text-danger">*</span>
+      </div>
+      <div class="col-md-10">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Client Id"
+          [(ngModel)]="clientId"
+          name="clientId"
+        />
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-md-2 m-auto">
+        Redirect Uri <span class="text-danger">*</span>
+      </div>
+      <div class="col-md-10">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Redirect Uri"
+          [(ngModel)]="redirectUri"
+          name="redirectUri"
+        />
+      </div>
+    </div>
+
+    <div class="row my-2">
+      <div class="col-md-6 mx-auto">
+        <button
+          class="profile-edit-btn"
+          type="submit"
+          (click)="submitRegister(1)"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="tab-pane fade"
+    id="group"
+  >
+    <div class="row my-2">
+      <div class="col-md-2 m-auto">
+        Client Id <span class="text-danger">*</span>
+      </div>
+      <div class="col-md-10">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Client Id"
+          [(ngModel)]="clientId"
+          name="clientId"
+        />
+
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-md-2 my-3">
+        Redirect Uri <span class="text-danger">*</span>
+      </div>
+      <div class="col-md-1 my-3">
+        <span class="text-muted h4 cursor-pointer" (click)="addRedirect()">
+          <i class="fa fa-plus text-success"></i>
+        </span>
+      </div>
+
+      <div class="col-md-9">
+        <ul class="list-group">
+          <li
+            class="list-group-item"
+            *ngFor="let redirectUri of fieldsRedirectUri; index as i" id = "item_{{i}}"
+          >
+            <div class="row">    
+              <div class="col-11">
+                <input
+                  id="redirect_{{ i }}"
+                  [ngModel]="redirectUri"
+                  type="text"
+                  class="form-control"
+                  placeholder="Redirect Uri"
+                  
+                />
+                
+              </div>
+              <div  (click)="deletedRedirect($event)" class="col-1 my-1 cursor-pointer" id="delRedirect_{{ i }}">
+                <span class="text-muted h4"  id="delRedirect_{{ i }}">
+                  <i class="fa fa-minus text-danger" id="delRedirect_{{ i }}"></i>
+                </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-md-6 mx-auto">
+        <button
+          class="profile-edit-btn"
+          type="submit"
+          (click)="submitRegister(2)"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col" *ngIf="isView">Your Client Secret: {{clientDetail.clientSecret}}</div>
 </div>

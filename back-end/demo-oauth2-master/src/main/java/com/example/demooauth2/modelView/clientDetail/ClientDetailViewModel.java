@@ -12,7 +12,7 @@ import java.util.Set;
 public class ClientDetailViewModel {
     private String clientId;
     private String clientSecret;
-    private String redirectUri;
+    private List<String> redirectUri;
     private Long tokenExpiration;
     private Long refreshExpiration;
     private List<String> scope;
@@ -31,5 +31,7 @@ public class ClientDetailViewModel {
         this.refreshExpiration =clientDetailEntity.getRefreshTokenValid();
         this.scope = clientDetailEntity.getScope();
     }
-
+    public boolean isValid(){
+        return this.clientId != null;
+    }
 }

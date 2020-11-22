@@ -17,7 +17,7 @@ export class ClientDetailService {
 
   constructor(private http: HttpClient) { }
 
-  public register(clientId: string,redirectUri: string): Observable<ClientDetail> {
+  public register(clientId: string,redirectUri: string[]): Observable<ClientDetail> {
     let headers = new HttpHeaders({
       'Content-type': 'application/json',
       Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
