@@ -1,5 +1,6 @@
 package com.example.demooauth2.controller.server;
 
+import com.example.demooauth2.modelView.clientDetail.ClientDetailViewModel;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.ClientDetailsService;
 import com.example.demooauth2.service.impl.ClientDetailsSeviceImpl;
@@ -8,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 @RestController
 @RequestMapping("/api/client")
@@ -16,8 +19,8 @@ public class ClientDetailController {
     private ClientDetailsService ClientDetailsSevice;
 
     @PostMapping("/createClientDetail")
-    public ResponseEntity<Object> createClientDetail(@RequestBody Map<String, String> clientDetail, Principal principal){
-        CommandResult result = ClientDetailsSevice.createClientDetail(principal,clientDetail.get("clientId"),clientDetail.get("redirectUri"));
+    public ResponseEntity<Object> createClientDetail(@RequestBody ClientDetailViewModel clientDetail, Principal principal){
+        CommandResult result = ClientDetailsSevice.createClientDetail(principal,clientDetail.getClientId(),clientDetail.getRedirectUri());
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 
