@@ -21,6 +21,8 @@ import org.springframework.security.oauth2.provider.client.JdbcClientDetailsServ
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -79,7 +81,7 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
             String clientSecret = UUID.randomUUID().toString();
             Optional<UserEntity> user = userRepository.findByUsername(principal.getName());
             if (user.isPresent()) {
-                ClientDetailEntity clientDetailEntity = new ClientDetailEntity(clientId, passwordEncoder.encode(clientSecret), redirectUri, user.get());
+                ClientDetailEntity clientDetailEntity = new ClientDetailEntity(clientId, passwordEncoder.encode(clientSecret), LocalDateTime.now(), redirectUri, user.get());
                 clientDetailRepository.save(clientDetailEntity);
                 ClientDetailViewModel result = new ClientDetailViewModel(clientId, clientSecret);
                 return new CommandResult().SucceedWithData(result);

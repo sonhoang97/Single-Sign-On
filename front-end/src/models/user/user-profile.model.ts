@@ -6,5 +6,5 @@ export class UserProfile {
     public phoneNumber: number;
     public firstname: string;
     public lastname: string;
-    public clients: ClientDetail[];
+    public lsClientDetail: ClientDetail[];
 }
