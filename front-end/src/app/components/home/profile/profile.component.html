@@ -1,6 +1,6 @@
-<div class="container emp-profile">
+<div class="container-fluid emp-profile">
     <div class="row">
-      <div class="col-md-3 bg-category">
+      <div class="col-md-2 bg-category">
         <div class="profile-img my-2">
           <img
             src="https://png.pngtree.com/png-vector/20190221/ourlarge/pngtree-male-avatar-vector-icon-png-image_691595.jpg"
@@ -35,11 +35,11 @@
           </p>
         </div>
       </div>
-      <div class="col-md-9 p-4">
+      <div class="col-md-10 p-4">
         <user-profile [userProfile]="userProfile" *ngIf="typeSelect == 1"></user-profile>
         <password *ngIf="typeSelect == 2"></password>
         <settings-token *ngIf="typeSelect == 3"></settings-token>
-        <client *ngIf="typeSelect == 4"></client>
+        <client [clients]="lsClient" *ngIf="typeSelect == 4"></client>
         <client-scope *ngIf="typeSelect == 5"></client-scope>
         <regist-client *ngIf="typeSelect == 6"></regist-client>
       </div>

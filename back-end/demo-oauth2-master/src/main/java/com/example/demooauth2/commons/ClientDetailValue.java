@@ -9,7 +9,6 @@ public class ClientDetailValue {
     public static final List<String> SCOPE_DEFAULT = new ArrayList<>(){
         {
             add("READ");
-            add("WRITE");
         }
     };
     public static final List<String> AUTHORIZE_DEFAULT = new ArrayList<>(){
