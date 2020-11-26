@@ -21,6 +21,8 @@ import org.springframework.security.oauth2.provider.client.JdbcClientDetailsServ
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -64,7 +66,7 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
     }
 
     @Override
-    public CommandResult createClientDetail(Principal principal,String clientId, String redirectUri) {
+    public CommandResult createClientDetail(Principal principal,String clientId, List<String> redirectUri) {
         try {
             if(!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()){
                 return new CommandResult(HttpStatus.UNAUTHORIZED,"Unauthenticated");
@@ -72,18 +74,21 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
             if (clientId == null || clientId.isEmpty() || redirectUri == null || redirectUri.isEmpty()) {
                 return new CommandResult(HttpStatus.NO_CONTENT, Messages.NO_CONTENT);
             }
-
+            ClientDetailViewModel clientDetailViewModel = clientDetailRepository.findByClientId(clientId);
+            if(clientDetailViewModel!=null){
+                return new CommandResult(HttpStatus.CONFLICT, "Client already exists: " + clientId);
+            }
             String clientSecret = UUID.randomUUID().toString();
             Optional<UserEntity> user = userRepository.findByUsername(principal.getName());
             if (user.isPresent()) {
-                ClientDetailEntity clientDetailEntity = new ClientDetailEntity(clientId, passwordEncoder.encode(clientSecret), redirectUri, user.get());
+                ClientDetailEntity clientDetailEntity = new ClientDetailEntity(clientId, passwordEncoder.encode(clientSecret), LocalDateTime.now(), redirectUri, user.get());
                 clientDetailRepository.save(clientDetailEntity);
                 ClientDetailViewModel result = new ClientDetailViewModel(clientId, clientSecret);
                 return new CommandResult().SucceedWithData(result);
             }
             return new CommandResult(HttpStatus.NOT_FOUND,"not found user");
-        } catch (ClientAlreadyExistsException ex) {
-            return new CommandResult(HttpStatus.CONFLICT, "Client already exists: " + clientId);
+        } catch (Exception ex) {
+            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error");
         }
     }
 

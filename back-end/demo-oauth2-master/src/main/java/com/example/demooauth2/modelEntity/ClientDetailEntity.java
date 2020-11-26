@@ -9,6 +9,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -21,13 +23,14 @@ public class ClientDetailEntity implements Serializable {
     public ClientDetailEntity() {
 
     }
-    public ClientDetailEntity(String clientId, String clientSecret,String redirectUri,UserEntity user){
+    public ClientDetailEntity(String clientId, String clientSecret, LocalDateTime createdAt, List<String> redirectUri, UserEntity user){
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.redirectUri = redirectUri;
         this.scope = ClientDetailValue.SCOPE_DEFAULT;
         this.tokenValid = (long)ClientDetailValue.TOKEN_VALIDITY_SECONDS;
         this.refreshTokenValid = (long)ClientDetailValue.REFRESH_TOKEN_VALIDITY_SECONDS;
+        this.createdAt = createdAt;
         this.resourceIds = ClientDetailValue.RESOURCE_ID;
         this.authorizedGrantTypes = ClientDetailValue.AUTHORIZE_DEFAULT;
         this.user = user;
@@ -37,11 +40,15 @@ public class ClientDetailEntity implements Serializable {
     @Column(name = "client_id")
     private String clientId;
 
+    @Column(name = "createdAt")
+    private LocalDateTime createdAt;
+
     @Column(name = "client_secret")
     private String clientSecret;
 
     @Column(name = "web_server_redirect_uri")
-    private String redirectUri;
+    @Convert(converter = StringListConverter.class)
+    private List<String> redirectUri;
 
     @Column(name = "scope")
     @Convert(converter = StringListConverter.class)

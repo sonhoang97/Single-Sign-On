@@ -4,6 +4,8 @@ import com.example.demooauth2.modelEntity.ClientDetailEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -12,11 +14,12 @@ import java.util.Set;
 public class ClientDetailViewModel {
     private String clientId;
     private String clientSecret;
-    private String redirectUri;
+    private List<String> redirectUri;
     private Long tokenExpiration;
     private Long refreshExpiration;
     private List<String> scope;
-
+    private List<String> authorizeGrantType;
+    private LocalDateTime createdAt;
     public ClientDetailViewModel(){}
 
     public ClientDetailViewModel(String clientId, String clientSecret){
@@ -30,6 +33,10 @@ public class ClientDetailViewModel {
         this.tokenExpiration = clientDetailEntity.getTokenValid();
         this.refreshExpiration =clientDetailEntity.getRefreshTokenValid();
         this.scope = clientDetailEntity.getScope();
+        this.authorizeGrantType = clientDetailEntity.getAuthorizedGrantTypes();
+        this.createdAt = clientDetailEntity.getCreatedAt();
     }
-
+    public boolean isValid(){
+        return this.clientId != null;
+    }
 }
