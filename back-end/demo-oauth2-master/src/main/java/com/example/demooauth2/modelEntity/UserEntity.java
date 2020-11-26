@@ -18,6 +18,7 @@ import java.util.Set;
 public class UserEntity implements Serializable {
 
     public UserEntity() {
+        this.id = 0;
         this.username = "test";
         this.password = "test";
         this.email ="test";
