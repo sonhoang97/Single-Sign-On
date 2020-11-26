@@ -17,7 +17,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("")
-//  @PreAuthorize("#oauth2.hasScope('WRITE') AND hasRole('admin')")
+  @PreAuthorize("#oauth2.hasScope('WRITE') AND hasRole('admin')")
     public ResponseEntity listUser() {
         return ResponseEntity.ok(userService.findAll());
     }

@@ -44,6 +44,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //                .antMatchers(HttpMethod.DELETE, ROOT_PATTERN).access("#oauth2.hasScope('WRITE')")
                 .antMatchers("/api/account/register").permitAll()
                 .antMatchers("/oauth/authorize").permitAll()
+                .antMatchers("/api/doc").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .loginPage("/login")

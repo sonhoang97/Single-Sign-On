@@ -1,4 +1,4 @@
-package com.example.demooauth2.service.impl.test;
+package com.example.demooauth2.controller;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
