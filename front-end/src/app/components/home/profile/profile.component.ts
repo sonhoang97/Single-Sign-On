@@ -11,6 +11,8 @@ export class ProfileComponent implements OnInit {
   typeSelect: number = 1;
   userProfile: UserProfile = new UserProfile();
   lsClient: ClientDetail[] = [];
+
+  username: string;
   constructor(private profileService: ProfileService) {}
 
   ngOnInit(): void {
@@ -22,7 +24,7 @@ export class ProfileComponent implements OnInit {
       (res) => {
         this.userProfile = res;
         this.lsClient = this.userProfile.lsClientDetail;
-        console.log(this.lsClient);
+        this.username = this.userProfile.username;
       },
       (err) => {
         console.log(err);

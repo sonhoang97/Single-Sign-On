@@ -56,46 +56,6 @@ export class AuthService {
       );
   }
 
-
-  // public loginCode(): Observable<any> {
-  //   let body = new URLSearchParams();
-  //   body.append('grant_type', 'authorization_code');
-  //   body.append('response_type', 'code');
-  //   body.append('client_id', 'mobile');
-
-  //   let headers = new HttpHeaders({'Content-type': 'application/json',
-  //     Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsicGF5bWVudCIsImludmVudG9yeSJdLCJ1c2VyX25hbWUiOiJrcmlzaCIsInNjb3BlIjpbIlJFQUQiLCJXUklURSJdLCJleHAiOjE2MDUwNzQzNzMsImF1dGhvcml0aWVzIjpbIlJPTEVfYWRtaW4iLCJkZWxldGVfcHJvZmlsZSIsInVwZGF0ZV9wcm9maWxlIiwicmVhZF9wcm9maWxlIiwiY3JlYXRlX3Byb2ZpbGUiXSwianRpIjoiYWZkZDVkYzUtNmY5MS00YWM5LWE5MWMtYjA3Y2I3YWEzNTQwIiwiY2xpZW50X2lkIjoibW9iaWxlIn0.DzzJ6nEvRUFmauOg372Ov46qfdXXExZHwRTh5bfMxeE'
-  //   });
-
-  //   return this.http
-  //     .post('http://localhost:8083/oauth/authorize', body.toString(), {
-  //       headers: headers,
-  //     })
-  //     .pipe(
-  //       map((res: any) => {
-
-  //         return res;
-  //       })
-  //     );
-  // }
-
-  // public logout(): Observable<any> {
-  //   let headers = new HttpHeaders({
-  //     Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
-  //   });
-  //   const refresh_token = LsHelper.getRefreshTokenFromStorage();
-  //   return this.http
-  //     .delete(this.apiURL + '/log_out?refresh_token=' + refresh_token, {
-  //       headers: headers,
-  //     })
-  //     .pipe(
-  //       map((res: any) => {
-  //         LsHelper.removeTokenStorage();
-  //         return res;
-  //       })
-  //     );
-  // }
-
   public getTokenByRefreshToken(): Observable<TokenPassword> {
     let body = new URLSearchParams();
     body.append('grant_type', 'refresh_token');
@@ -112,6 +72,27 @@ export class AuthService {
       })
       .pipe(
         map((res: TokenPassword) => {
+          return res;
+        })
+      );
+  }
+
+  public changePassword(currentPassword: string, newPassword: string, confirmPassword: string): Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
+
+    let bodyPassword = {
+      currentPassword,newPassword,confirmPassword
+    }
+
+    return this.http
+      .post(this.apiURL + '/changePassword', JSON.stringify(bodyPassword), {
+        headers: headers,
+      })
+      .pipe(
+        map((res: any) => {
           return res;
         })
       );
