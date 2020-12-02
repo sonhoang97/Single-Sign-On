@@ -4,8 +4,10 @@ import com.example.demooauth2.modelEntity.UserEntity;
 //import com.example.demooauth2.modelView.users.UserTokenViewModel;
 import org.hibernate.sql.Select;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
@@ -14,6 +16,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     @Query("Select u.id from UserEntity u where u.username=:username")
     Integer findIdByUsername(String username);
+
+    @Query("Select u.password from UserEntity u where u.username=:username")
+    String findPasswordByUsername(String username);
 
     @Query("Select NEW com.example.demooauth2.modelView.users.UserTokenViewModel(u) from UserEntity u where u.username=:username")
     <UserTokenViewModel>
@@ -26,4 +31,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query("Select NEW com.example.demooauth2.modelView.users.UserProfileViewModel(u) from UserEntity u where u.username=:username")
     <UserProfileViewModel>
     UserProfileViewModel getProfileByUsername(String username);
+
+    @Transactional
+    @Modifying
+    @Query("update UserEntity set password=:password where username=:username")
+    void updatePassword(String username, String password);
 }

@@ -8,17 +8,21 @@ import com.example.demooauth2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserEntity> findAll() {
@@ -46,15 +50,50 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommandResult getProfile(Principal principal) {
-        if(!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()){
-            return new CommandResult(HttpStatus.UNAUTHORIZED,"Unauthenticated");
+        if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
+            return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");
         }
 
         UserProfileViewModel user = userRepository.getProfileByUsername(principal.getName());
-        if(!user.isValid()){
-            return new CommandResult(HttpStatus.NOT_FOUND,"Not found user");
+        if (!user.isValid()) {
+            return new CommandResult(HttpStatus.NOT_FOUND, "Not found user");
         }
 
         return new CommandResult().SucceedWithData(user);
     }
+
+    @Override
+    public CommandResult changePassword(Principal principal, Map<String, String> bodyPassword) {
+        try {
+            if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
+                return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");
+            }
+
+            String currentPassword = bodyPassword.get("currentPassword");
+            String newPassword = bodyPassword.get("newPassword");
+            String confirmPassword = bodyPassword.get("confirmPassword");
+            if (currentPassword == null || currentPassword.isEmpty() || newPassword == null || newPassword.isEmpty() || confirmPassword == null || confirmPassword.isEmpty()) {
+                return new CommandResult(HttpStatus.NOT_FOUND, "Empty password!");
+            }
+            if (!newPassword.equals(confirmPassword)) {
+                return new CommandResult(HttpStatus.CONFLICT, "Wrong confirm password!");
+            }
+
+            String storePassword = userRepository.findPasswordByUsername(principal.getName());
+            if (storePassword == null || storePassword.isEmpty()) {
+                return new CommandResult(HttpStatus.NOT_FOUND, "Not found current password!");
+            }
+            boolean passwordValid = passwordEncoder.matches(currentPassword, storePassword);
+            if (!passwordValid) {
+                return new CommandResult(HttpStatus.CONFLICT, "Wrong current password!");
+            }
+
+            String storeNewPassword = passwordEncoder.encode(newPassword);
+            userRepository.updatePassword(principal.getName(), storeNewPassword);
+            return new CommandResult().Succeed();
+        } catch (Exception ex) {
+            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error!");
+        }
+    }
+
 }
