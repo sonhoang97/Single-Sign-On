@@ -1,15 +1,13 @@
 package com.example.demooauth2;
 
-import com.example.demooauth2.controller.UserServiceImpTest;
+import com.example.demooauth2.controller.UserControllerTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        UserServiceImpTest.class
+        UserControllerTest.class
 })
 public class DemoOauth2ApplicationTests {
 

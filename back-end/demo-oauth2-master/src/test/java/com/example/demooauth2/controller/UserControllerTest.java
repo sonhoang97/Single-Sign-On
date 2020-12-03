@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserServiceImpTest {
+public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -60,9 +60,9 @@ public class UserServiceImpTest {
         Mockito.when(userService.findAll()).thenReturn(users);
 
        MvcResult mvcResult =  mockMvc.perform(get("/api/users")
-               .header("Authorization", "Bearer " +  getAccessToken("krish", "kpass")))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+               .header("Authorization", "Bearer " +  getAccessToken("krish", "krish")))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                .andExpect(jsonPath("$", hasSize(1))) // Hi vọng server trả về List độ dài 1
                .andExpect(jsonPath("$[0].id", is(0))) // Hi vọng phần tử trả về đầu tiên có id = 1
                .andExpect(jsonPath("$[0].username", is("test")))// Hi vọng phần tử trả về đầu tiên có name = "title-0"

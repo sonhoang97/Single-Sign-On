@@ -25,7 +25,7 @@ public class PermissionServiceImpl implements PermissionService {
                 return new CommandResult(HttpStatus.CONFLICT, "PermissionEntity has existed!");
 
             permissionRepository.save(permissionEntity);
-            return new CommandResult().SucceedWithData("Create new role successful!");
+            return new CommandResult().SucceedWithData("Create new permission successful!");
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.BAD_REQUEST, "Cannot create new permissionEntity!");
         }
