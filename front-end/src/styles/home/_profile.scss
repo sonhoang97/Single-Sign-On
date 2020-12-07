@@ -37,14 +37,15 @@ profile {
   }
   .profile-edit-btn {
     border: none;
-    border-radius: 1.5rem;
-    width: 100%;
-    padding: 10px 0px;
-    font-weight: 600;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-weight: bold;
     color: #6c757d;
+    font-size: 18px;
+    width: 200px;
     &:hover {
       box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-      background-color: #0062cc;
+      background-color: #3931af;
       color: white;
     }
   }
