@@ -18,7 +18,7 @@ export class RegisterFormComponent implements OnInit {
   password: string;
 
   email: string;
-  phoneNumber: number;
+  phoneNumber: string;
 
   invalid: boolean = false;
   wrongConfirm: boolean = false;

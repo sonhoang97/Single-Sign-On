@@ -18,4 +18,6 @@ public interface UserService {
     CommandResult getProfile(Principal principal);
 
     CommandResult changePassword(Principal principal, Map<String, String> bodyPassword);
+
+    CommandResult updateProfile(Principal principal, Map<String, String> bodyProfile);
 }

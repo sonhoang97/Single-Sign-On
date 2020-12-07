@@ -54,7 +54,7 @@ public class UserEntity implements Serializable {
     private String lastname;
 
     @Column(name = "phonenumber")
-    private int phonenumber;
+    private String phonenumber;
 
     @Column(name = "enabled")
     private boolean enabled;

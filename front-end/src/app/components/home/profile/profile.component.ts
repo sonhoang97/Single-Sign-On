@@ -8,9 +8,10 @@ import { ProfileService } from 'src/services/profile/profile.service';
   templateUrl: './profile.component.html',
 })
 export class ProfileComponent implements OnInit {
-  typeSelect: number = 1;
+  typeSelect: number = 4;
   userProfile: UserProfile = new UserProfile();
   lsClient: ClientDetail[] = [];
+
 
   username: string;
   constructor(private profileService: ProfileService) {}
@@ -25,6 +26,7 @@ export class ProfileComponent implements OnInit {
         this.userProfile = res;
         this.lsClient = this.userProfile.lsClientDetail;
         this.username = this.userProfile.username;
+        console.log(this.lsClient);
       },
       (err) => {
         console.log(err);

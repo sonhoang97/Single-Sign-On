@@ -1,0 +1,36 @@
+client {
+  .border-client {
+    border-right: 1px solid rgb(177, 175, 175);
+  }
+  .bg-selected {
+    background-color: rgb(196, 196, 196);
+  }
+  .edit-item {
+    color: #6c757d;
+    &:hover {
+      color: blue;
+      .right {
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+      }
+      .arrow {
+        border: solid blue;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
+      }
+    }
+  }
+
+  .rectangle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .border-group{
+    border: 1px solid $gray-light;
+    border-radius: 5px;
+    border-top: none;
+  }
+}
