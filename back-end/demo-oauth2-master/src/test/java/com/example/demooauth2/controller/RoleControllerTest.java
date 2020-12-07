@@ -107,6 +107,21 @@ public class RoleControllerTest {
     }
 
     @Test
+    public void deleteTest() throws Exception  {
+        PermissionEntity permissionEx = new PermissionEntity("test");
+        Mockito.when(roleService.Delete(Mockito.anyInt())).thenReturn(new CommandResult().SucceedWithData("Delete role successful!"));
+
+        MvcResult mvcResult =  mockMvc.perform(delete("/api/permissions/0")
+                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        Assert.assertEquals("Delete role successful!", mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
     public  void unAuthorTest() throws Exception {
         MvcResult mvcResult =  mockMvc.perform(get("/api/roles")
                 .contentType(MediaType.APPLICATION_JSON))
