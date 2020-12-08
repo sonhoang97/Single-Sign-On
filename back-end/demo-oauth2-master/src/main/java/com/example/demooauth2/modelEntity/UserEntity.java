@@ -24,7 +24,7 @@ public class UserEntity implements Serializable {
         this.email ="test";
         this.firstname = "test";
         this.lastname ="test";
-        this.phonenumber = 0;
+        this.phonenumber = "0";
         this.enabled = true;
         this.accountNonExpired = true;
         this.credentialsNonExpired =true;
