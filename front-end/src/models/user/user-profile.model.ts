@@ -3,7 +3,7 @@ import { ClientDetail } from '../clientDetail/client-detail';
 export class UserProfile {
     public username: string;
     public email: string;
-    public phoneNumber: number;
+    public phonenumber: string;
     public firstname: string;
     public lastname: string;
     public lsClientDetail: ClientDetail[];

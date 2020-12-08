@@ -55,4 +55,16 @@ public class AccountController {
         CommandResult result = userService.getProfile(principal);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
+
+   @PutMapping("/profile")
+    public ResponseEntity<Object> updateProfile(Principal principal,@RequestBody Map<String, String> bodyProfile){
+        CommandResult result = userService.updateProfile(principal,bodyProfile);
+        return new ResponseEntity<>(result.getData(),result.getStatus());
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<Object> changePassword(Principal principal,@RequestBody Map<String, String> bodyPassword){
+        CommandResult result = userService.changePassword(principal,bodyPassword);
+        return new ResponseEntity<>(result.getData(),result.getStatus());
+    }
 }

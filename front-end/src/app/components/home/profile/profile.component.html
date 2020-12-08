@@ -1,47 +1,50 @@
 <div class="container-fluid emp-profile">
-    <div class="row">
-      <div class="col-md-2 bg-category">
-        <div class="profile-img my-2">
-          <img
-            src="https://png.pngtree.com/png-vector/20190221/ourlarge/pngtree-male-avatar-vector-icon-png-image_691595.jpg"
-            alt=""
-          />
-          <div class="file btn btn-lg btn-primary">
-            Change Photo
-            <input type="file" name="file" />
-          </div>
-        </div>
-        <div class="profile-work my-3">
-          <h5 class="font-weight-bold text-white">Account</h5>
-          <p (click)="typeSelect = 1">
-            <i class="fa fa-user" aria-hidden="true"></i> User profile
-          </p>
-          <p (click)="typeSelect = 2">
-            <i class="fab fa-500px" aria-hidden="true"></i> Password
-          </p>
-          <p (click)="typeSelect = 3">
-            <i class="fas fa-key" aria-hidden="true"></i> Settings Token
-          </p>
-          <hr style="border-top: 1px solid rgba(235, 233, 233, 0.1)"/>
-          <h5 class="font-weight-bold text-white">Configure</h5>
-          <p (click)="typeSelect = 4">
-            <i class="fas fa-box" aria-hidden="true"></i> Client
-          </p>
-          <p (click)="typeSelect = 5">
-            <i class="fas fa-boxes" aria-hidden="true"></i> Client Scope
-          </p>
-          <p (click)="typeSelect = 6">
-            <i class="fas fa-box-open" aria-hidden="true"></i> Regist Client
-          </p>
+  <div class="row">
+    <div class="col-md-2 bg-category">
+      <div class="profile-img my-2">
+        <img
+          src="https://png.pngtree.com/png-vector/20190221/ourlarge/pngtree-male-avatar-vector-icon-png-image_691595.jpg"
+          alt=""
+        />
+        <div class="file btn btn-lg btn-primary">
+          Change Photo
+          <input type="file" name="file" />
         </div>
       </div>
-      <div class="col-md-10 p-4">
-        <user-profile [userProfile]="userProfile" *ngIf="typeSelect == 1"></user-profile>
-        <password *ngIf="typeSelect == 2"></password>
-        <settings-token *ngIf="typeSelect == 3"></settings-token>
-        <client [clients]="lsClient" *ngIf="typeSelect == 4"></client>
-        <client-scope *ngIf="typeSelect == 5"></client-scope>
-        <regist-client *ngIf="typeSelect == 6"></regist-client>
+      <div class="profile-work my-3">
+        <h5 class="font-weight-bold text-white">Account</h5>
+        <p (click)="typeSelect = 1">
+          <i class="fa fa-user" aria-hidden="true"></i> User profile
+        </p>
+        <p (click)="typeSelect = 2">
+          <i class="fab fa-500px" aria-hidden="true"></i> Password
+        </p>
+        <p (click)="typeSelect = 3">
+          <i class="fas fa-key" aria-hidden="true"></i> Settings Token
+        </p>
+        <hr style="border-top: 1px solid rgba(235, 233, 233, 0.1)" />
+        <h5 class="font-weight-bold text-white">Configure</h5>
+        <p (click)="typeSelect = 4">
+          <i class="fas fa-box" aria-hidden="true"></i> Client
+        </p>
+        <!-- <p (click)="typeSelect = 5">
+            <i class="fas fa-boxes" aria-hidden="true"></i> Client Scope
+          </p> -->
+        <p (click)="typeSelect = 6">
+          <i class="fas fa-box-open" aria-hidden="true"></i> Regist Client
+        </p>
       </div>
     </div>
+    <div class="col-md-10 py-4">
+      <user-profile
+        [userProfile]="userProfile"
+        *ngIf="typeSelect == 1"
+      ></user-profile>
+      <password [username]="username" *ngIf="typeSelect == 2"></password>
+      <settings-token *ngIf="typeSelect == 3"></settings-token>
+      <client [clients]="lsClient" *ngIf="typeSelect == 4"></client>
+      <!-- <client-scope *ngIf="typeSelect == 5"></client-scope> -->
+      <regist-client *ngIf="typeSelect == 6"></regist-client>
+    </div>
+  </div>
 </div>

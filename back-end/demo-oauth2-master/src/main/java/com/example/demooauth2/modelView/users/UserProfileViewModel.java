@@ -16,7 +16,7 @@ public class UserProfileViewModel {
     private String firstname;
     private String lastname;
     private String email;
-    private int phoneNumber;
+    private String phonenumber;
     private List<ClientDetailViewModel> lsClientDetail = new ArrayList<>();
 
     public UserProfileViewModel() {
@@ -27,7 +27,7 @@ public class UserProfileViewModel {
         this.firstname = userEntity.getFirstname();
         this.lastname = userEntity.getLastname();
         this.email = userEntity.getEmail();
-        this.phoneNumber = userEntity.getPhonenumber();
+        this.phonenumber = userEntity.getPhonenumber();
 
         for (ClientDetailEntity clientDetail : userEntity.getClients()) {
             lsClientDetail.add(new ClientDetailViewModel(clientDetail));

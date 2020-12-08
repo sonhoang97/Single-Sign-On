@@ -7,9 +7,16 @@ import { ClientDetail } from 'src/models/clientDetail/client-detail';
 })
 export class ClientComponent implements OnInit {
   @Input() clients: ClientDetail[] = [];
+
+  indexDefault = 0;
+  editRedirectClick = false;
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  getItemClient(index: number): void {
+    console.log(this.clients[index]);
+    this.indexDefault = index;
+  }
 }

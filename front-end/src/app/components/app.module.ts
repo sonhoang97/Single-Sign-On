@@ -29,9 +29,9 @@ const APP_COMPONENTS: any[] = [
 
 const APP_POPUP_COMPONENTS: any[] = [];
 
-const APP_SHARED_COMPONENTS: any[] = [fromApp.LoadingComponent];
+const APP_SHARED_COMPONENTS: any[] = [fromApp.LoadingComponent, fromApp.PasswordStrengthBarComponent];
 @NgModule({
-  declarations: [APP_COMPONENTS, APP_POPUP_COMPONENTS, APP_SHARED_COMPONENTS ],
+  declarations: [APP_COMPONENTS, APP_POPUP_COMPONENTS, APP_SHARED_COMPONENTS],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -43,7 +43,6 @@ const APP_SHARED_COMPONENTS: any[] = [fromApp.LoadingComponent];
     ToastrModule.forRoot({
       timeOut: 3000,
     }),
-    
   ],
   exports: [APP_POPUP_COMPONENTS],
   entryComponents: [APP_POPUP_COMPONENTS],

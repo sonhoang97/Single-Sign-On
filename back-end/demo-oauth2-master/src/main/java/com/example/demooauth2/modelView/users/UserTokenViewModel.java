@@ -18,7 +18,7 @@ public class UserTokenViewModel {
     private String firstname;
     private String lastname;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
 
     public UserTokenViewModel(){};
 
