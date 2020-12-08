@@ -16,4 +16,12 @@ public class PermissionEntity implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    public PermissionEntity( String name) {
+        this.name = name;
+    }
+
+    public PermissionEntity() {
+        this.name = "test";
+    }
 }

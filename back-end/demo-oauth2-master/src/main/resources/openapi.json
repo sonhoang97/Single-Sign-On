@@ -36,6 +36,68 @@
           }
         }
       }
+    },
+    "schemas": {
+      "permission": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "role": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "permission": {
+            "$ref": "#/components/schemas/permission"
+          }
+        }
+      },
+      "user": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "phonenumber": {
+            "type": "string"
+          },
+          "enable": {
+            "type": "boolean"
+          },
+          "accountNonExpired": {
+            "type": "boolean"
+          },
+          "credentialsNonExpired": {
+            "type": "boolean"
+          },
+          "accountNonLocked": {
+            "type": "boolean"
+          },
+          "permission": {
+            "$ref": "#/components/schemas/permission"
+          }
+        }
+      }
     }
   },
   "security": [
@@ -52,6 +114,9 @@
   "paths": {
     "/permissions": {
       "get": {
+        "tags": [
+          "Permission"
+        ],
         "summary": "Returns a list of permission.",
         "description": "Optional extended description in CommonMark or HTML.",
         "responses": {
@@ -74,6 +139,206 @@
             "bearerAuth": []
           }
         ]
+      }
+    },
+    "/permissions/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "the user identifier, as userId",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "put": {
+        "tags": [
+          "Permission"
+        ],
+        "summary": "Update permission by id",
+        "responses": {
+          "200": {
+            "description": "A message of server",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Permission"
+        ],
+        "summary": "get a permisison by ID",
+        "responses": {
+          "200": {
+            "description": "return a permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/permission"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Permission"
+        ],
+        "summary": "delete a permission by ID",
+        "responses": {
+          "200": {
+            "description": "return a message",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "return list user",
+        "responses": {
+          "200": {
+            "description": "A Json array of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/user"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/profile": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "return user profile",
+        "responses": {
+          "200": {
+            "description": "A Json array of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles": {
+      "get": {
+        "tags": [
+          "Role"
+        ],
+        "summary": "return all role",
+        "responses": {
+          "200": {
+            "description": "a json array of role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/role"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "the user identifier, as userId",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "put": {
+        "tags": [
+          "Role"
+        ],
+        "summary": "Update role by id",
+        "responses": {
+          "200": {
+            "description": "A message of server",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Role"
+        ],
+        "summary": "get a role by ID",
+        "responses": {
+          "200": {
+            "description": "return a permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/role"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Role"
+        ],
+        "summary": "delete a role by ID",
+        "responses": {
+          "200": {
+            "description": "return a message",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
