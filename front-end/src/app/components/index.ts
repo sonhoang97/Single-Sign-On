@@ -8,3 +8,4 @@ export * from './shared/password-strength-bar/password-strength-bar.component';
 export * from './home/home-menu/home-menu.component';
 export * from './docs/api.doc.component';
 export * from './home/profile/index';
+export * from './admin/index';

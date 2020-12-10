@@ -20,4 +20,5 @@ public interface UserService {
     CommandResult changePassword(Principal principal, Map<String, String> bodyPassword);
 
     CommandResult updateProfile(Principal principal, Map<String, String> bodyProfile);
+
 }
