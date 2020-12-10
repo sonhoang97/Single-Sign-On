@@ -22,19 +22,18 @@ export class LoginFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkAuthenticated();
-    
   }
 
   submitLogin() {
     this.isLoading = true;
     this.authService.login(this.username, this.password).subscribe(
       (res) => {
-    this.isLoading = false;
+        this.isLoading = false;
         this.toastr.success(Messages.SUCCESS.SUCCESS);
         this.refresh();
       },
       (err) => {
-    this.isLoading = false;
+        this.isLoading = false;
         if (err.status == 400) this.toastr.warning(Messages.ERROR.LOGIN_WRONG);
         else this.toastr.warning('Something wrong!');
         console.log(err);
@@ -42,14 +41,18 @@ export class LoginFormComponent implements OnInit {
     );
   }
 
-  checkAuthenticated():void {
-    if(LsHelper.getTokenFromStorage()){
-      this.router.navigate(['']);
-
+  checkAuthenticated(): void {
+    if (LsHelper.getTokenFromStorage()) {
+      const authorities = LsHelper.getAuthoritiesFromToken();
+      if (authorities.includes('ROLE_admin')) {
+        this.router.navigate(['admin']);
+      } else {
+        this.router.navigate(['profile']);
+      }
     }
   }
 
   refresh(): void {
     window.location.reload();
-}
+  }
 }

@@ -26,7 +26,8 @@
       </tbody>
     </table>
   </div>
-  <div class="col-md">
+  <div class="col-md" *ngIf="clients.length==0">None</div>
+  <div class="col-md" *ngIf="clients.length!=0">
     <div class="row m-1 h3 font-weight-bold">Overview</div>
     <div class="row m-2 border-group py-3">
       <div class="col-12">
@@ -172,10 +173,10 @@
         </div>
         <hr>
         <div class="row">
-          <div class="col-md-3 font-weight-bold">Remove</div>
+          <div class="col-md-3 font-weight-bold ">Remove</div>
           <div class="col-md-7 text-muted">Remove this client!!</div>
           <div
-          class="col-md-auto ml-auto mr-2 font-weight-bold cursor-pointer edit-item"
+          class="col-md-auto ml-auto mr-2 font-weight-bold cursor-pointer edit-item text-danger"
         >
           <i class="fas fa-pencil-alt" aria-hidden="true"></i> Remove
           <i class="arrow right"></i>

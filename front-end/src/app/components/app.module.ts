@@ -9,6 +9,7 @@ import { UserValidGuard } from './guards/user-valid.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AdminValidGuard } from './guards/admin-valid.guard';
 
 const APP_COMPONENTS: any[] = [
   fromApp.AppComponent,
@@ -25,11 +26,15 @@ const APP_COMPONENTS: any[] = [
   fromApp.PasswordComponent,
   fromApp.SettingsTokenComponent,
   fromApp.RegistClientComponent,
+  fromApp.HomeAdminComponent,
 ];
 
 const APP_POPUP_COMPONENTS: any[] = [];
 
-const APP_SHARED_COMPONENTS: any[] = [fromApp.LoadingComponent, fromApp.PasswordStrengthBarComponent];
+const APP_SHARED_COMPONENTS: any[] = [
+  fromApp.LoadingComponent,
+  fromApp.PasswordStrengthBarComponent,
+];
 @NgModule({
   declarations: [APP_COMPONENTS, APP_POPUP_COMPONENTS, APP_SHARED_COMPONENTS],
   imports: [
@@ -46,7 +51,7 @@ const APP_SHARED_COMPONENTS: any[] = [fromApp.LoadingComponent, fromApp.Password
   ],
   exports: [APP_POPUP_COMPONENTS],
   entryComponents: [APP_POPUP_COMPONENTS],
-  providers: [UserValidGuard],
+  providers: [UserValidGuard, AdminValidGuard],
   bootstrap: [fromApp.AppComponent],
 })
 export class AppModule {}
