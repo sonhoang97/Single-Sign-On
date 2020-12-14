@@ -55,7 +55,7 @@ public class PermissionControllerTest {
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-         String requestJson = mapper.writeValueAsString(permissionEx);
+        String requestJson = mapper.writeValueAsString(permissionEx);
         MvcResult mvcResult =  mockMvc.perform(post("/api/permissions")
                 .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
                 .contentType(MediaType.APPLICATION_JSON)

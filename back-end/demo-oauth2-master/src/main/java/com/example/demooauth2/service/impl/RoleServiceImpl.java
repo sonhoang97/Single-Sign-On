@@ -1,6 +1,8 @@
 package com.example.demooauth2.service.impl;
 
+import com.example.demooauth2.modelEntity.PermissionEntity;
 import com.example.demooauth2.modelEntity.RoleEntity;
+import com.example.demooauth2.repository.PermissionRepository;
 import com.example.demooauth2.repository.RoleRepository;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.RoleService;
@@ -14,6 +16,8 @@ import java.util.Optional;
 public class RoleServiceImpl implements RoleService {
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    PermissionRepository permissionRepository;
     @Override
     public CommandResult CreateNew(RoleEntity role) {
         try {
@@ -78,6 +82,37 @@ public class RoleServiceImpl implements RoleService {
         catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Get role fail!");
 
+        }
+    }
+
+    public CommandResult AddPermission(int roleId, int permissionId) {
+        try {
+            Optional<RoleEntity> existRole = roleRepository.findById(roleId);
+            if(!existRole.isPresent()) {
+                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
+            }
+            PermissionEntity permission = permissionRepository.getOne(permissionId);
+            existRole.get().addNewPermisison(permission);
+
+            roleRepository.save(existRole.get());
+            return  new CommandResult().SucceedWithData("Add permission for role successful!");
+        } catch (Exception ex) {
+            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Add new permission for role fail!");
+        }
+    }
+
+    public CommandResult DeletePermission(int roleId, int permissionId) {
+        try {
+            Optional<RoleEntity> existRole = roleRepository.findById(roleId);
+            if(!existRole.isPresent()) {
+                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
+            }
+            PermissionEntity permission = permissionRepository.getOne(permissionId);
+            existRole.get().deleteAPermission(permission);
+            roleRepository.save(existRole.get());
+            return new CommandResult().SucceedWithData("Remove permission for role successful!");
+        } catch (Exception ex) {
+            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Remove permission for role fail!");
         }
     }
 }

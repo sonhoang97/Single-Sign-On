@@ -1,5 +1,6 @@
 package com.example.demooauth2.controller.server;
 
+import com.example.demooauth2.modelEntity.PermissionEntity;
 import com.example.demooauth2.modelEntity.RoleEntity;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.RoleService;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/roles")
@@ -41,6 +44,31 @@ public class RoleController {
 
     public ResponseEntity<Object> Delete(@PathVariable(value = "id") int roleId) {
         CommandResult result = roleService.Delete(roleId);
+        return new ResponseEntity<>(result.getData(), result.getStatus());
+    }
+
+    @PutMapping("/{id}/permissions")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<Object> UpdatePermission(@PathVariable(value = "id") int roleId,
+                                         @RequestBody List<PermissionEntity> permissions) {
+       // TODO update new permission for role
+
+        CommandResult result = new CommandResult();
+        return new ResponseEntity<>(result.getData(), result.getStatus());
+    }
+
+    @PostMapping("/{id}/permissions/{permissionId}")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<Object> AddNewPermission(@PathVariable(value = "id") int roleId, @PathVariable(value = "permissionId") int permissionId){
+
+        CommandResult result = roleService.AddPermission(roleId, permissionId);
+        return new ResponseEntity<>(result.getData(), result.getStatus());
+    }
+
+    @DeleteMapping("/{id}/permissions/{permissionId}")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<Object> RemovePermission(@PathVariable(value = "id") int roleId, @PathVariable(value = "permissionId") int permissionId){
+        CommandResult result = roleService.DeletePermission(roleId, permissionId);
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
 }
