@@ -24,12 +24,12 @@ public class UserEntity implements Serializable {
         this.email ="test";
         this.firstname = "test";
         this.lastname ="test";
-        this.phonenumber = 0;
+        this.phonenumber = "";
         this.enabled = true;
         this.accountNonExpired = true;
         this.credentialsNonExpired =true;
         this.accountNonLocked = true;
-
+        this.loggedInFb = false;
         List<RoleEntity> roles = new ArrayList<>();
         this.roles = roles;
     }
@@ -45,6 +45,7 @@ public class UserEntity implements Serializable {
         this.accountNonExpired = user.isAccountNonExpired();
         this.credentialsNonExpired = user.isCredentialsNonExpired();
         this.accountNonLocked = user.isAccountNonLocked();
+        this.loggedInFb = user.isLoggedInFb();
         this.roles = user.getRoles();
     }
 
@@ -83,6 +84,9 @@ public class UserEntity implements Serializable {
 
     @Column(name = "accountNonLocked")
     private boolean accountNonLocked;
+
+    @Column(name = "loggedInFb")
+    private boolean loggedInFb;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_user", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},

@@ -1,6 +1,8 @@
 package com.example.demooauth2.service.impl;
 
+import com.example.demooauth2.modelEntity.RoleEntity;
 import com.example.demooauth2.modelView.users.UserProfileViewModel;
+import com.example.demooauth2.repository.RoleRepository;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.modelEntity.UserEntity;
 import com.example.demooauth2.repository.UserRepository;
@@ -14,8 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,7 +28,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public List<UserEntity> findAll() {
@@ -40,7 +45,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public CommandResult registerNewUserAccount(UserEntity userDto) {
         if (findByUsername(userDto.getUsername()) != null) {
-            return new CommandResult(HttpStatus.CONFLICT, "Username has existed!");
+            if (!userDto.isLoggedInFb()) {
+                return new CommandResult(HttpStatus.CONFLICT, "Username has existed!");
+            } else {
+                userRepository.deleteAllByUsername(userDto.getUsername());
+            }
+        }
+        Optional<RoleEntity> role = roleRepository.findByName("ROLE_operator");
+        if(role.isPresent()){
+            List<RoleEntity> rolesDefault = new ArrayList<>();
+            rolesDefault.add(role.get());
+            userDto.setRoles(rolesDefault);
         }
         userRepository.save(userDto);
         return new CommandResult().Succeed();
@@ -95,7 +110,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommandResult updateProfile(Principal principal, Map<String, String> bodyProfile){
+    public CommandResult updateProfile(Principal principal, Map<String, String> bodyProfile) {
         try {
             if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
                 return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");
@@ -106,10 +121,10 @@ public class UserServiceImpl implements UserService {
             String email = bodyProfile.get("email");
             String phonenumber = bodyProfile.get("phonenumber");
 
-            if (firstname == null || firstname.isEmpty() || lastname == null || lastname.isEmpty() || email == null || email.isEmpty()|| phonenumber == null || phonenumber.isEmpty()) {
+            if (firstname == null || firstname.isEmpty() || lastname == null || lastname.isEmpty() || email == null || email.isEmpty() || phonenumber == null || phonenumber.isEmpty()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Something are empties!");
             }
-            userRepository.updateProfile(principal.getName(),firstname,lastname,email,phonenumber);
+            userRepository.updateProfile(principal.getName(), firstname, lastname, email, phonenumber);
             return new CommandResult().Succeed();
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error!");

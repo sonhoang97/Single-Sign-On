@@ -18,7 +18,7 @@ export class AuthService {
 
   public register(userRegister: any): Observable<any> {
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json; charset=utf-8',
       dataType: 'json',
     });
     return this.http
