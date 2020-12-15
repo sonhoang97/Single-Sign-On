@@ -64,6 +64,7 @@ export class RegisterFormComponent implements OnInit {
     this.userRigister.username = this.username;
     this.userRigister.email = this.email;
     this.userRigister.phonenumber = this.phoneNumber;
+    this.userRigister.loggedInFb = true;
     console.log(this.userRigister);
     this.authService.register(this.userRigister).subscribe(
       (res) => {

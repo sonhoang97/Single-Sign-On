@@ -10,6 +10,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminValidGuard } from './guards/admin-valid.guard';
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+} from 'angularx-social-login';
+import {
+  GoogleLoginProvider,
+  FacebookLoginProvider,
+} from 'angularx-social-login';
 
 const APP_COMPONENTS: any[] = [
   fromApp.AppComponent,
@@ -27,6 +35,7 @@ const APP_COMPONENTS: any[] = [
   fromApp.SettingsTokenComponent,
   fromApp.RegistClientComponent,
   fromApp.HomeAdminComponent,
+  fromApp.CallbackFacebookComponent
 ];
 
 const APP_POPUP_COMPONENTS: any[] = [];
@@ -48,10 +57,30 @@ const APP_SHARED_COMPONENTS: any[] = [
     ToastrModule.forRoot({
       timeOut: 3000,
     }),
+    SocialLoginModule,
   ],
   exports: [APP_POPUP_COMPONENTS],
   entryComponents: [APP_POPUP_COMPONENTS],
-  providers: [UserValidGuard, AdminValidGuard],
+  providers: [
+    UserValidGuard,
+    AdminValidGuard,
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('848039156015832'),
+          },
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider('761570297587-529p6ssv5pjfcmna5jo8nts5hj4945sg.apps.googleusercontent.com'),
+          },
+        ],
+      } as SocialAuthServiceConfig,
+    },
+  ],
   bootstrap: [fromApp.AppComponent],
 })
 export class AppModule {}

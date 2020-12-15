@@ -3,6 +3,7 @@ export * from './home/top-menu/top-menu.component';
 export * from './home/footer/footer.component';
 export * from './home/login-form/login-form.component';
 export * from './home/register-form/register-form.component';
+export * from './home/login-form/callback-facebook/callback-facebook.component'
 export * from './shared/loading/loading.component';
 export * from './shared/password-strength-bar/password-strength-bar.component';
 export * from './home/home-menu/home-menu.component';
