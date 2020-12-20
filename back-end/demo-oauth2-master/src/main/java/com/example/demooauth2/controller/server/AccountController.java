@@ -67,4 +67,18 @@ public class AccountController {
         CommandResult result = userService.changePassword(principal,bodyPassword);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
+
+    @PostMapping("/roles/{roleid}")
+    public ResponseEntity<Object> AddNewRole(Principal principal,@PathVariable(value = "roleid") int roleId){
+
+        CommandResult result = userService.addRole(principal, roleId);
+        return new ResponseEntity<>(result.getData(), result.getStatus());
+    }
+
+    @DeleteMapping("/roles/{roleid}")
+    public ResponseEntity<Object> RemoveRole(Principal principal,@PathVariable(value = "roleid") int roleId){
+
+        CommandResult result = userService.RemoveRole(principal, roleId);
+        return new ResponseEntity<>(result.getData(), result.getStatus());
+    }
 }

@@ -1,6 +1,8 @@
 package com.example.demooauth2.service.impl;
 
+import com.example.demooauth2.modelEntity.RoleEntity;
 import com.example.demooauth2.modelView.users.UserProfileViewModel;
+import com.example.demooauth2.repository.RoleRepository;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.modelEntity.UserEntity;
 import com.example.demooauth2.repository.UserRepository;
@@ -16,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,7 +27,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public List<UserEntity> findAll() {
@@ -112,6 +116,43 @@ public class UserServiceImpl implements UserService {
             userRepository.updateProfile(principal.getName(),firstname,lastname,email,phonenumber);
             return new CommandResult().Succeed();
         } catch (Exception ex) {
+            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error!");
+        }
+    }
+
+    @Override
+    public CommandResult addRole(Principal principal, int roleId) {
+        try {
+            if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
+                return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");
+            }
+            Optional<RoleEntity> existRole = roleRepository.findById(roleId);
+            if(!existRole.isPresent()) {
+                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
+            }
+            UserEntity userEntity =  userRepository.findByUsername(principal.getName()).get();
+            userEntity.AddNewRole(existRole.get());
+            return  new CommandResult().Succeed();
+        }
+        catch (Exception ex) {
+            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error!");
+        }
+    }
+    @Override
+    public CommandResult RemoveRole(Principal principal, int roleId) {
+        try {
+            if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
+                return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");
+            }
+            Optional<RoleEntity> existRole = roleRepository.findById(roleId);
+            if(!existRole.isPresent()) {
+                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
+            }
+            UserEntity userEntity =  userRepository.findByUsername(principal.getName()).get();
+            userEntity.RemoveRole(existRole.get());
+            return  new CommandResult().Succeed();
+        }
+        catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error!");
         }
     }

@@ -48,6 +48,13 @@ public class UserEntity implements Serializable {
         this.roles = user.getRoles();
     }
 
+    public void AddNewRole(RoleEntity role) {
+        this.roles.add((role));
+    }
+
+    public void RemoveRole(RoleEntity role) {
+        this.roles.remove((role));
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
