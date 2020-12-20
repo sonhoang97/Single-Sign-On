@@ -44,4 +44,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Modifying
     @Query("update UserEntity set firstname=:firstname, lastname = :lastname, email = :email, phonenumber = :phonenumber where username=:username")
     void updateProfile(String username,String firstname, String lastname, String email, String phonenumber);
+
+
 }

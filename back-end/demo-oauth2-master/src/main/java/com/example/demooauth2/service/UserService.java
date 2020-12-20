@@ -21,4 +21,8 @@ public interface UserService {
 
     CommandResult updateProfile(Principal principal, Map<String, String> bodyProfile);
 
+    CommandResult addRole(Principal principal, int roleId);
+
+    CommandResult RemoveRole(Principal principal, int roleId);
+
 }

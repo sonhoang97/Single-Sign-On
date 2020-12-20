@@ -24,7 +24,7 @@ public class UserEntity implements Serializable {
         this.email ="test";
         this.firstname = "test";
         this.lastname ="test";
-        this.phonenumber = "";
+        this.phonenumber = "0";
         this.enabled = true;
         this.accountNonExpired = true;
         this.credentialsNonExpired =true;
@@ -49,6 +49,13 @@ public class UserEntity implements Serializable {
         this.roles = user.getRoles();
     }
 
+    public void AddNewRole(RoleEntity role) {
+        this.roles.add((role));
+    }
+
+    public void RemoveRole(RoleEntity role) {
+        this.roles.remove((role));
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

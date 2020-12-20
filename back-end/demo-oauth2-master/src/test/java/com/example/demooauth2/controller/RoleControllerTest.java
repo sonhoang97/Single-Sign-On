@@ -111,7 +111,7 @@ public class RoleControllerTest {
         PermissionEntity permissionEx = new PermissionEntity("test");
         Mockito.when(roleService.Delete(Mockito.anyInt())).thenReturn(new CommandResult().SucceedWithData("Delete role successful!"));
 
-        MvcResult mvcResult =  mockMvc.perform(delete("/api/permissions/0")
+        MvcResult mvcResult =  mockMvc.perform(delete("/api/roles/0")
                 .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -154,6 +154,37 @@ public class RoleControllerTest {
                 .readValue(response.getContentAsByteArray(), OAuthToken.class)
                 .accessToken;
     }
+
+    @Test
+    public void addPermissionSuccess() throws Exception {
+        PermissionEntity permissionEx = new PermissionEntity("test");
+        Mockito.when(roleService.AddPermission(Mockito.anyInt(),Mockito.anyInt())).thenReturn(new CommandResult().SucceedWithData("Add permission to role successful!"));
+
+        MvcResult mvcResult =  mockMvc.perform(post("/api/roles/0/permissions/0")
+                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        Assert.assertEquals("Add permission to role successful!", mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
+    public void deletePermissionSuccess() throws Exception {
+        PermissionEntity permissionEx = new PermissionEntity("test");
+        Mockito.when(roleService.DeletePermission(Mockito.anyInt(),Mockito.anyInt())).thenReturn(new CommandResult().SucceedWithData("Delete permission to role successful!"));
+
+        MvcResult mvcResult =  mockMvc.perform(delete("/api/roles/0/permissions/0")
+                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        Assert.assertEquals("Delete permission to role successful!", mvcResult.getResponse().getContentAsString());
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     private static class OAuthToken {
         @JsonProperty("access_token")
