@@ -1,11 +1,17 @@
 package com.example.demooauth2.controller;
 
+import com.example.demooauth2.modelEntity.PermissionEntity;
 import com.example.demooauth2.modelEntity.UserEntity;
+import com.example.demooauth2.responseModel.CommandResult;
+import com.example.demooauth2.service.OAuth2Service;
 import com.example.demooauth2.service.UserService;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -46,36 +53,58 @@ public class UserControllerTest {
     @MockBean
     private UserService userService;
 
+    @MockBean
+    private OAuth2Service oAuth2Service;
 
     @Before
     public void init() {
     }
 
+ //   @Test
+//
+//    public void test_get_all_success() throws Exception {
+//        List<UserEntity> users = new ArrayList<UserEntity>();
+//        users.add(new UserEntity());
+//
+//        Mockito.when(userService.findAll()).thenReturn(users);
+//
+//       MvcResult mvcResult =  mockMvc.perform(get("/api/account")
+//               .header("Authorization", "Bearer " +  getAccessToken("krish", "krish")))
+//               .andExpect(status().isOk())
+//               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//               .andExpect(jsonPath("$", hasSize(1))) // Hi vọng server trả về List độ dài 1
+//               .andExpect(jsonPath("$[0].id", is(0))) // Hi vọng phần tử trả về đầu tiên có id = 1
+//               .andExpect(jsonPath("$[0].username", is("test")))// Hi vọng phần tử trả về đầu tiên có name = "title-0"
+//               .andDo(print()).andReturn();
+//           MockHttpServletResponse res = mvcResult.getResponse();
+//
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        List<UserEntity> actual = mapper.readValue(res.getContentAsString(),new TypeReference<List<UserEntity>>(){});
+//
+//        Mockito.verify(userService, Mockito.times(1)).findAll();
+//        Mockito.verifyNoMoreInteractions(userService);
+//    }
+
     @Test
-
-    public void test_get_all_success() throws Exception {
-        List<UserEntity> users = new ArrayList<UserEntity>();
-        users.add(new UserEntity());
-
-        Mockito.when(userService.findAll()).thenReturn(users);
-
-       MvcResult mvcResult =  mockMvc.perform(get("/api/users")
-               .header("Authorization", "Bearer " +  getAccessToken("krish", "krish")))
-               .andExpect(status().isOk())
-               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-               .andExpect(jsonPath("$", hasSize(1))) // Hi vọng server trả về List độ dài 1
-               .andExpect(jsonPath("$[0].id", is(0))) // Hi vọng phần tử trả về đầu tiên có id = 1
-               .andExpect(jsonPath("$[0].username", is("test")))// Hi vọng phần tử trả về đầu tiên có name = "title-0"
-               .andDo(print()).andReturn();
-           MockHttpServletResponse res = mvcResult.getResponse();
+    public void testRegisterSuccess() throws  Exception {
+        UserEntity usr = new UserEntity();
 
 
+        Mockito.when(userService.registerNewUserAccount(Mockito.any(UserEntity.class))).thenReturn(new CommandResult().Succeed());
         ObjectMapper mapper = new ObjectMapper();
-        List<UserEntity> actual = mapper.readValue(res.getContentAsString(),new TypeReference<List<UserEntity>>(){});
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        String requestJson = mapper.writeValueAsString(usr);
+        MvcResult mvcResult =  mockMvc.perform(post("/api/account/register").content(requestJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
 
-        Mockito.verify(userService, Mockito.times(1)).findAll();
+        Mockito.verify(userService, Mockito.times(1)).registerNewUserAccount(Mockito.any(UserEntity.class));
         Mockito.verifyNoMoreInteractions(userService);
     }
+
+
+
     @Test
     public void testGetProfile() throws  Exception {
         UserEntity usr = new UserEntity();
@@ -83,8 +112,8 @@ public class UserControllerTest {
 
         Mockito.when(userService.findByUsername("krish")).thenReturn(usr);
 
-        MvcResult mvcResult =  mockMvc.perform(get("/api/users/profile")
-                .header("Authorization", "Bearer " +  getAccessToken("krish", "kpass")))
+        MvcResult mvcResult =  mockMvc.perform(get("/api/account/profile")
+                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
         MockHttpServletResponse res = mvcResult.getResponse();

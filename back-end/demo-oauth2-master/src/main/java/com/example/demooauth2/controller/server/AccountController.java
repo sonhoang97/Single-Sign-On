@@ -42,13 +42,13 @@ public class AccountController {
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 
-    @DeleteMapping("/log_out")
-    public ResponseEntity<Object> revokeToken(@RequestParam Map<String, Object> requestParam,@RequestHeader (name="Authorization") String token) {
-        String refreshToken = (String) requestParam.get("refresh_token");
-        String[] tok = token.split(" ");
-        CommandResult result = oAuth2Service.revokeToken(tok[1],refreshToken);
-        return new ResponseEntity<>(result.getData(),result.getStatus());
-    }
+//    @DeleteMapping("/log_out")
+//    public ResponseEntity<Object> revokeToken(@RequestParam Map<String, Object> requestParam,@RequestHeader (name="Authorization") String token) {
+//        String refreshToken = (String) requestParam.get("refresh_token");
+//        String[] tok = token.split(" ");
+//        CommandResult result = oAuth2Service.revokeToken(tok[1],refreshToken);
+//        return new ResponseEntity<>(result.getData(),result.getStatus());
+//    }
 
     @GetMapping("/profile")
     public ResponseEntity<Object> getProfile(Principal principal){
