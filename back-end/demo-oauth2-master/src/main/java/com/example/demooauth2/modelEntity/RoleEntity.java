@@ -30,4 +30,37 @@ public class RoleEntity implements Serializable {
         permissions = new ArrayList<PermissionEntity>();
         permissions.add(new PermissionEntity());
     }
+
+    public void setPermissions(List<PermissionEntity> permissions) {
+        this.permissions = permissions;
+    }
+
+    public  void addNewPermisison(PermissionEntity permission) {
+        this.permissions.add(permission);
+    }
+
+    public  void deleteAPermission(PermissionEntity permission) {
+        this.permissions.remove(permission);
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<PermissionEntity> getPermissions() {
+        return permissions;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }
