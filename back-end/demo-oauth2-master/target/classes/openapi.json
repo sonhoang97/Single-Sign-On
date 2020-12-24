@@ -340,6 +340,113 @@
           }
         }
       }
+    },
+    "/roles/{roleid}/permissions/{permissionid}": {
+      "parameters": [
+        {
+          "name": "roleid",
+          "in": "path",
+          "required": true,
+          "description": "the role identifier, as roleid",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "permissionid",
+          "in": "path",
+          "required": true,
+          "description": "the permissionid identifier, as permissionid",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "tags": [
+          "Role"
+        ],
+        "summary": "add a permission to role by id",
+        "responses": {
+          "200": {
+            "description": "A message of server",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Role"
+        ],
+        "summary": "delete a permission from role by id",
+        "responses": {
+          "200": {
+            "description": "A message of server",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/roles/{roleId}": {
+      "parameters": [
+        {
+          "name": "roleId",
+          "in": "path",
+          "required": true,
+          "description": "a role identifier, as roleId",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "add new role to user",
+        "responses": {
+          "200": {
+            "description": "a message from server",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "remove role of user",
+        "responses": {
+          "200": {
+            "description": "a message from server",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
