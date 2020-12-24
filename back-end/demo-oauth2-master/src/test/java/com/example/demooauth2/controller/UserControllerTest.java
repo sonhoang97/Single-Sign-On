@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +32,7 @@ import org.springframework.util.Base64Utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,7 +105,25 @@ public class UserControllerTest {
         Mockito.verifyNoMoreInteractions(userService);
     }
 
+    @Test
+    public void  testAddRoleSuccess() throws Exception {
+        Mockito.when(userService.addRole(Mockito.any(Principal.class), Mockito.anyInt())).thenReturn(new CommandResult().Succeed());
 
+        MvcResult mvcResult =  mockMvc.perform(post("/api/account/roles/0")
+                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+        Mockito.verify(userService, Mockito.times(1)).addRole(Mockito.any(Principal.class), Mockito.anyInt());
+        Mockito.verifyNoMoreInteractions(userService);
+
+    }
+
+    @Test
+    public  void testRemoveRoleSuccess() throws Exception {
+
+    }
 
     @Test
     public void testGetProfile() throws  Exception {
