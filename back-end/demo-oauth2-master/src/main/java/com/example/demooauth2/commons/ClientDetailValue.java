@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientDetailValue {
-    public static final int TOKEN_VALIDITY_SECONDS = 3600;
-    public static final int REFRESH_TOKEN_VALIDITY_SECONDS = 360000;
+    public static final int TOKEN_VALIDITY_SECONDS = 360000;
+    public static final int REFRESH_TOKEN_VALIDITY_SECONDS = 36000000;
     public static final List<String> SCOPE_DEFAULT = new ArrayList<>(){
         {
             add("READ");
+            add("WRITE");
         }
     };
     public static final List<String> AUTHORIZE_DEFAULT = new ArrayList<>(){

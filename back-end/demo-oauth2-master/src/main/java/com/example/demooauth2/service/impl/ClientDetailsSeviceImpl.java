@@ -1,6 +1,5 @@
 package com.example.demooauth2.service.impl;
 
-import com.example.demooauth2.commons.ClientDetailValue;
 import com.example.demooauth2.commons.Messages;
 import com.example.demooauth2.modelEntity.ClientDetailEntity;
 import com.example.demooauth2.modelEntity.UserEntity;
@@ -13,16 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.ClientAlreadyExistsException;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
-import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -81,55 +78,90 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
             String clientSecret = UUID.randomUUID().toString();
             Optional<UserEntity> user = userRepository.findByUsername(principal.getName());
             if (user.isPresent()) {
-                ClientDetailEntity clientDetailEntity = new ClientDetailEntity(clientId, passwordEncoder.encode(clientSecret), LocalDateTime.now(), redirectUri, user.get());
+                ClientDetailEntity clientDetailEntity = new ClientDetailEntity(clientId, passwordEncoder.encode(clientSecret), LocalDateTime.now(), redirectUri, user.get(),clientSecret);
                 clientDetailRepository.save(clientDetailEntity);
-                ClientDetailViewModel result = new ClientDetailViewModel(clientId, clientSecret);
-                return new CommandResult().SucceedWithData(result);
+                return new CommandResult().Succeed();
             }
             return new CommandResult(HttpStatus.NOT_FOUND,"not found user");
         } catch (Exception ex) {
-            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error");
+            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Something wrong");
         }
     }
 
     @Override
-    public CommandResult updateClientSecret(String clientId) {
+    public CommandResult updateClientSecret(String clientId, Principal principal) {
         try {
+            if(!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()){
+                return new CommandResult(HttpStatus.UNAUTHORIZED,"Unauthenticated");
+            }
             if (clientId == null || clientId.isEmpty()) {
                 return new CommandResult(HttpStatus.NO_CONTENT, Messages.NO_CONTENT);
             }
+            Optional<ClientDetailEntity> clientDetail = clientDetailRepository.findClientDetailEntitiesByClientId(clientId);
+            if(!clientDetail.isPresent()){
+                return new CommandResult(HttpStatus.NOT_FOUND, "Client not found: " + clientId);
+            }
             String clientSecret = UUID.randomUUID().toString();
-            clientDetailRepository.updateClientSecret(clientId, this.passwordEncoder.encode(clientSecret));
+            List<String> additionalInformation = clientDetail.get().getAdditionalInformation();
+            if(additionalInformation==null|| additionalInformation.isEmpty()){
+                additionalInformation = new ArrayList<>(){
+                    {
+                        add(clientSecret);
+                    }
+                };
+            } else{
+                additionalInformation.set(0,clientSecret);
+            }
 
-            return new CommandResult().SucceedWithData(new ClientDetailViewModel(clientId,clientSecret));
+            clientDetail.get().setClientSecret(this.passwordEncoder.encode(clientSecret));
+            clientDetail.get().setAdditionalInformation(additionalInformation);
+            clientDetailRepository.save(clientDetail.get());
+            return new CommandResult().Succeed();
         } catch (Exception ex) {
-            return new CommandResult(HttpStatus.NOT_FOUND, "No client found with id = " + clientId);
+            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Something wrong!");
+
         }
     }
 
     @Override
-    public CommandResult updateRedirectUri(String clientId, String redirectUri) {
+    public CommandResult updateRedirectUri(String clientId, List<String> redirectUri, Principal principal) {
         try {
+            if(!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()){
+                return new CommandResult(HttpStatus.UNAUTHORIZED,"Unauthenticated");
+            }
             if (clientId == null || clientId.isEmpty() || redirectUri == null || redirectUri.isEmpty()) {
                 return new CommandResult(HttpStatus.NO_CONTENT, Messages.NO_CONTENT);
             }
-            clientDetailRepository.updateRedirectUri(clientId,redirectUri);
+            Optional<ClientDetailEntity> clientDetail = clientDetailRepository.findClientDetailEntitiesByClientId(clientId);
+            if(!clientDetail.isPresent()){
+                return new CommandResult(HttpStatus.NOT_FOUND, "Client not found: " + clientId);
+            }
+            clientDetail.get().setRedirectUri(redirectUri);
+            clientDetailRepository.save(clientDetail.get());
             return new CommandResult().Succeed();
         } catch (Exception ex) {
-            return new CommandResult(HttpStatus.NOT_FOUND, "No client with requested id: " + clientId);
+            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Something wrong!");
         }
     }
 
     @Override
-    public CommandResult removeClientDetail(String clientId){
+    public CommandResult removeClientDetail(String clientId, Principal principal){
         try{
+            if(!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()){
+                return new CommandResult(HttpStatus.UNAUTHORIZED,"Unauthenticated");
+            }
             if (clientId == null || clientId.isEmpty()) {
                 return new CommandResult(HttpStatus.NO_CONTENT, Messages.NO_CONTENT);
+            }
+            ClientDetailViewModel clientDetailViewModel = clientDetailRepository.findByClientId(clientId);
+            if(clientDetailViewModel==null){
+                return new CommandResult(HttpStatus.NOT_FOUND, "Client not found: " + clientId);
             }
             clientDetailRepository.deleteClientDetail(clientId);
             return new CommandResult().Succeed();
         }catch(Exception ex){
-            return new CommandResult(HttpStatus.NOT_FOUND, "No client found with id = " + clientId);
+            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Something wrong!");
+
         }
     }
 }

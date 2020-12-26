@@ -29,7 +29,7 @@ public interface ClientDetailRepository extends JpaRepository<ClientDetailEntity
     @Transactional
     @Modifying
     @Query("update ClientDetailEntity set redirectUri=:redirectUri where clientId=:clientId")
-    void updateRedirectUri(String clientId,String redirectUri);
+    void updateRedirectUri(String clientId,List<String> redirectUri);
 
     @Transactional
     @Modifying
