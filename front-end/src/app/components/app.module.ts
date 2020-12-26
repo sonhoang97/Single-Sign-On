@@ -10,6 +10,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminValidGuard } from './guards/admin-valid.guard';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import {
   SocialLoginModule,
   SocialAuthServiceConfig,
@@ -48,7 +51,9 @@ const APP_SHARED_COMPONENTS: any[] = [
   declarations: [APP_COMPONENTS, APP_POPUP_COMPONENTS, APP_SHARED_COMPONENTS],
   imports: [
     BrowserModule,
+    ModalModule.forRoot(),
     BrowserAnimationsModule,
+    AccordionModule.forRoot(),
     FormsModule,
     CommonModule,
     AppRoutingModule,
@@ -58,6 +63,7 @@ const APP_SHARED_COMPONENTS: any[] = [
       timeOut: 3000,
     }),
     SocialLoginModule,
+    TooltipModule.forRoot(),
   ],
   exports: [APP_POPUP_COMPONENTS],
   entryComponents: [APP_POPUP_COMPONENTS],

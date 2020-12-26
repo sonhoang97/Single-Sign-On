@@ -46,7 +46,9 @@ profile {
     }
   }
 
-
+  span .fa-trash:hover{
+    color: $red;
+  }
   .proile-rating {
     font-size: 12px;
     color: #818182;

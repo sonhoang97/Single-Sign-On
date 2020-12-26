@@ -25,14 +25,20 @@ public class ClientDetailController {
     }
 
     @PostMapping("/updateRedirectUri")
-    public ResponseEntity<Object> updateRedirectUri(@RequestBody Map<String, String> clientDetail){
-        CommandResult result = ClientDetailsSevice.updateRedirectUri(clientDetail.get("clientId"),clientDetail.get("redirectUri"));
+    public ResponseEntity<Object> updateRedirectUri(@RequestBody ClientDetailViewModel clientDetail, Principal principal){
+        CommandResult result = ClientDetailsSevice.updateRedirectUri(clientDetail.getClientId(),clientDetail.getRedirectUri(),principal);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 
     @PostMapping("/updateClientSecret")
-    public ResponseEntity<Object> updateClientSecret(@RequestBody Map<String, String> clientDetail){
-        CommandResult result = ClientDetailsSevice.updateClientSecret(clientDetail.get("clientId"));
+    public ResponseEntity<Object> updateClientSecret(@RequestBody Map<String, String> clientDetail, Principal principal){
+        CommandResult result = ClientDetailsSevice.updateClientSecret(clientDetail.get("clientId"),principal);
+        return new ResponseEntity<>(result.getData(),result.getStatus());
+    }
+
+    @PostMapping("/deleteClientDetail")
+    public ResponseEntity<Object> deleteClientDetail(@RequestBody Map<String, String> clientDetail, Principal principal){
+        CommandResult result = ClientDetailsSevice.removeClientDetail(clientDetail.get("clientId"),principal);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 

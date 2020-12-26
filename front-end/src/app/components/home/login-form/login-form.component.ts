@@ -22,7 +22,6 @@ export class LoginFormComponent implements OnInit {
 
   user: SocialUser;
   loggedInFb: boolean;
-
   userRigister: User = new User();
   constructor(
     private authService: AuthService,
@@ -37,7 +36,7 @@ export class LoginFormComponent implements OnInit {
 
   submitLogin() {
     if (this.loggedInFb) {
-      this.username = this.user.email;
+      this.username = this.user.id;
       this.password = this.user.authToken;
     }
     this.isLoading = true;
@@ -85,12 +84,12 @@ export class LoginFormComponent implements OnInit {
       this.user = user;
       console.log(this.user);
       this.loggedInFb = user != null;
-      this.userRigister.firstname =this.user.firstName;
+      this.userRigister.firstname = this.user.firstName;
       this.userRigister.lastname = this.user.lastName;
       this.userRigister.password = this.user.authToken;
-      this.userRigister.username =  this.user.email;
+      this.userRigister.username = this.user.id;
       this.userRigister.email = this.user.email;
-      this.userRigister.phonenumber = "";
+      this.userRigister.phonenumber = '';
       this.userRigister.loggedInFb = true;
       console.log(this.userRigister);
       this.authService.register(this.userRigister).subscribe(
