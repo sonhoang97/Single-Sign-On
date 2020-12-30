@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -20,10 +21,9 @@ import java.util.Set;
 @Setter
 public class ClientDetailEntity implements Serializable {
 
-    public ClientDetailEntity() {
+    public ClientDetailEntity() {}
 
-    }
-    public ClientDetailEntity(String clientId, String clientSecret, LocalDateTime createdAt, List<String> redirectUri, UserEntity user){
+    public ClientDetailEntity(String clientId, String clientSecret, LocalDateTime createdAt, List<String> redirectUri, UserEntity user, String clientSecretYet){
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.redirectUri = redirectUri;
@@ -34,6 +34,11 @@ public class ClientDetailEntity implements Serializable {
         this.resourceIds = ClientDetailValue.RESOURCE_ID;
         this.authorizedGrantTypes = ClientDetailValue.AUTHORIZE_DEFAULT;
         this.user = user;
+        this.additionalInformation= new ArrayList<>(){
+            {
+                add(clientSecretYet);
+            }
+        };
     }
 
     @Id

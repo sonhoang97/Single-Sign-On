@@ -398,6 +398,54 @@
           }
         }
       }
-    }
+    },
+    "/account/roles/{roleId}": {
+      "parameters": [
+        {
+          "name": "roleId",
+          "in": "path",
+          "required": true,
+          "description": "a role identifier, as roleId",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "add new role to user",
+        "responses": {
+          "200": {
+            "description": "a message from server",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "remove role of user",
+        "responses": {
+          "200": {
+            "description": "a message from server",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
   }
 }

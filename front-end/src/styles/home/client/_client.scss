@@ -1,9 +1,13 @@
 client {
+  .list-group li.list-group-item {
+    border: none;
+    padding: 0;
+  }
   .border-client {
     border-right: 1px solid rgb(177, 175, 175);
   }
   .bg-selected {
-    background-color: rgb(196, 196, 196);
+    background-color: rgb(245, 243, 243);
   }
   .edit-item {
     color: #6c757d;
@@ -33,4 +37,26 @@ client {
     border-radius: 5px;
     border-top: none;
   }
+  .in4 div{
+    font-size: 14px;
+    hr{
+      margin: 5px;
+    }
+  }
+
+  .delete-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-weight: bold;
+    color:  $red;
+    font-size: 18px;
+    width: 200px;
+    &:hover {
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+      background-color: $red;
+      color: white;
+    }
+  }
+
 }

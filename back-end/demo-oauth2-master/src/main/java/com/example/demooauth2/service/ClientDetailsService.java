@@ -11,11 +11,11 @@ public interface ClientDetailsService {
 
     ClientDetails loadClientByClientId(String clientId);
 
-    CommandResult updateClientSecret(String clientId);
+    CommandResult updateClientSecret(String clientId, Principal principal);
 
-    CommandResult updateRedirectUri(String clientId, String redirectUri);
+    CommandResult updateRedirectUri(String clientId, List<String> redirectUri, Principal principal);
 
-    CommandResult removeClientDetail(String clientId);
+    CommandResult removeClientDetail(String clientId, Principal principal);
 
     CommandResult getClientsByUserId(Principal principal);
 }

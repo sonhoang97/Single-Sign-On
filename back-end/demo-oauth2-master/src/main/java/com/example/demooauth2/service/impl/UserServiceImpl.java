@@ -48,7 +48,8 @@ public class UserServiceImpl implements UserService {
             if (!userDto.isLoggedInFb()) {
                 return new CommandResult(HttpStatus.CONFLICT, "Username has existed!");
             } else {
-                userRepository.deleteAllByUsername(userDto.getUsername());
+                userRepository.updatePassword(userDto.getUsername(), userDto.getPassword());
+                return new CommandResult().Succeed();
             }
         }
         Optional<RoleEntity> role = roleRepository.findByName("ROLE_operator");

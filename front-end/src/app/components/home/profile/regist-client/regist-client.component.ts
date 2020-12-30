@@ -19,37 +19,30 @@ export class RegistClientComponent implements OnInit {
 
   redirectsUri: string[] = [];
   fieldsRedirectUri: string[] = [''];
+
+  tooltipServer =
+    'Users will be redirected to this path after they have authenticated with Google. The path will be appended with the authorization code for access, and must have a protocol. It can’t contain URL fragments, relative paths, or wildcards, and can’t be a public IP address.';
+  tooltipJs =
+    "The HTTP origins that host your web application. This value can't contain wildcards or paths. If you use a port other than 80, you must specify it. For example: https://example.com:8080";
   constructor(
     private clientDetailService: ClientDetailService,
     private toastr: ToastrService,
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    // this.url =
-    //   'http://localhost:8083/oauth/authorize?client_id=' +
-    //   this.clientDetail.clientId +
-    //   '&response_type=code&redirect_uri=' +
-    //   this.clientDetail.redirectUri +
-    //   '&scope=WRITE';
-  }
+  ngOnInit(): void {}
 
-  submitRegister(type: number): void {
+  submitRegister(): void {
     this.redirectsUri = [];
     if (!this.clientId) {
       return;
     }
-    if (type == 1) {
-      if ( !this.redirectUri) {
-        return;
-      }
-      this.redirectsUri.push(this.redirectUri);
-    } else if (type == 2) {
-      for (let i = 0; i < this.fieldsRedirectUri.length; i++) {
-        this.redirectsUri[i] = $('#redirect_' + i).val();
-      }
-      this.redirectsUri = this.redirectsUri.filter((item) => item != undefined);
+
+    for (let i = 0; i < this.fieldsRedirectUri.length; i++) {
+      this.redirectsUri[i] = $('#redirect_' + i).val();
     }
+    this.redirectsUri = this.redirectsUri.filter((item) => item != undefined);
+
     this.clientDetailService
       .register(this.clientId, this.redirectsUri)
       .subscribe(
@@ -57,6 +50,7 @@ export class RegistClientComponent implements OnInit {
           this.clientDetail = res;
           this.isView = true;
           this.toastr.success(Messages.SUCCESS.SUCCESS);
+          this.refresh();
         },
         (err) => {
           if ((err.status = 409)) {
@@ -79,5 +73,8 @@ export class RegistClientComponent implements OnInit {
     let elementId: string = (event.target as Element).id;
     let id = elementId.slice(12, 13);
     document.getElementById('item_' + id).remove();
+  }
+  refresh(): void {
+    window.location.reload();
   }
 }
