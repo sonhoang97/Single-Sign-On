@@ -143,6 +143,7 @@ public class UserServiceImpl implements UserService {
             }
             UserEntity userEntity =  userRepository.findByUsername(principal.getName()).get();
             userEntity.AddNewRole(existRole.get());
+            userRepository.save(userEntity);
             return  new CommandResult().Succeed();
         }
         catch (Exception ex) {
@@ -161,6 +162,7 @@ public class UserServiceImpl implements UserService {
             }
             UserEntity userEntity =  userRepository.findByUsername(principal.getName()).get();
             userEntity.RemoveRole(existRole.get());
+            userRepository.save(userEntity);
             return  new CommandResult().Succeed();
         }
         catch (Exception ex) {

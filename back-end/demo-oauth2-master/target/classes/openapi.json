@@ -340,6 +340,64 @@
           }
         }
       }
+    },
+    "/roles/{roleid}/permissions/{permissionid}": {
+      "parameters": [
+        {
+          "name": "roleid",
+          "in": "path",
+          "required": true,
+          "description": "the role identifier, as roleid",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "permissionid",
+          "in": "path",
+          "required": true,
+          "description": "the permissionid identifier, as permissionid",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "tags": [
+          "Role"
+        ],
+        "summary": "add a permission to role by id",
+        "responses": {
+          "200": {
+            "description": "A message of server",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Role"
+        ],
+        "summary": "delete a permission from role by id",
+        "responses": {
+          "200": {
+            "description": "A message of server",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
