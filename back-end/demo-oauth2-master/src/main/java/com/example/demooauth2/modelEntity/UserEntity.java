@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,8 +31,7 @@ public class UserEntity implements Serializable {
         this.credentialsNonExpired =true;
         this.accountNonLocked = true;
         this.loggedInFb = false;
-        List<RoleEntity> roles = new ArrayList<>();
-        this.roles = roles;
+        this.roles = new HashSet<>();
     }
 
     public UserEntity(UserEntity user) {
@@ -95,11 +95,12 @@ public class UserEntity implements Serializable {
     @Column(name = "loggedInFb")
     private boolean loggedInFb;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_user", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {
                     @JoinColumn(name = "role_id", referencedColumnName = "id")})
-    private List<RoleEntity> roles;
+    private Set<RoleEntity> roles;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

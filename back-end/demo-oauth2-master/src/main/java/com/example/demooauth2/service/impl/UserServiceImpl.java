@@ -1,6 +1,7 @@
 package com.example.demooauth2.service.impl;
 
 import com.example.demooauth2.modelEntity.RoleEntity;
+import com.example.demooauth2.modelView.pageList.PageList;
 import com.example.demooauth2.modelView.users.UserProfileViewModel;
 import com.example.demooauth2.repository.RoleRepository;
 import com.example.demooauth2.responseModel.CommandResult;
@@ -8,6 +9,9 @@ import com.example.demooauth2.modelEntity.UserEntity;
 import com.example.demooauth2.repository.UserRepository;
 import com.example.demooauth2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,10 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,6 +35,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserEntity> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public CommandResult getAllUsers(String searchString,int sortType,int pageIndex, int pageSize){
+        Sort sortable = Sort.by("username").ascending();
+        if (sortType ==0) {
+            sortable = Sort.by("username").ascending();
+        }
+        if (sortType ==1) {
+            sortable = Sort.by("username").descending();
+        }
+        Pageable pageable = PageRequest.of(pageIndex, pageSize, sortable);
+        List<UserProfileViewModel> users = userRepository.getAllUsers(searchString,pageable);
+        int totalSize = (int) userRepository.count();
+        PageList<UserProfileViewModel> result = new PageList<>(users, pageIndex,pageSize, totalSize);
+        return new CommandResult().SucceedWithData(result);
     }
 
     @Override
@@ -52,9 +69,9 @@ public class UserServiceImpl implements UserService {
                 return new CommandResult().Succeed();
             }
         }
-        Optional<RoleEntity> role = roleRepository.findByName("ROLE_operator");
+        Optional<RoleEntity> role = roleRepository.findByName("ROLE_user");
         if(role.isPresent()){
-            List<RoleEntity> rolesDefault = new ArrayList<>();
+            Set<RoleEntity> rolesDefault = new HashSet<>();
             rolesDefault.add(role.get());
             userDto.setRoles(rolesDefault);
         }
@@ -133,7 +150,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommandResult addRole(Principal principal, int roleId) {
+    public CommandResult addRole(Principal principal,String username, int roleId) {
         try {
             if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
                 return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");
@@ -142,9 +159,12 @@ public class UserServiceImpl implements UserService {
             if(!existRole.isPresent()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
             }
-            UserEntity userEntity =  userRepository.findByUsername(principal.getName()).get();
-            userEntity.AddNewRole(existRole.get());
-            userRepository.save(userEntity);
+            Optional<UserEntity> userEntity =  userRepository.findByUsername(username);
+            if(!userEntity.isPresent()){
+                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user");
+            }
+            userEntity.get().AddNewRole(existRole.get());
+            userRepository.save(userEntity.get());
             return  new CommandResult().Succeed();
         }
         catch (Exception ex) {
@@ -152,7 +172,7 @@ public class UserServiceImpl implements UserService {
         }
     }
     @Override
-    public CommandResult RemoveRole(Principal principal, int roleId) {
+    public CommandResult RemoveRole(Principal principal,String username, int roleId) {
         try {
             if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
                 return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");
@@ -161,9 +181,12 @@ public class UserServiceImpl implements UserService {
             if(!existRole.isPresent()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
             }
-            UserEntity userEntity =  userRepository.findByUsername(principal.getName()).get();
-            userEntity.RemoveRole(existRole.get());
-            userRepository.save(userEntity);
+            Optional<UserEntity> userEntity =  userRepository.findByUsername(username);
+            if(!userEntity.isPresent()) {
+                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user: "+ username);
+            }
+            userEntity.get().RemoveRole(existRole.get());
+            userRepository.save(userEntity.get());
             return  new CommandResult().Succeed();
         }
         catch (Exception ex) {

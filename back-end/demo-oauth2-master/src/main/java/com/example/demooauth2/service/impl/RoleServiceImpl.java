@@ -2,6 +2,7 @@ package com.example.demooauth2.service.impl;
 
 import com.example.demooauth2.modelEntity.PermissionEntity;
 import com.example.demooauth2.modelEntity.RoleEntity;
+import com.example.demooauth2.modelView.roles.RoleViewModel;
 import com.example.demooauth2.repository.PermissionRepository;
 import com.example.demooauth2.repository.RoleRepository;
 import com.example.demooauth2.responseModel.CommandResult;
@@ -76,10 +77,22 @@ public class RoleServiceImpl implements RoleService {
             if(!existRole.isPresent()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
             }
+            if(existRole.get().getName().equals("ROLE_admin") || existRole.get().getId()==1)
             roleRepository.delete(existRole.get());
             return  new CommandResult().SucceedWithData("Delete role successful!");
         }
         catch (Exception ex) {
+            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Get role fail!");
+
+        }
+    }
+
+    @Override
+    public CommandResult getAllRoleWithoutUserRole() {
+        try {
+            List<RoleViewModel> data = roleRepository.getAllRoleWithoutUserRole();
+            return  new CommandResult().SucceedWithData(data);
+        } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Get role fail!");
 
         }
