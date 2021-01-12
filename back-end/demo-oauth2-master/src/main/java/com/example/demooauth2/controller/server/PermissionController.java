@@ -31,13 +31,14 @@ public class PermissionController {
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
     @GetMapping("")
+    @PreAuthorize("hasAuthority('read_permission')")
     public ResponseEntity<Object> GetAll(){
       CommandResult result = permissionService.getAll();
       return  new ResponseEntity<>(result.getData(),result.getStatus());
     }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('admin')")
-
     public ResponseEntity<Object> Delete(@PathVariable (value = "id" )int permissionId) {
         CommandResult result = permissionService.Delete(permissionId);
         return new ResponseEntity<>(result.getData(), result.getStatus());

@@ -34,40 +34,47 @@ public class RoleController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('read_role')")
     public ResponseEntity<Object> GetAll() {
         CommandResult result = roleService.getAll();
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('admin')")
+    @GetMapping("/all")
+    @PreAuthorize("hasAuthority('read_role')")
+    public ResponseEntity<Object> GetAllRoleWithoutUserRole() {
+        CommandResult result = roleService.getAllRoleWithoutUserRole();
+        return new ResponseEntity<>(result.getData(), result.getStatus());
+    }
 
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('edit_role')")
     public ResponseEntity<Object> Delete(@PathVariable(value = "id") int roleId) {
         CommandResult result = roleService.Delete(roleId);
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
 
     @PutMapping("/{id}/permissions")
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasAuthority('edit_permission')")
     public ResponseEntity<Object> UpdatePermission(@PathVariable(value = "id") int roleId,
-                                         @RequestBody List<PermissionEntity> permissions) {
-       // TODO update new permission for role
+                                                   @RequestBody List<PermissionEntity> permissions) {
+        // TODO update new permission for role
 
         CommandResult result = new CommandResult();
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
 
     @PostMapping("/{id}/permissions/{permissionId}")
-    @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<Object> AddNewPermission(@PathVariable(value = "id") int roleId, @PathVariable(value = "permissionId") int permissionId){
+    @PreAuthorize("hasAuthority('edit_permission_role')")
+    public ResponseEntity<Object> AddNewPermission(@PathVariable(value = "id") int roleId, @PathVariable(value = "permissionId") int permissionId) {
 
         CommandResult result = roleService.AddPermission(roleId, permissionId);
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
 
     @DeleteMapping("/{id}/permissions/{permissionId}")
-    @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<Object> RemovePermission(@PathVariable(value = "id") int roleId, @PathVariable(value = "permissionId") int permissionId){
+    @PreAuthorize("hasAuthority('edit_permission_role')")
+    public ResponseEntity<Object> RemovePermission(@PathVariable(value = "id") int roleId, @PathVariable(value = "permissionId") int permissionId) {
         CommandResult result = roleService.DeletePermission(roleId, permissionId);
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
