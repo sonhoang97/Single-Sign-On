@@ -163,7 +163,6 @@ public class UserServiceImpl implements UserService {
             if(!userEntity.isPresent()){
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user");
             }
-
             userEntity.get().AddNewRole(existRole.get());
             userRepository.save(userEntity.get());
             return  new CommandResult().Succeed();
