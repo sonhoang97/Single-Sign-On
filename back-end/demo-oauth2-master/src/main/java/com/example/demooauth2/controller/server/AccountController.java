@@ -43,8 +43,9 @@ public class AccountController {
                                            @PathVariable(value = "sortType") int sortType,
                                            @PathVariable(value = "pageIndex") int pageIndex,
                                            @PathVariable(value = "pageSize") int pageSize,
+                                           @RequestParam(required = false, defaultValue = "-1") int status,
                                            @RequestParam(required = false, defaultValue = "") String searchString){
-        CommandResult result = userService.getAllUsers(searchString,sortType,pageIndex,pageSize);
+        CommandResult result = userService.getAllUsers(searchString,status,sortType,pageIndex,pageSize);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 

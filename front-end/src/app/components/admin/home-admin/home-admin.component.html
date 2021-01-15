@@ -9,6 +9,9 @@
         <p (click)="typeSelect = 2" [class.selected-item]="typeSelect == 2">
           <i class="fab fa-500px" aria-hidden="true"></i> API Approve
         </p>
+        <p (click)="typeSelect = 3" [class.selected-item]="typeSelect == 3">
+          <i class="fab fa-500px" aria-hidden="true"></i> User
+        </p>
         <hr style="border-top: 1px solid rgba(235, 233, 233, 0.1)" />
         <h5 class="font-weight-bold text-white">Configure</h5>
         <p (click)="typeSelect = 4" [class.selected-item]="typeSelect == 4">
@@ -20,6 +23,9 @@
       <app-swagger-ui *ngIf="typeSelect == 4"></app-swagger-ui>
       <div *ngIf="typeSelect == 1">
         <role-admin></role-admin>
+      </div>
+      <div *ngIf="typeSelect == 3">
+        <user-admin></user-admin>
       </div>
     </div>
   </div>

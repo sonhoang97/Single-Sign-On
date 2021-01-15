@@ -1,0 +1,89 @@
+<div class="container-fluid bg-light my-4">
+  <div class="row pt-2">
+    <div class="col-12 col-md-4">
+      <div class="form-group">
+        <label>Search for</label>
+        <input type="text" placeholder="Username,Email" class="form-control" [(ngModel)]="searchString" />
+      </div>
+    </div>
+    <div class="col-12 col-md-1">
+      <div class="form-group">
+        <label> Status</label>
+        <select  [(ngModel)]="status" id="status" class="form-control">
+          <option value="-1" selected>All</option>
+          <option value="1">Normal</option>
+          <option value="0">Banned</option>
+        </select>
+      </div>
+    </div>
+    <!-- <div class="col-12 col-md-5">
+        <div class="form-group">
+          <label class="ml-md-2">Donation date</label>
+          <div class="row d-flex align-items-center">
+            <div class="col-2 col-md-auto ml-md-2 pr-md-1">From</div>
+            <div class="col-10 col-md mb-2 mb-md-0">
+              <input type="date" [(ngModel)]="startDate" class="form-control" uib-datepicker-popup='yyyy-MM-dd'>
+            </div>
+            <div class="col-2 col-md-auto ml-md-2 pr-md-1">To</div>
+            <div class="col-10 col-md position-relative">
+              <input [class.error-date]="startDate>toDate" type="date" class="form-control" [min]="startDate"
+                [(ngModel)]="toDate" uib-datepicker-popup='yyyy-MM-dd'>
+              <div *ngIf="startDate>toDate" class="invalid-tooltip">Value must be {{startDate | date: 'MM-dd-yyyy'}} or later.</div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    <div class="col-4 col-md-auto ml-auto ml-md-0 d-flex align-items-end">
+      <div class="form-group w-100">
+        <button class="btn btn-primary w-100" (click)="searchUsers()">
+          <i class="icon icon-search icon-14"> </i>
+          Search
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row no-gutters table-responsive-xl table-container">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Phone Number</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="!isLoading">
+        <tr *ngFor="let user of users | paginate: config">
+          <td scope="col">
+            {{ user.username }}
+          </td>
+          <td scope="col">{{ user.email }}</td>
+          <td scope="col">{{ user.firstname }}</td>
+          <td scope="col">{{ user.lastname }}</td>
+          <td scope="col">{{ user.phonenumber }}</td>
+          <td *ngIf="user.enabled" scope="col">Active</td>
+          <td *ngIf="!user.enabled" scope="col">Banned</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <loading class=" mx-auto" *ngIf="isLoading"></loading>
+  </div>
+  <div class="row">
+    <pagination-controls
+      class="col-12 col-md-8"
+      (pageChange)="pageChanged($event)"
+    ></pagination-controls>
+    <div class="col-auto ml-auto font-italic">
+      Showing {{ config.itemsPerPage * (config.currentPage - 1) + 1 }} -
+      {{ config.itemsPerPage * (config.currentPage - 1) + users.length }}/{{
+        config.totalItems
+      }}
+    </div>
+  </div>
+</div>
