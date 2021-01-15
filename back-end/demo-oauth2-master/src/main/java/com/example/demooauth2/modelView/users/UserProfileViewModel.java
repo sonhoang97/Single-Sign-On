@@ -20,6 +20,7 @@ public class UserProfileViewModel {
     private String lastname;
     private String email;
     private String phonenumber;
+    private boolean enabled;
     private List<ClientDetailViewModel> lsClientDetail = new ArrayList<>();
     private Set<RoleEntity> lsRoles = new HashSet<>();
 
@@ -32,6 +33,7 @@ public class UserProfileViewModel {
         this.lastname = userEntity.getLastname();
         this.email = userEntity.getEmail();
         this.phonenumber = userEntity.getPhonenumber();
+        this.enabled = userEntity.isEnabled();
         this.lsRoles = userEntity.getRoles();
         for (ClientDetailEntity clientDetail : userEntity.getClients()) {
             lsClientDetail.add(new ClientDetailViewModel(clientDetail));

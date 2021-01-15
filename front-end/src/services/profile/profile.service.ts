@@ -53,4 +53,30 @@ export class ProfileService {
         })
       );
   }
+
+  public getUsersAdmin(searchString: string,status:number, sortType: number, pageIndex: number, pageSize: number): Observable<any> {
+      const url = this.apiURL + '/getUsers/'+sortType+'/'+pageIndex+'/'+pageSize+'?searchString='+searchString+ '&status='+status;
+      const urlNonStatus = this.apiURL + '/getUsers/'+sortType+'/'+pageIndex+'/'+pageSize+'?searchString='+searchString;
+      if(status == -1){
+      return this.http
+        .get(urlNonStatus, {
+          headers: this.headers,
+        })
+        .pipe(
+          map((res: any) => {
+            return res;
+          })
+        );
+    } else {
+      return this.http
+        .get(url, {
+          headers: this.headers,
+        })
+        .pipe(
+          map((res: any) => {
+            return res;
+          })
+        );
+    }
+  }
 }

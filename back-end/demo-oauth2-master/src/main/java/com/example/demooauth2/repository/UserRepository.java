@@ -49,6 +49,15 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer>  {
     @Query("update UserEntity set firstname=:firstname, lastname = :lastname, email = :email, phonenumber = :phonenumber where username=:username")
     void updateProfile(String username,String firstname, String lastname, String email, String phonenumber);
 
+    @Query("Select NEW com.example.demooauth2.modelView.users.UserProfileViewModel(u) from UserEntity u WHERE (u.username LIKE %?1% OR u.email LIKE %?1%) AND u.enabled=?2")
+    List<UserProfileViewModel> getAllUsers(String searchString,boolean status, Pageable pageable);
+
     @Query("Select NEW com.example.demooauth2.modelView.users.UserProfileViewModel(u) from UserEntity u WHERE u.username LIKE %?1% OR u.email LIKE %?1%")
-    List<UserProfileViewModel> getAllUsers(String searchString, Pageable pageable);
+    List<UserProfileViewModel> getAllUsersNonStatus(String searchString, Pageable pageable);
+
+    @Query("Select COUNT(u) from UserEntity u WHERE (u.username LIKE %?1% OR u.email LIKE %?1%) AND u.enabled=?2")
+    int countSearchUsers(String searchString, boolean status);
+
+    @Query("Select COUNT(u) from UserEntity u WHERE u.username LIKE %?1% OR u.email LIKE %?1%")
+    int countSearchUsersNonStatus(String searchString);
 }
