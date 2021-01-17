@@ -3,5 +3,6 @@ export const PathController = {
   Admin: 'admin',
   OAuth2: 'oauth',
   Users: 'users',
-  Client: 'client'
+  Client: 'client',
+  Role:'roles'
 };
