@@ -13,6 +13,13 @@ import { AdminValidGuard } from './guards/admin-valid.guard';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import {NgxPaginationModule} from 'ngx-pagination'
+// MDB Angular Free
+import {
+  CheckboxModule,
+  WavesModule,
+  ButtonsModule,
+} from 'angular-bootstrap-md';
 import {
   SocialLoginModule,
   SocialAuthServiceConfig,
@@ -38,7 +45,9 @@ const APP_COMPONENTS: any[] = [
   fromApp.SettingsTokenComponent,
   fromApp.RegistClientComponent,
   fromApp.HomeAdminComponent,
-  fromApp.CallbackFacebookComponent
+  fromApp.CallbackFacebookComponent,
+  fromApp.RoleAdminComponent,
+  fromApp.UserAdminComponent
 ];
 
 const APP_POPUP_COMPONENTS: any[] = [];
@@ -64,6 +73,10 @@ const APP_SHARED_COMPONENTS: any[] = [
     }),
     SocialLoginModule,
     TooltipModule.forRoot(),
+    CheckboxModule,
+    WavesModule,
+    ButtonsModule,
+    NgxPaginationModule
   ],
   exports: [APP_POPUP_COMPONENTS],
   entryComponents: [APP_POPUP_COMPONENTS],
@@ -81,7 +94,9 @@ const APP_SHARED_COMPONENTS: any[] = [
           },
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider('761570297587-529p6ssv5pjfcmna5jo8nts5hj4945sg.apps.googleusercontent.com'),
+            provider: new GoogleLoginProvider(
+              '761570297587-529p6ssv5pjfcmna5jo8nts5hj4945sg.apps.googleusercontent.com'
+            ),
           },
         ],
       } as SocialAuthServiceConfig,
