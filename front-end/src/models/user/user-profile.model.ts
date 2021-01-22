@@ -1,5 +1,5 @@
 import { ClientDetail } from '../clientDetail/client-detail';
-import { Role } from '../role/role.mdel';
+import { Role } from '../role/role.model';
 
 export class UserProfile {
     public username: string;
@@ -9,5 +9,5 @@ export class UserProfile {
     public lastname: string;
     public lsClientDetail: ClientDetail[];
     public enabled: boolean;
-    public lsRole: Role[];
+    public lsRoles: Role[];
 }

@@ -88,9 +88,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public CommandResult getAllRoleWithoutUserRole() {
+    public CommandResult getAllRoles() {
         try {
-            List<RoleViewModel> data = roleRepository.getAllRoleWithoutUserRole();
+            List<RoleViewModel> data = roleRepository.getAllRoles();
             return  new CommandResult().SucceedWithData(data);
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Get role fail!");

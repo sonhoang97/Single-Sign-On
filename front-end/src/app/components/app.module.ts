@@ -13,8 +13,8 @@ import { AdminValidGuard } from './guards/admin-valid.guard';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-import {NgxPaginationModule} from 'ngx-pagination'
-import {MatSelectModule} from '@angular/material/select';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { MatSelectModule } from '@angular/material/select';
 // MDB Angular Free
 import {
   CheckboxModule,
@@ -30,6 +30,7 @@ import {
   FacebookLoginProvider,
 } from 'angularx-social-login';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { AddPermissionPopupComponent } from './admin/home-admin/role-admin/add-permission-popup/add-permission-popup.component';
 const APP_COMPONENTS: any[] = [
   fromApp.AppComponent,
   fromApp.TopMenuComponent,
@@ -48,10 +49,13 @@ const APP_COMPONENTS: any[] = [
   fromApp.HomeAdminComponent,
   fromApp.CallbackFacebookComponent,
   fromApp.RoleAdminComponent,
-  fromApp.UserAdminComponent
+  fromApp.UserAdminComponent,
 ];
 
-const APP_POPUP_COMPONENTS: any[] = [fromApp.DetailUserPopupComponent];
+const APP_POPUP_COMPONENTS: any[] = [
+  fromApp.DetailUserPopupComponent,
+  fromApp.AddPermissionPopupComponent,
+];
 
 const APP_SHARED_COMPONENTS: any[] = [
   fromApp.LoadingComponent,
@@ -79,7 +83,7 @@ const APP_SHARED_COMPONENTS: any[] = [
     ButtonsModule,
     NgxPaginationModule,
     TypeaheadModule.forRoot(),
-    MatSelectModule
+    MatSelectModule,
   ],
   exports: [APP_POPUP_COMPONENTS],
   entryComponents: [APP_POPUP_COMPONENTS],

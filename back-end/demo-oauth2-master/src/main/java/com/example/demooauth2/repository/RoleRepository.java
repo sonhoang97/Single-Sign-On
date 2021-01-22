@@ -13,6 +13,6 @@ public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
     @Query("select r from RoleEntity r where r.name =:roleName")
     Optional<RoleEntity> findByName(String roleName);
 
-    @Query("select new com.example.demooauth2.modelView.roles.RoleViewModel(r) from RoleEntity r where r.name<>'ROLE_user'")
-    List<RoleViewModel> getAllRoleWithoutUserRole();
+    @Query("select new com.example.demooauth2.modelView.roles.RoleViewModel(r) from RoleEntity r")
+    List<RoleViewModel> getAllRoles();
 }

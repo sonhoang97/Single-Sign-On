@@ -17,21 +17,11 @@ public class RoleViewModel {
     private String name;
     private Integer id;
     private Set<PermissionEntity> permissions;
-    private List<String> username = new ArrayList<>();
 
     public RoleViewModel(RoleEntity role) {
-        if (!role.getName().equals("ROLE_user")) {
-            this.name = role.getName();
-            this.id = role.getId();
-            this.permissions = new HashSet<>(role.getPermissions());
-            if (role.getUsers().size() == 0) {
-                this.username = new ArrayList<>();
-            } else {
-                for (UserEntity user : role.getUsers()) {
-                    this.username.add(user.getUsername());
-                }
-            }
-        }
+        this.name = role.getName();
+        this.id = role.getId();
+        this.permissions = new HashSet<>(role.getPermissions());
     }
 }
 
