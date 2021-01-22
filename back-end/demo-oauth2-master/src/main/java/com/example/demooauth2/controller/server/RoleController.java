@@ -42,8 +42,8 @@ public class RoleController {
 
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('read_role')")
-    public ResponseEntity<Object> GetAllRoleWithoutUserRole() {
-        CommandResult result = roleService.getAllRoleWithoutUserRole();
+    public ResponseEntity<Object> GetAllRoles() {
+        CommandResult result = roleService.getAllRoles();
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
 

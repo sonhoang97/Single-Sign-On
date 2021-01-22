@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Messages } from 'src/app/commons/consts/message.const';
-import { Role } from 'src/models/role/role.mdel';
+import { Role } from 'src/models/role/role.model';
 import { UserProfile } from 'src/models/user/user-profile.model';
 import { ProfileService } from 'src/services/profile/profile.service';
-import { RoleService } from 'src/services/role/profile.service';
+import { RoleService } from 'src/services/role/role.service';
 
 @Component({
   selector: 'detail-user-popup',
