@@ -79,4 +79,34 @@ export class ProfileService {
         );
     }
   }
+
+  public banUser(username: string): Observable<any> {
+    let body = {
+      username
+    };
+    return this.http
+      .post(this.apiURL + '/banUser', JSON.stringify(body), {
+        headers: this.headers,
+      })
+      .pipe(
+        map((res: any) => {
+          return res;
+        })
+      );
+  }
+
+  public activeUser(username: string): Observable<any> {
+    let body = {
+      username
+    };
+    return this.http
+      .post(this.apiURL + '/activeUser', JSON.stringify(body), {
+        headers: this.headers,
+      })
+      .pipe(
+        map((res: any) => {
+          return res;
+        })
+      );
+  }
 }

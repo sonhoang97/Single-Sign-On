@@ -208,4 +208,28 @@ public class UserServiceImpl implements UserService {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error!");
         }
     }
+
+    @Override
+    public CommandResult banUser(String username){
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+        if (!userEntity.isPresent()) {
+            return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user: " + username);
+        }
+
+        userEntity.get().setEnabled(false);
+        userRepository.save(userEntity.get());
+        return new CommandResult().Succeed();
+
+    }
+
+    @Override
+    public CommandResult activeUser(String username){
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+        if (!userEntity.isPresent()) {
+            return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user: " + username);
+        }
+        userEntity.get().setEnabled(true);
+        userRepository.save(userEntity.get());
+        return new CommandResult().Succeed();
+    }
 }

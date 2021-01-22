@@ -26,4 +26,8 @@ public interface UserService {
     CommandResult RemoveRole(Principal principal,String username, int roleId);
 
     CommandResult getAllUsers(String searchString,int status,int sortType, int pageIndex, int pageSize);
+
+    CommandResult banUser(String username);
+
+    CommandResult activeUser(String username);
 }
