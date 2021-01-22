@@ -4,5 +4,6 @@ export const PathController = {
   OAuth2: 'oauth',
   Users: 'users',
   Client: 'client',
-  Role:'roles'
+  Role:'roles',
+  Permission: 'permissions',
 };

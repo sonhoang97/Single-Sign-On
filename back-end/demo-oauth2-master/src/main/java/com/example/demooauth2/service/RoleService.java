@@ -19,6 +19,6 @@ public interface RoleService {
 
     CommandResult DeletePermission(int roleId, int permissionId);
 
-    CommandResult getAllRoleWithoutUserRole();
+    CommandResult getAllRoles();
 
 }

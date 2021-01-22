@@ -1,5 +1,5 @@
 import { ClientDetail } from '../clientDetail/client-detail';
-import { Role } from '../role/role.mdel';
+import { Role } from '../role/role.model';
 
 export class UserProfile {
   public username: string;

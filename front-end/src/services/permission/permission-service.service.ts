@@ -3,34 +3,30 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { PathController } from 'src/app/commons/consts/path-controller.const';
 import { Config } from 'src/app/config';
 import { Observable } from 'rxjs';
-import { User } from 'src/models/user/user.model';
 import { LsHelper } from 'src/app/commons/helpers/ls.helper';
 import { map } from 'rxjs/operators';
-import { UserProfile } from 'src/models/user/user-profile.model';
-import { Role } from 'src/models/role/role.mdel';
+import { Permission } from 'src/models/role/permission.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class RoleService {
-  private apiURL = Config.getPath(PathController.Role);
+export class PermissionServiceService {
+  private apiURL = Config.getPath(PathController.Permission);
   private headers = new HttpHeaders({
     'Content-type': 'application/json',
     Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
   });
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  public getAllRoles(): Observable<Role[]> {
+  public getAllPermissions(): Observable<Permission[]> {
     return this.http
-      .get(this.apiURL + '/all', {
+      .get(this.apiURL, {
         headers: this.headers,
       })
       .pipe(
-        map((res: Role[]) => {
+        map((res: Permission[]) => {
           return res;
         })
       );
   }
-
-  
 }
