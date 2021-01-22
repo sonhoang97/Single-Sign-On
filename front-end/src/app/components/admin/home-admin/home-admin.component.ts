@@ -6,13 +6,11 @@ import { ThemePalette } from '@angular/material/core';
   templateUrl: './home-admin.component.html',
 })
 export class HomeAdminComponent implements OnInit {
-  typeSelect: number = 1;
+  typeSelect: number = 3;
   color: ThemePalette = 'accent';
   checked = false;
   disabled = false;
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

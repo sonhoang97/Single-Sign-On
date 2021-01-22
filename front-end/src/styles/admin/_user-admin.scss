@@ -1,0 +1,17 @@
+user-admin {
+  .btn {
+    padding: 3px 12px;
+  }
+  td {
+    padding: 6px 6px 3px 6px;
+  }
+  pagination-controls {
+    display: flex;
+    align-items: center;
+  }
+  .field-middle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

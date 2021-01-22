@@ -74,11 +74,11 @@ export class UserAdminComponent implements OnInit {
 
   detailUserPopup(user: UserProfile): void {
     const initialState = {
-      user
+      user,
     };
-    this.bsModalRef = this.modalService.show(
-        DetailUserPopupComponent,
-        { initialState, class: 'gray modal-lg' }
-    );
-}
+    this.bsModalRef = this.modalService.show(DetailUserPopupComponent, {
+      initialState,
+      class: 'gray modal-md',
+    });
+  }
 }

@@ -11,28 +11,87 @@
 </div>
 <div class="modal-body">
   <div class="container">
-    <div class="row">
-      <div class="col-md-3 font-weight-bold">Username</div>
-      <div class="col-md-auto text-muted">{{ user.username }}</div>
+    <div class="row my-1">
+      <div class="col-md-4 h6 text-right py-0 my-auto pr-1 font-weight-bold">
+        Username:
+      </div>
+      <div class="col-md-6 text-left text-muted">
+        <input
+          [ngModel]="user.username"
+          type="text"
+          class="form-control"
+          aria-label="Small"
+          aria-describedby="inputGroup-sizing-sm"
+          disabled
+        />
+      </div>
     </div>
-    <div class="row">
-      <div class="col-md-3 font-weight-bold">First Name</div>
-      <div class="col-md-auto text-muted">{{ user.firstname }}</div>
+    <div class="row my-1">
+      <div class="col-md-4 h6 text-right py-0 my-auto pr-1 font-weight-bold">
+        First Name:
+      </div>
+      <div class="col-md-6 text-left text-muted">
+        <input
+          [ngModel]="user.firstname"
+          type="text"
+          class="form-control"
+          aria-label="Small"
+          aria-describedby="inputGroup-sizing-sm"
+          disabled
+        />
+      </div>
     </div>
-    <div class="row">
-      <div class="col-md-3 font-weight-bold">Last Name</div>
-      <div class="col-md-auto text-muted">{{ user.lastname }}</div>
+    <div class="row my-1">
+      <div class="col-md-4 h6 text-right py-0 my-auto pr-1 font-weight-bold">
+        Last Name:
+      </div>
+      <div class="col-md-6 text-left text-muted">
+        <input
+          [ngModel]="user.lastname"
+          type="text"
+          class="form-control"
+          aria-label="Small"
+          aria-describedby="inputGroup-sizing-sm"
+          disabled
+        />
+      </div>
     </div>
-    <div class="row">
-      <div class="col-md-3 font-weight-bold">Email</div>
-      <div class="col-md-auto text-muted">{{ user.email }}</div>
+    <div class="row my-1">
+      <div class="col-md-4 h6 text-right py-0 my-auto pr-1 font-weight-bold">
+        Email:
+      </div>
+      <div class="col-md-6 text-left text-muted">
+        <input
+          [ngModel]="user.email"
+          type="text"
+          class="form-control"
+          aria-label="Small"
+          aria-describedby="inputGroup-sizing-sm"
+          disabled
+        />
+      </div>
     </div>
-    <div class="row">
-      <div class="col-md-3 font-weight-bold">Phone Number</div>
-      <div class="col-md-auto text-muted">{{ user.phonenumber }}</div>
+    <div class="row my-1">
+      <div
+        class="col-md-4 h6 px-0 text-right py-0 my-auto pr-1 font-weight-bold"
+      >
+        Phone Number:
+      </div>
+      <div class="col-md-6 text-left text-muted">
+        <input
+          [ngModel]="user.phonenumber"
+          type="text"
+          class="form-control"
+          aria-label="Small"
+          aria-describedby="inputGroup-sizing-sm"
+          disabled
+        />
+      </div>
     </div>
-    <div class="row">
-      <div class="col-md-3 font-weight-bold">Status</div>
+    <div class="row my-1">
+      <div class="col-md-4 h6 text-right py-0 my-auto pr-1 font-weight-bold">
+        Status:
+      </div>
       <div
         *ngIf="user.enabled"
         class="col-md-auto font-weight-bold text-success"
@@ -45,7 +104,7 @@
         ></i>
         <ng-template #isBan>
           <div class="modal-body text-center">
-            <h5 class="font-weight-bold">Do you want to ban this user?</h5>
+            <h6 class="font-weight-bold">Do you want to ban this user?</h6>
             <button type="button" class="btn btn-default" (click)="banUser()">
               Yes
             </button>
@@ -71,7 +130,7 @@
         ></i>
         <ng-template #isActive>
           <div class="modal-body text-center">
-            <h5 class="font-weight-bold">Do you want to active this user?</h5>
+            <h6 class="font-weight-bold">Do you want to active this user?</h6>
             <button
               type="button"
               class="btn btn-default"
@@ -148,9 +207,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let client of user.lsClientDetail; index as i"
-          >
+          <tr *ngFor="let client of user.lsClientDetail; index as i">
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ client.clientId }}</td>
             <td>{{ client.createdAt | date: "MMMM d, y" }}</td>
