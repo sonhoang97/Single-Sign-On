@@ -14,4 +14,7 @@ user-admin {
     align-items: center;
     justify-content: center;
   }
+  .no-pointer {
+    pointer-events: none;
+  }
 }
