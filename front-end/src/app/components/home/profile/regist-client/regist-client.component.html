@@ -1,0 +1,120 @@
+<h3 class="mb-md-3">Create OAuth client ID</h3>
+<hr />
+<div class="mb-2">
+  A client ID is used to identify a single web application to SSO's OAuth
+  servers.
+</div>
+<div class="row my-2">
+  <div class="col-md-1 my-1">Client Id <span class="text-danger">*</span></div>
+  <div class="col-md-7">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Client Id"
+      [(ngModel)]="clientId"
+      name="clientId"
+    />
+  </div>
+</div>
+<h5 class="mt-5">
+  Authorized JavaScript origins
+  <i
+    class="fas fa-question-circle"
+    tooltip="{{ tooltipJs }}"
+    placement="bottom"
+  ></i>
+</h5>
+<div class="text-muted mb-2">For use with requests from a browser</div>
+<div class="row my-2">
+  <div class="col-md-2 my-3">
+    Redirect URIs <span class="text-danger">*</span>
+    <span class="text-muted h4 cursor-pointer ml-3">
+      <i class="fa fa-plus text-success"></i>
+    </span>
+  </div>
+  <div class="col-md-6">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-11">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Redirect Uri"
+            />
+          </div>
+          <div class="col-1 my-1 cursor-pointer">
+            <span class="text-muted h4">
+              <i class="fas fa-trash"></i>
+            </span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<h5 class="mt-5">
+  Authorized redirect URIs
+  <i
+    class="fas fa-question-circle"
+    tooltip="{{ tooltipServer }}"
+    placement="bottom"
+  ></i>
+</h5>
+<div class="text-muted mb-2">For use with requests from a browser</div>
+<div class="row my-2">
+  <div class="col-md-2 my-3">
+    Redirect URIs <span class="text-danger">*</span>
+    <span class="text-muted h4 cursor-pointer ml-3" (click)="addRedirect()">
+      <i class="fa fa-plus text-success"></i>
+    </span>
+  </div>
+  <div class="col-md-6">
+    <ul class="list-group">
+      <li
+        class="list-group-item"
+        *ngFor="let redirectUri of fieldsRedirectUri; index as i"
+        id="item_{{ i }}"
+      >
+        <div class="row">
+          <div class="col-11">
+            <input
+              id="redirect_{{ i }}"
+              [ngModel]="redirectUri"
+              type="text"
+              class="form-control"
+              placeholder="Redirect Uri"
+            />
+          </div>
+          <div
+            (click)="deletedRedirect($event)"
+            class="col-1 my-1 cursor-pointer"
+            id="delRedirect_{{ i }}"
+          >
+            <span class="text-muted h4" id="delRedirect_{{ i }}">
+              <i class="fas fa-trash" id="delRedirect_{{ i }}"></i>
+            </span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<h5 class="mt-5">Template Login</h5>
+<div class="text-muted mb-2">
+  The template you choose will be show when you login
+</div>
+<div class="row my-2">
+  <div class="col-md">Todo!</div>
+</div>
+<div class="row my-2">
+  <div class="col-md-auto">
+    <button class="profile-edit-btn" type="submit" (click)="submitRegister()">
+      Submit
+    </button>
+  </div>
+  <div class="col-md-auto">
+    <button class="profile-edit-btn" type="submit">Cancel</button>
+  </div>
+</div>

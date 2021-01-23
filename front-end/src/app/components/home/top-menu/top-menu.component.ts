@@ -8,36 +8,27 @@ import { AuthService } from 'src/services/auth/auth.service';
   templateUrl: './top-menu.component.html',
 })
 export class TopMenuComponent implements OnInit {
-  @Input() userNameDisplay: string;
+  userNameDisplay: string;
   isAuthenticated = false;
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.setupUserNameDisplay();
-  }
-
-  setupUserNameDisplay(): void {
-    if (!LsHelper.getUserFromStorage()) {
+    const user = LsHelper.getUserFromStorage();
+    if(user){
+      this.userNameDisplay = user.username;
+      this.isAuthenticated = true;
+    }else {
       this.userNameDisplay = 'Account';
       this.isAuthenticated = false;
-    } else {
-      this.isAuthenticated = true;
     }
   }
 
   logOut(): void {
-    this.authService.logout().subscribe(
-      (res) => {
-        this.setupUserNameDisplay();
-        this.refresh();
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    LsHelper.removeTokenStorage();
+    this.refresh();
   }
 
   refresh(): void {
     window.location.reload();
-}
+  }
 }

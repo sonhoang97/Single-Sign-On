@@ -1,5 +1,7 @@
 package com.example.demooauth2.config;
 
+import com.example.demooauth2.config.customs.CustomTokenEnhancer;
+import com.example.demooauth2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +19,14 @@ import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Configuration
 @EnableAuthorizationServer
@@ -37,19 +43,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Bean("jdbcClientDetailsService")
-    public JdbcClientDetailsService clientDetailsService() {
-        return new JdbcClientDetailsService(dataSource);
+    @Autowired
+    private UserRepository userRepository;
+    @Bean
+    public JwtAccessTokenConverter tokenEnhancer() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey("123456");
+        return converter;
     }
 
-    @Bean("JdbcTemplate")
-    public JdbcTemplate jdbcTemplateObject() {
-        return new JdbcTemplate(dataSource);
-    }
-
-    @Bean("tokenStore")
-    public TokenStore jdbcTokenStore() {
-        return new JdbcTokenStore(dataSource);
+    @Bean
+    public JwtTokenStore tokenStore() {
+        return new JwtTokenStore(tokenEnhancer());
     }
 
     @Bean
@@ -62,26 +67,44 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new JdbcAuthorizationCodeServices(dataSource);
     }
 
+//    @Bean("default_token_service")
+//    public AuthorizationServerTokenServices loadDefaultTokenServices() {
+//        return new DefaultTokenServices();
+//    }
+    @Bean("jdbcClientDetailsService")
+    public JdbcClientDetailsService clientDetailsService() {
+        return new JdbcClientDetailsService(dataSource);
+    }
+
+    @Bean("JdbcTemplate")
+    public JdbcTemplate jdbcTemplateObject() {
+        return new JdbcTemplate(dataSource);
+    }
+
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(List.of(new CustomTokenEnhancer(userRepository), tokenEnhancer()));
+        endpoints.authenticationManager(authenticationManager)
+                 .tokenStore(tokenStore())
+                 .tokenEnhancer(tokenEnhancerChain)
+                 .accessTokenConverter(tokenEnhancer())
+                 .approvalStore(approvalStore())
+                 .authorizationCodeServices(authorizationCodeServices())
+                 .userDetailsService(userDetailsService);;
+    }
+
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.checkTokenAccess("isAuthenticated()")
-                .tokenKeyAccess("permitAll()")
-                .passwordEncoder(passwordEncoder);
+        security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
-//        clients.withClientDetails(clientDetailsService());
+        clients.withClientDetails(clientDetailsService());
 
     }
 
-    @Override
-    public void configure(AuthorizationServerEndpointsConfigurer enpoints) throws Exception {
-        enpoints.tokenStore(jdbcTokenStore())
-                .authorizationCodeServices(authorizationCodeServices())
-                .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService)
-                .approvalStore(approvalStore());
-    }
 }

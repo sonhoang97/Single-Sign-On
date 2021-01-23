@@ -1,0 +1,280 @@
+<h3 class="font-weight-bold mb-md-3" style="border-bottom: 1px solid gray">
+  Credentials
+</h3>
+<h5 class="text-muted">OAuth 2.0 Client IDs</h5>
+<div class="row">
+  <div class="col-md border-client" *ngIf="clients.length != 0">
+    <table class="table table-sm table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">
+            Client ID
+            <i class="fa fa-sort mx-2" aria-hidden="true"></i>
+          </th>
+          <th>Created date</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let client of clients; index as i"
+          class="cursor-pointer"
+          (click)="getItemClient(i)"
+          [class.bg-selected]="i == indexDefault"
+        >
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ client.clientId }}</td>
+          <td>{{ client.createdAt | date: "MMMM d, y" }}</td>
+          <td>Web Appication</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-md border-client" *ngIf="clients.length == 0">
+    <table class="table table-sm table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">
+            Client ID
+            <i class="fa fa-sort mx-2" aria-hidden="true"></i>
+          </th>
+          <th>Created date</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <td>No Client ID to display</td>
+      </tbody>
+    </table>
+  </div>
+</div>
+<hr />
+<div *ngIf="clients.length == 0">No Client ID to display</div>
+<div class="row" *ngIf="clients.length != 0">
+  <div class="col-md-7 mx-2">
+    <h5>
+      Authorized JavaScript origins
+      <i
+        class="fas fa-question-circle"
+        tooltip="{{ tooltipJs }}"
+        placement="bottom"
+      ></i>
+    </h5>
+    <div class="text-muted mb-2">For use with requests from a browser</div>
+    <div class="row">
+      <div class="col-md-4 my-1">
+        Redirect URIs <span class="text-danger">*</span>
+        <span class="text-muted h4 cursor-pointer ml-3">
+          <i class="fa fa-plus text-success"></i>
+        </span>
+      </div>
+      <div class="col-md">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-11">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Redirect Uri"
+                />
+              </div>
+              <div class="col-1 my-1 cursor-pointer">
+                <span class="text-muted h4">
+                  <i class="fas fa-trash"></i>
+                </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <h5 class="mt-5">
+      Authorized redirect URIs
+      <i
+        class="fas fa-question-circle"
+        tooltip="{{ tooltipServer }}"
+        placement="bottom"
+      ></i>
+    </h5>
+    <div class="text-muted mb-2">For use with requests from a browser</div>
+    <div class="row">
+      <div class="col-md-4 my-1">
+        Redirect URIs <span class="text-danger">*</span>
+        <span class="text-muted h4 cursor-pointer ml-3" (click)="addRedirect()">
+          <i class="fa fa-plus text-success"></i>
+        </span>
+      </div>
+      <div class="col-md">
+        <ul class="list-group">
+          <li
+            class="list-group-item"
+            *ngFor="
+              let redirectUri of clients[indexDefault].redirectUri;
+              index as i
+            "
+            id="client_item_{{ i }}"
+          >
+            <div class="row">
+              <div class="col-11">
+                <input
+                  id="client_redirectUri_{{ i }}"
+                  [ngModel]="redirectUri"
+                  type="text"
+                  class="form-control mb-2"
+                  placeholder="Redirect Uri"
+                />
+              </div>
+              <div
+                (click)="deletedRedirect($event)"
+                class="col-1 my-1 cursor-pointer"
+                id="client_delRedirectUri_{{ i }}"
+              >
+                <span class="text-muted h4" id="client_delRedirectUri_{{ i }}">
+                  <i
+                    class="fas fa-trash"
+                    id="client_delRedirectUri_{{ i }}"
+                  ></i>
+                </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <h5 class="mt-5">Template Login</h5>
+    <div class="text-muted mb-2">
+      The template you choose will be show when you login
+    </div>
+    <div class="row my-2">
+      <div class="col-md">Todo!</div>
+    </div>
+    <div class="row my-2">
+      <div class="col-md-auto">
+        <button class="profile-edit-btn" type="submit" (click)="updateClient()">Save</button>
+      </div>
+      <div class="col-md-auto">
+        <button class="profile-edit-btn" type="submit">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md mx-2 in4">
+    <div class="col-md">
+      <div class="row">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-md-3 font-weight-bold">Client ID</div>
+            <div class="col-md-9 text-muted font-weight-bold">
+              {{ clients[indexDefault].clientId }}
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-md-3 font-weight-bold">Client Secret</div>
+            <div
+              class="col-md text-muted"
+              *ngIf="clients[indexDefault].additionalInformation.length != 0"
+            >
+              {{ clients[indexDefault].additionalInformation[0] }}
+            </div>
+            <div
+              class="col-md-auto ml-auto font-weight-bold cursor-pointer edit-item"
+              (click)="openModalReset(isReset)"
+            >
+              <i class="fas fa-sync-alt" aria-hidden="true"></i> Reset
+              <i class="arrow right"></i>
+            </div>
+            <ng-template #isReset>
+              <div class="modal-body text-center">
+                <h5 class="font-weight-bold">
+                  Do you want to create a new client secret?
+                </h5>
+                <p>
+                  The existing secret will be revoked immediately, and the new
+                  secret immediately available. This cannot be undone.
+                </p>
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  (click)="updateClientSecret()"
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="modalRefReset.hide()"
+                >
+                  Cancel
+                </button>
+              </div>
+            </ng-template>
+          </div>
+
+          <hr />
+          <div class="row">
+            <div class="col-md-3 font-weight-bold">Scopes</div>
+            <div class="col-md text-muted">
+              <ng-container *ngFor="let scope of clients[indexDefault].scope">
+                {{ scope }}<br />
+              </ng-container>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-md-3 font-weight-bold">Created At</div>
+            <div class="col-md-9 text-muted">
+              {{
+                clients[indexDefault].createdAt | date: "MMMM d, y, h:mm:ss a"
+              }}
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-md-auto ml-auto">
+              <button class="delete-btn" (click)="openModalDelete(isDelete)">
+                <i class="fas fa-trash mr-2" aria-hidden="true"></i>
+                Delete
+              </button>
+            </div>
+            <ng-template #isDelete>
+              <div class="modal-body text-center">
+                <h5 class="font-weight-bold">Delete credential</h5>
+                <p>
+                  This credential will be deleted immediately and permanently.
+                  Once deleted, it can no longer be used to make API requests.
+                </p>
+                <p>
+                  Do you want to delete credential:
+                  <span class="font-weight-bold">{{
+                    clients[indexDefault].clientId
+                  }}</span
+                  >?
+                </p>
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  (click)="deleteClient()"
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="modalRefDelete.hide()"
+                >
+                  Cancel
+                </button>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

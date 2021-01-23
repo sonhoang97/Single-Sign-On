@@ -1,11 +1,4 @@
 <div class="container">
   <p class="h1">Đây là Home</p>
-  <button (click)="viewProfile()">View profile</button>
-  <div *ngIf="isView">
-    <p>Username: {{ userProfile.username }}</p>
-    <p>Email: {{ userProfile.email }}</p>
-    <p>Password: {{ userProfile.password }}</p>
-    <p>phoneNumber: {{ userProfile.phonenumber }}</p>
-  </div>
-  <h5 *ngIf="isView && !userProfile">Dont have user profile</h5>
+  <div>{{user.username}}</div>
 </div>

@@ -1,0 +1,257 @@
+<div class="modal-header">
+  <p class="h4 font-weight-bold pull-left">Detail User</p>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="bsModalRef.hide()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container">
+    <div class="row my-1">
+      <div class="col-md-4 h6 text-right py-0 my-auto pr-1 font-weight-bold">
+        Username:
+      </div>
+      <div class="col-md-6 text-left text-muted">
+        <input
+          [ngModel]="user.username"
+          type="text"
+          class="form-control"
+          aria-label="Small"
+          aria-describedby="inputGroup-sizing-sm"
+          disabled
+        />
+      </div>
+    </div>
+    <div class="row my-1">
+      <div class="col-md-4 h6 text-right py-0 my-auto pr-1 font-weight-bold">
+        First Name:
+      </div>
+      <div class="col-md-6 text-left text-muted">
+        <input
+          [ngModel]="user.firstname"
+          type="text"
+          class="form-control"
+          aria-label="Small"
+          aria-describedby="inputGroup-sizing-sm"
+          disabled
+        />
+      </div>
+    </div>
+    <div class="row my-1">
+      <div class="col-md-4 h6 text-right py-0 my-auto pr-1 font-weight-bold">
+        Last Name:
+      </div>
+      <div class="col-md-6 text-left text-muted">
+        <input
+          [ngModel]="user.lastname"
+          type="text"
+          class="form-control"
+          aria-label="Small"
+          aria-describedby="inputGroup-sizing-sm"
+          disabled
+        />
+      </div>
+    </div>
+    <div class="row my-1">
+      <div class="col-md-4 h6 text-right py-0 my-auto pr-1 font-weight-bold">
+        Email:
+      </div>
+      <div class="col-md-6 text-left text-muted">
+        <input
+          [ngModel]="user.email"
+          type="text"
+          class="form-control"
+          aria-label="Small"
+          aria-describedby="inputGroup-sizing-sm"
+          disabled
+        />
+      </div>
+    </div>
+    <div class="row my-1">
+      <div
+        class="col-md-4 h6 px-0 text-right py-0 my-auto pr-1 font-weight-bold"
+      >
+        Phone Number:
+      </div>
+      <div class="col-md-6 text-left text-muted">
+        <input
+          [ngModel]="user.phonenumber"
+          type="text"
+          class="form-control"
+          aria-label="Small"
+          aria-describedby="inputGroup-sizing-sm"
+          disabled
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 h6 px-0 text-right my-auto pr-1 font-weight-bold">
+        Role:
+      </div>
+
+      <div class="form-group col-md-6 my-auto">
+        <select
+          [(ngModel)]="user.lsRoles[0].id"
+          id="status"
+          class="form-control"
+          class="form-control"
+          id="exampleFormControlSelect2"
+        >
+          <option
+            *ngFor="let rolee of lsAllRoles; index as i"
+            [value]="rolee.id"
+          >
+            {{ rolee.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- <div class="col-md">
+        <ul class="list-group">
+          <li
+            class="list-group-item"
+            *ngFor="let role of user.lsRoles; index as i"
+            id="item_{{ i }}"
+          >
+            <div class="row my-2">
+              <div class="col-8">
+                <select
+                  [(ngModel)]="role.id"
+                  id="status"
+                  class="form-control"
+                  disabled
+                >
+                  <option
+                    *ngFor="let rolee of lsAllRoles; index as i"
+                    [value]="rolee.id"
+                  >
+                    {{ rolee.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-auto my-1 cursor-pointer" id="delRole_{{ i }}">
+                <span class="text-muted h4" id="delRole_{{ i }}">
+                  <i class="fas fa-trash" id="delRole_{{ i }}"></i>
+                </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div> -->
+    </div>
+    <div class="row my-1 status">
+      <div class="col-md-4 h6 px-0 text-right my-auto pr-1 font-weight-bold">
+        Status:
+      </div>
+
+      <div *ngIf="user.enabled" class="col-md-2 my-auto font-weight-bold">
+        <div class="text-success">Actived</div>
+      </div>
+      <div *ngIf="user.enabled" class="col-md-4 my-auto text-right">
+        <i
+          class="btn btn-danger"
+          aria-hidden="true"
+          (click)="openModalBan(isBan)"
+          >Ban user</i
+        >
+      </div>
+
+      <ng-template #isBan>
+        <div class="modal-body text-center">
+          <h6 class="font-weight-bold">Are you sure to ban this user?</h6>
+          <button type="button" class="btn btn-danger" (click)="banUser()">
+            Yes
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="modalRefBan.hide()"
+          >
+            Cancel
+          </button>
+        </div>
+      </ng-template>
+
+      <div *ngIf="!user.enabled" class="col-md-1 my-auto font-weight-bold">
+        <div class="text-danger">Banned</div>
+      </div>
+
+      <div *ngIf="!user.enabled" class="col-md-5 my-auto text-right">
+        <i class="btn btn-info" aria-hidden="true" (click)="openModalBan(isBan)"
+          >Unban user</i
+        >
+      </div>
+      <ng-template #isBan>
+        <div class="modal-body text-center">
+          <h6 class="font-weight-bold">Are you sure to unban this user?</h6>
+          <button type="button" class="btn btn-info" (click)="banUser()">
+            Yes
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="modalRefBan.hide()"
+          >
+            Cancel
+          </button>
+        </div>
+      </ng-template>
+    </div>
+
+    <hr />
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-md border-client" *ngIf="user.lsClientDetail.length != 0">
+      <table class="table table-sm table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">
+              Client ID
+              <i class="fa fa-sort mx-2" aria-hidden="true"></i>
+            </th>
+            <th>Created date</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let client of user.lsClientDetail; index as i">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ client.clientId }}</td>
+            <td>{{ client.createdAt | date: "MMMM d, y" }}</td>
+            <td>Web Appication</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md border-client" *ngIf="user.lsClientDetail.length == 0">
+      <table class="table table-sm table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">
+              Client ID
+              <i class="fa fa-sort mx-2" aria-hidden="true"></i>
+            </th>
+            <th>Created date</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <td>No Client ID to display</td>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">
+      Cancel
+    </button>
+  </div>
+</div>

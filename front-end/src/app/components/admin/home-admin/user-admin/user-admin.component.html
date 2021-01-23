@@ -1,0 +1,148 @@
+<div class="container-fluid">
+  <div class="row pt-2">
+    <div class="col-12 col-md-4">
+      <div class="form-group">
+        <label class="text-muted">Search for</label>
+        <input
+          type="text"
+          placeholder="Username,Email"
+          class="form-control"
+          [(ngModel)]="searchString"
+        />
+      </div>
+    </div>
+    <div class="col-12 col-md-1">
+      <div class="form-group">
+        <label class="text-muted"> Status</label>
+        <select [(ngModel)]="status" id="status" class="form-control">
+          <option value="-1" selected>All</option>
+          <option value="1">Normal</option>
+          <option value="0">Banned</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-4 col-md-auto ml-auto ml-md-0 d-flex align-items-end">
+      <div class="form-group w-100">
+        <button
+          class="btn btn-primary w-100 form-control"
+          (click)="searchUsers()"
+        >
+          <i class="icon icon-search icon-14"> </i>
+          Search
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row no-gutters table-responsive-xl table-container">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Phone Number</th>
+          <th scope="col">Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody *ngIf="!isLoading">
+        <tr *ngFor="let user of users | paginate: config">
+          <td scope="col" class="align-middle">
+            {{ user.username }}
+          </td>
+          <td scope="col" class="align-middle">{{ user.email }}</td>
+          <td scope="col" class="align-middle">{{ user.firstname }}</td>
+          <td scope="col" class="align-middle">{{ user.lastname }}</td>
+          <td scope="col" class="align-middle">
+            {{ user.phonenumber }}
+          </td>
+          <td *ngIf="user.enabled" scope="col" class="align-middle">
+            <div class="btn btn-success no-pointer">Active</div>
+          </td>
+          <td *ngIf="!user.enabled" scope="col" class="align-middle">
+            <div class="btn btn-danger no-pointer">Banned</div>
+          </td>
+          <td class="py-auto">
+            <div
+              class="row mx-auto cursor-pointer"
+              (click)="detailUserPopup(user)"
+            >
+              <button type="button" class="col-md-auto mx-auto btn btn-info">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-pencil"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"
+                  ></path>
+                </svg>
+                Edit
+              </button>
+              <button type="button" class="col-md-auto mx-auto btn btn-danger">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 171 171"
+                  style="fill: #000000"
+                >
+                  <g
+                    fill="none"
+                    fill-rule="nonzero"
+                    stroke="none"
+                    stroke-width="1"
+                    stroke-linecap="butt"
+                    stroke-linejoin="miter"
+                    stroke-miterlimit="10"
+                    stroke-dasharray=""
+                    stroke-dashoffset="0"
+                    font-family="none"
+                    font-weight="none"
+                    font-size="none"
+                    text-anchor="none"
+                    style="mix-blend-mode: normal"
+                  >
+                    <path
+                      d="M0,171.99924v-171.99924h171.99924v171.99924z"
+                      fill="none"
+                    ></path>
+                    <g fill="#ffffff">
+                      <path
+                        d="M85.5,0c-8.38969,0 -15.47015,4.6357 -25.97062,10.04625c-10.50047,5.41055 -24.59461,11.94328 -46.5975,16.77937l-2.67187,0.64125v2.67188c0,52.39547 18.36914,87.41039 36.765,109.11938c18.39586,21.70898 37.08563,30.3525 37.08563,30.3525l1.49625,0.74812l1.49625,-0.74812c0,0 73.63688,-38.0475 73.63688,-139.47188v-2.67187l-2.67187,-0.64125c-22.00289,-4.83609 -36.09703,-11.36883 -46.5975,-16.77937c-10.50047,-5.41055 -17.58094,-10.04625 -25.97062,-10.04625zM85.5,6.84c5.6243,0 12.14367,3.7807 22.87125,9.29812c10.1932,5.23688 24.52781,11.66273 45.315,16.56563c-1.25578,92.74078 -63.89789,127.5286 -68.29312,129.85312c-2.12414,-1.02867 -16.92633,-8.42977 -33.23812,-27.68062c-17.19352,-20.29289 -34.21336,-52.92984 -34.84125,-102.1725c20.78719,-4.90289 35.1218,-11.32875 45.315,-16.56562c10.72758,-5.51742 17.24695,-9.29812 22.87125,-9.29812zM85.5,41.04c-20.73375,0 -37.62,16.88625 -37.62,37.62c0,20.73375 16.88625,37.62 37.62,37.62c20.73375,0 37.62,-16.88625 37.62,-37.62c0,-20.73375 -16.88625,-37.62 -37.62,-37.62zM85.5,47.88c7.2675,0 13.88039,2.55164 19.13062,6.73313l-43.1775,43.1775c-4.18148,-5.25023 -6.73313,-11.86312 -6.73313,-19.13062c0,-17.0332 13.7468,-30.78 30.78,-30.78zM109.54688,59.52938c4.18148,5.25023 6.73313,11.86312 6.73313,19.13062c0,17.0332 -13.7468,30.78 -30.78,30.78c-7.2675,0 -13.88039,-2.55164 -19.13062,-6.73313z"
+                      ></path>
+                    </g>
+                  </g>
+                </svg>
+                Ban
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <loading class="mx-auto" *ngIf="isLoading"></loading>
+  </div>
+  <div class="row">
+    <pagination-controls
+      class="col-md"
+      (pageChange)="pageChanged($event)"
+    ></pagination-controls>
+    <div class="col-auto ml-auto font-italic">
+      Showing {{ config.itemsPerPage * (config.currentPage - 1) + 1 }} -
+      {{ config.itemsPerPage * (config.currentPage - 1) + users.length }}/{{
+        config.totalItems
+      }}
+    </div>
+  </div>
+</div>

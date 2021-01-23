@@ -18,7 +18,7 @@ export class AuthService {
 
   public register(userRegister: any): Observable<any> {
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json; charset=utf-8',
       dataType: 'json',
     });
     return this.http
@@ -41,7 +41,7 @@ export class AuthService {
 
     let headers = new HttpHeaders({
       'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      Authorization: 'Basic ' + btoa('admin:admin'),
+      Authorization: 'Basic ' + btoa('mobile:pin'),
     });
 
     return this.http
@@ -56,24 +56,6 @@ export class AuthService {
       );
   }
 
-  public logout(): Observable<any> {
-    let headers = new HttpHeaders({
-      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
-    });
-    const refresh_token = LsHelper.getRefreshTokenFromStorage();
-    return this.http
-      .delete(this.apiURL + '/log_out?refresh_token=' + refresh_token, {
-        headers: headers,
-      })
-      .pipe(
-        map((res: any) => {
-          LsHelper.removeTokenStorage();
-          LsHelper.removeUserStorage();
-          return res;
-        })
-      );
-  }
-
   public getTokenByRefreshToken(): Observable<TokenPassword> {
     let body = new URLSearchParams();
     body.append('grant_type', 'refresh_token');
@@ -81,7 +63,7 @@ export class AuthService {
 
     let headers = new HttpHeaders({
       'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      Authorization: 'Basic ' + btoa('admin:admin'),
+      Authorization: 'Basic ' + btoa('mobile:pin'),
     });
 
     return this.http
@@ -95,15 +77,24 @@ export class AuthService {
       );
   }
 
-  public isAuthenticated(): Observable<any> {
-    const token = LsHelper.getTokenFromStorage();
+  public changePassword(currentPassword: string, newPassword: string, confirmPassword: string): Observable<any>{
     let headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
     });
-    return this.http.get(this.apiURL + '/isAuthenticated',{headers: headers}).pipe(
-      map((res: any) => {
-        return res;
+
+    let bodyPassword = {
+      currentPassword,newPassword,confirmPassword
+    }
+
+    return this.http
+      .post(this.apiURL + '/changePassword', JSON.stringify(bodyPassword), {
+        headers: headers,
       })
-    );
+      .pipe(
+        map((res: any) => {
+          return res;
+        })
+      );
   }
 }

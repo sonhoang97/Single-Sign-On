@@ -1,0 +1,45 @@
+<div class="container-fluid">
+  <div class="row no-gutters table-responsive-xl table-container">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Role Name</th>
+          <th scope="col">Permissions</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody *ngIf="!isLoading">
+        <tr *ngFor="let role of lsRoles">
+          <td scope="col" class="align-middle">
+            {{ role.name }}
+          </td>
+          <td scope="col">
+            <div class="row mx-2">
+              <div
+                class="col-auto m-2 permission-item font-weight-bold"
+                *ngFor="let permission of role.permissions"
+              >
+                {{ permission.name }}
+                <button
+                  type="button"
+                  class="close pull-right ml-2"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          </td>
+          <td style="width:7%">
+            <div class="row cursor-pointer" (click)="addPermissionPopup()">
+              <i class="fas fa-pencil-alt text-success mx-auto" aria-hidden="true"></i>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <loading class="mx-auto" *ngIf="isLoading"></loading>
+</div>

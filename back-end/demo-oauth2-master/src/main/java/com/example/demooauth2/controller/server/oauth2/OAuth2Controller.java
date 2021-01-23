@@ -1,8 +1,14 @@
 package com.example.demooauth2.controller.server.oauth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+import org.springframework.security.oauth2.common.DefaultOAuth2RefreshToken;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.WhitelabelApprovalEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.WhitelabelErrorEndpoint;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -14,6 +20,7 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -22,10 +29,13 @@ import java.util.Map;
 public class OAuth2Controller {
 
     @Autowired
-    private WhitelabelApprovalEndpoint approvalEndPoint;
+    private WhitelabelApprovalEndpoint whitelabelApprovalEndpoint;
 
     @Autowired
     private WhitelabelErrorEndpoint whitelabelErrorEndpoint;
+
+    @Autowired
+    private TokenEndpoint tokenStore;
 
     @Autowired
     private AuthorizationEndpoint authorizationEndpoint;
@@ -60,8 +70,9 @@ public class OAuth2Controller {
 
     @RequestMapping("/confirm_access")
     public ModelAndView customConfirmAccessPage(Map<String, Object> model, HttpServletRequest request) throws Exception {
-        // TODO: custom code here
-        return approvalEndPoint.getAccessConfirmation(model, request);
+        // TODO: redirect to approval.jsp
+//        return new ModelAndView("redirect:/approval");
+        return whitelabelApprovalEndpoint.getAccessConfirmation(model, request);
     }
 
     @RequestMapping("/error")
@@ -69,4 +80,17 @@ public class OAuth2Controller {
         // TODO: custom code here
         return whitelabelErrorEndpoint.handleError(request);
     }
+
+//    @DeleteMapping("/revoke_token")
+//    public ResponseEntity revokeToken(@RequestParam Map<String, Object> requestParam) {
+//        String accessToken = (String) requestParam.get("access_token");
+//        String refreshToken = (String) requestParam.get("refresh_token");
+//        OAuth2AccessToken oAuth2AccessToken = new DefaultOAuth2AccessToken(accessToken);
+//        OAuth2RefreshToken oAuth2RefreshToken = new DefaultOAuth2RefreshToken(refreshToken);
+//        tokenStore.removeAccessToken(oAuth2AccessToken);
+//        tokenStore.removeRefreshToken(oAuth2RefreshToken);
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("message", "success");
+//        return ResponseEntity.ok(response);
+//    }
 }
