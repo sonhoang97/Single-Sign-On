@@ -95,6 +95,7 @@ public class UserEntity implements Serializable {
     @Column(name = "loggedInFb")
     private boolean loggedInFb;
 
+
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_user", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},

@@ -1,12 +1,21 @@
 package com.example.demooauth2.config;
 
 import com.example.demooauth2.config.customs.CustomTokenEnhancer;
+import com.example.demooauth2.repository.RefreshTokenRepository;
 import com.example.demooauth2.repository.UserRepository;
+import com.example.demooauth2.token.JwtTokenService;
+import com.example.demooauth2.token.JwtTokenStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.core.token.TokenService;
+import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -14,18 +23,22 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -45,6 +58,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+
     @Bean
     public JwtAccessTokenConverter tokenEnhancer() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
@@ -53,9 +70,32 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Bean
-    public JwtTokenStore tokenStore() {
-        return new JwtTokenStore(tokenEnhancer());
+    public TokenStore tokenStore() {
+        return new JwtTokenStoreService(tokenEnhancer(), refreshTokenRepository);
     }
+
+    @Bean
+    public JwtTokenService jwtTokenService(ClientDetailsService clientDetailsService) {
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(List.of(new CustomTokenEnhancer(userRepository), tokenEnhancer()));
+        JwtTokenService tokenService = new JwtTokenService(refreshTokenRepository);
+        tokenService.setAuthenticationManager(createPreAuthProvider());
+        tokenService.setTokenEnhancer(tokenEnhancerChain);
+        tokenService.setTokenStore(tokenStore());
+        tokenService.setSupportRefreshToken(true);
+        tokenService.setClientDetailsService(clientDetailsService);
+        return tokenService;
+    }
+
+//    @Bean
+//    public JwtTokenService jwtTokenService() {
+//        JwtTokenService tokenService = new JwtTokenService();
+//        tokenService.setTokenStore(tokenStore());
+//        tokenService.setAuthenticationManager(authenticationManager);
+//
+//        return  tokenService;
+//    }
+
 
     @Bean
     public ApprovalStore approvalStore() {
@@ -87,12 +127,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
         tokenEnhancerChain.setTokenEnhancers(List.of(new CustomTokenEnhancer(userRepository), tokenEnhancer()));
         endpoints.authenticationManager(authenticationManager)
-                 .tokenStore(tokenStore())
-                 .tokenEnhancer(tokenEnhancerChain)
-                 .accessTokenConverter(tokenEnhancer())
-                 .approvalStore(approvalStore())
-                 .authorizationCodeServices(authorizationCodeServices())
-                 .userDetailsService(userDetailsService);;
+                .tokenStore(tokenStore())
+                .tokenEnhancer(tokenEnhancerChain)
+                .accessTokenConverter(tokenEnhancer())
+                .approvalStore(approvalStore())
+                .authorizationCodeServices(authorizationCodeServices())
+                .userDetailsService(userDetailsService)
+                .tokenServices(jwtTokenService(endpoints.getClientDetailsService()))
+        //     .tokenServices(jwtTokenService())
+;
+
     }
 
     @Override
@@ -107,4 +151,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     }
 
+    private void addUserDetailsService(JwtTokenService tokenServices, UserDetailsService userDetailsService) {
+        if (userDetailsService != null) {
+            PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
+            provider.setPreAuthenticatedUserDetailsService(new UserDetailsByNameServiceWrapper<PreAuthenticatedAuthenticationToken>(
+                    userDetailsService));
+            tokenServices
+                    .setAuthenticationManager(new ProviderManager(Arrays.<AuthenticationProvider> asList(provider)));
+        }
+    }
+
+    private ProviderManager createPreAuthProvider() {
+        PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
+        provider.setPreAuthenticatedUserDetailsService(new UserDetailsByNameServiceWrapper<>(userDetailsService));
+        return new ProviderManager(Arrays.asList(provider));
+    }
 }
