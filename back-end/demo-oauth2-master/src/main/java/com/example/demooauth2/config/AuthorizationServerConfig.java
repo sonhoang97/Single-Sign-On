@@ -70,7 +70,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Bean
-    public TokenStore tokenStore() {
+    public JwtTokenStoreService tokenStore() {
         return new JwtTokenStoreService(tokenEnhancer(), refreshTokenRepository);
     }
 
@@ -78,7 +78,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public JwtTokenService jwtTokenService(ClientDetailsService clientDetailsService) {
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
         tokenEnhancerChain.setTokenEnhancers(List.of(new CustomTokenEnhancer(userRepository), tokenEnhancer()));
-        JwtTokenService tokenService = new JwtTokenService(refreshTokenRepository);
+        JwtTokenService tokenService = new JwtTokenService();
         tokenService.setAuthenticationManager(createPreAuthProvider());
         tokenService.setTokenEnhancer(tokenEnhancerChain);
         tokenService.setTokenStore(tokenStore());

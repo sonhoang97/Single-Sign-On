@@ -32,6 +32,7 @@ public class JwtTokenStoreService extends JwtTokenStore {
     @Override
     public void storeRefreshToken(OAuth2RefreshToken refreshToken, OAuth2Authentication authentication) {
         //  this.readRefreshToken(refreshToken)
+
         Optional<RefreshTokenEntity> existRfToken = refreshTokenRepository.findByUserName(authentication.getPrincipal().toString());
 
         if (!existRfToken.isPresent()) {
@@ -47,6 +48,19 @@ public class JwtTokenStoreService extends JwtTokenStore {
 
     }
 
+    public String getRefreshTokenValue(String username){
+       Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findByUserName(username);
+       if (refreshTokenEntity.isPresent()) {
+           return  refreshTokenEntity.get().getRefreshToken();
+       }
+       else  return  null;
+    }
 
-
+    public String getExistRefreshTokenValue(String refreshtokenValue) {
+        Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshtokenValue);
+        if (refreshTokenEntity.isPresent())
+            return refreshTokenEntity.get().getRefreshToken();
+        else
+            return null;
+    }
 }
