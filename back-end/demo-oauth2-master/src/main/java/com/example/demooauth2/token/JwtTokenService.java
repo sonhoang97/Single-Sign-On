@@ -134,7 +134,7 @@ public class JwtTokenService implements AuthorizationServerTokenServices, Resour
             if (claimsRequest.containsKey("jti")) {
                 jtiRequest = claimsRequest.get("jti").toString();
             }
-        } catch (IllegalArgumentException var11) {}
+        } catch (Exception var11) {}
 
         Authentication authenticationRequest = tokenStore.readAuthentication(refreshTokenValue);
         String existRefreshTokenValue = tokenStore.getRefreshTokenValue(authenticationRequest.getPrincipal().toString());
@@ -144,7 +144,7 @@ public class JwtTokenService implements AuthorizationServerTokenServices, Resour
             if (exitstClaims.containsKey("jti")) {
                 existJti = exitstClaims.get("jti").toString();
             }
-        } catch (IllegalArgumentException var11) {}
+        } catch (Exception var11) {}
 
         if (!jtiRequest.equals(existJti) ) {
             throw new InvalidTokenException("Refresh token is invalid");
