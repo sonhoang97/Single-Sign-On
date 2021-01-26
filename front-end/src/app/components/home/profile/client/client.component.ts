@@ -13,7 +13,7 @@ export class ClientComponent implements OnInit {
   @Input() clients: ClientDetail[] = [];
 
   indexDefault = 0;
-
+  selectedClient = false;
   modalRefReset: BsModalRef;
   modalRefDelete: BsModalRef;
 
@@ -35,6 +35,7 @@ export class ClientComponent implements OnInit {
   getItemClient(index: number): void {
     console.log(this.clients[index]);
     this.indexDefault = index;
+    this.selectedClient = true;
   }
 
   openModalReset(isReset: TemplateRef<any>) {

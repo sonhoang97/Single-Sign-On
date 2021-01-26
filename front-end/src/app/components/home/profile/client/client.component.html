@@ -1,10 +1,18 @@
-<h3 class="font-weight-bold mb-md-3" style="border-bottom: 1px solid gray">
-  Credentials
-</h3>
-<h5 class="text-muted">OAuth 2.0 Client IDs</h5>
+<div class="row">
+  <a class="navText" (click)="selectedClient = false"
+    ><h3 class="col-auto font-weight-bold mb-md-3 px-0 navText">
+      Credentials &nbsp;
+    </h3></a
+  >
+  <h3 class="col-auto font-weight-bold mb-md-3 px-0" *ngIf="selectedClient">
+    >>&nbsp;{{ clients[indexDefault].clientId }}
+  </h3>
+</div>
+<h5 class="text-h2" *ngIf="!selectedClient">OAuth 2.0 Client IDs</h5>
+
 <div class="row">
   <div class="col-md border-client" *ngIf="clients.length != 0">
-    <table class="table table-sm table-hover">
+    <table class="table table-sm table-hover" *ngIf="!selectedClient">
       <thead class="thead-light">
         <tr>
           <th scope="col">#</th>
@@ -53,9 +61,9 @@
 </div>
 <hr />
 <div *ngIf="clients.length == 0">No Client ID to display</div>
-<div class="row" *ngIf="clients.length != 0">
-  <div class="col-md-7 mx-2">
-    <h5>
+<div class="row" *ngIf="clients.length != 0 && selectedClient">
+  <div class="col-md-6 mx-2">
+    <h5 class="text-h2">
       Authorized JavaScript origins
       <i
         class="fas fa-question-circle"
@@ -65,35 +73,49 @@
     </h5>
     <div class="text-muted mb-2">For use with requests from a browser</div>
     <div class="row">
-      <div class="col-md-4 my-1">
+      <div class="col-md-4">
         Redirect URIs <span class="text-danger">*</span>
-        <span class="text-muted h4 cursor-pointer ml-3">
-          <i class="fa fa-plus text-success"></i>
-        </span>
+        <span class="text-muted h4 cursor-pointer ml-3"> </span>
       </div>
       <div class="col-md">
         <ul class="list-group">
           <li class="list-group-item">
-            <div class="row">
-              <div class="col-11">
+            <div class="col row my-1">
+              <div class="col-11 my-auto pl-0 pr-1">
                 <input
                   type="text"
                   class="form-control"
                   placeholder="Redirect Uri"
                 />
               </div>
-              <div class="col-1 my-1 cursor-pointer">
-                <span class="text-muted h4">
-                  <i class="fas fa-trash"></i>
-                </span>
-              </div>
+              <button
+                type="button"
+                class="col btn btn-outline-danger btn-16 mx-0 my-auto px-0 py-0"
+                id="client_delRedirectUri_0"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  class="bi bi-dash"
+                >
+                  <path
+                    d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"
+                  ></path>
+                </svg>
+              </button>
             </div>
           </li>
         </ul>
+        <button class="btn btn-primary my-1 px-auto py-auto">
+          <i class="fa fa-plus mx-1"></i> Add Uri
+        </button>
       </div>
     </div>
 
-    <h5 class="mt-5">
+    <h5 class="mt-5 text-h2">
       Authorized redirect URIs
       <i
         class="fas fa-question-circle"
@@ -105,9 +127,6 @@
     <div class="row">
       <div class="col-md-4 my-1">
         Redirect URIs <span class="text-danger">*</span>
-        <span class="text-muted h4 cursor-pointer ml-3" (click)="addRedirect()">
-          <i class="fa fa-plus text-success"></i>
-        </span>
       </div>
       <div class="col-md">
         <ul class="list-group">
@@ -119,35 +138,46 @@
             "
             id="client_item_{{ i }}"
           >
-            <div class="row">
-              <div class="col-11">
+            <div class="col row my-1">
+              <div class="col-11 my-auto pl-0 pr-1">
                 <input
                   id="client_redirectUri_{{ i }}"
                   [ngModel]="redirectUri"
                   type="text"
-                  class="form-control mb-2"
+                  class="form-control"
                   placeholder="Redirect Uri"
                 />
               </div>
-              <div
+
+              <button
                 (click)="deletedRedirect($event)"
-                class="col-1 my-1 cursor-pointer"
+                type="button"
+                class="col btn btn-outline-danger btn-16 mx-0 my-auto px-0 py-0"
                 id="client_delRedirectUri_{{ i }}"
               >
-                <span class="text-muted h4" id="client_delRedirectUri_{{ i }}">
-                  <i
-                    class="fas fa-trash"
-                    id="client_delRedirectUri_{{ i }}"
-                  ></i>
-                </span>
-              </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-dash"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"
+                  ></path>
+                </svg>
+              </button>
             </div>
           </li>
         </ul>
+        <button class="btn btn-primary my-1" (click)="addRedirect()">
+          <i class="fa fa-plus mx-1"></i> Add Uri
+        </button>
       </div>
     </div>
-    <h5 class="mt-5">Template Login</h5>
-    <div class="text-muted mb-2">
+    <h5 class="mt-5 text-h2">Template Login</h5>
+    <div class="mb-2 text-muted">
       The template you choose will be show when you login
     </div>
     <div class="row my-2">
@@ -155,10 +185,16 @@
     </div>
     <div class="row my-2">
       <div class="col-md-auto">
-        <button class="profile-edit-btn" type="submit" (click)="updateClient()">Save</button>
+        <button
+          class="btn btn-success btn-long"
+          type="submit"
+          (click)="updateClient()"
+        >
+          Save
+        </button>
       </div>
       <div class="col-md-auto">
-        <button class="profile-edit-btn" type="submit">Cancel</button>
+        <button class="btn btn-secondary btn-long" type="submit">Cancel</button>
       </div>
     </div>
   </div>
@@ -237,7 +273,10 @@
           <hr />
           <div class="row">
             <div class="col-md-auto ml-auto">
-              <button class="delete-btn" (click)="openModalDelete(isDelete)">
+              <button
+                class="btn btn-danger btn-long"
+                (click)="openModalDelete(isDelete)"
+              >
                 <i class="fas fa-trash mr-2" aria-hidden="true"></i>
                 Delete
               </button>
