@@ -150,17 +150,6 @@ public class JwtTokenService implements AuthorizationServerTokenServices, Resour
             throw new InvalidTokenException("Refresh token is invalid");
         }
 
-//        if (existRefreshTokenValue == null) {
-//              throw new InvalidTokenException("Can not find refresh token");
-//        }
-//        else  {
-//            refreshTokenValue = existRefreshTokenValue;
-//        }
-//        if (existRefreshToken.isPresent()){
-//        return super.refreshAccessToken(refreshTokenValue, tokenRequest);
-//        }
-//        else throw new InvalidTokenException("Can not find refresh token");
-//        }
         if (!this.supportRefreshToken) {
             throw new InvalidGrantException("Invalid refresh token: " + refreshTokenValue);
         } else {
