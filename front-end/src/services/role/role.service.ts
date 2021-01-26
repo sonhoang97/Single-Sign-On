@@ -14,16 +14,17 @@ import { Role } from 'src/models/role/role.model';
 })
 export class RoleService {
   private apiURL = Config.getPath(PathController.Role);
-  private headers = new HttpHeaders({
-    'Content-type': 'application/json',
-    Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
-  });
+
   constructor(private http: HttpClient) {}
 
   public getAllRoles(): Observable<Role[]> {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
     return this.http
       .get(this.apiURL + '/all', {
-        headers: this.headers,
+        headers: headers,
       })
       .pipe(
         map((res: Role[]) => {

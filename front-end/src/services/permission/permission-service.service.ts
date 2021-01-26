@@ -12,16 +12,17 @@ import { Permission } from 'src/models/role/permission.model';
 })
 export class PermissionServiceService {
   private apiURL = Config.getPath(PathController.Permission);
-  private headers = new HttpHeaders({
-    'Content-type': 'application/json',
-    Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
-  });
+
   constructor(private http: HttpClient) { }
 
   public getAllPermissions(): Observable<Permission[]> {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
     return this.http
       .get(this.apiURL, {
-        headers: this.headers,
+        headers: headers,
       })
       .pipe(
         map((res: Permission[]) => {
