@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from 'src/models/user/user.model';
 import { AuthService } from 'src/services/auth/auth.service';
 import { LsHelper } from '../commons/helpers/ls.helper';
@@ -11,9 +12,7 @@ export class AppComponent implements OnInit {
   title = 'front-end';
   userNameDisplay: string;
   userProfile: User = new User();
-  constructor(
-    private authService: AuthService,
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
   ngOnInit(): void {
     const token = LsHelper.getTokenFromStorage();
     if (token) {
@@ -24,20 +23,31 @@ export class AppComponent implements OnInit {
   checkToken(): void {
     if (LsHelper.isExpiredRefreshToken()) {
       LsHelper.removeTokenStorage();
-      window.location.reload();
+      this.router.navigate(['login']);
       return;
     }
     if (LsHelper.isExpiredToken()) {
-      this.authService.getTokenByRefreshToken().subscribe(
-        (res) => {
-          LsHelper.removeTokenStorage();
-          LsHelper.saveTokenToStorage(res);
-          // window.location.reload();
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    }    
+      console.log('Expired token');
+      this.getTokenByRefreshToken();
+    }
+    setTimeout(() => {
+      console.log('timeout refreshtoken');
+      this.checkToken();
+    }, 140000);
+  }
+
+  getTokenByRefreshToken(): void {
+    this.authService.getTokenByRefreshToken().subscribe(
+      (res) => {
+        LsHelper.removeTokenStorage();
+        LsHelper.saveTokenToStorage(res);
+        // window.location.reload();
+      },
+      (err) => {
+        LsHelper.removeTokenStorage();
+        this.router.navigate(['login']);
+        console.log(err);
+      }
+    );
   }
 }

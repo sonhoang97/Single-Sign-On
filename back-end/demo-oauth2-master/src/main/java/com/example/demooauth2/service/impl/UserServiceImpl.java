@@ -3,6 +3,7 @@ package com.example.demooauth2.service.impl;
 import com.example.demooauth2.modelEntity.RoleEntity;
 import com.example.demooauth2.modelView.pageList.PageList;
 import com.example.demooauth2.modelView.users.UserProfileViewModel;
+import com.example.demooauth2.repository.RefreshTokenRepository;
 import com.example.demooauth2.repository.RoleRepository;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.modelEntity.UserEntity;
@@ -33,6 +34,8 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public List<UserEntity> findAll() {
@@ -139,6 +142,7 @@ public class UserServiceImpl implements UserService {
 
             String storeNewPassword = passwordEncoder.encode(newPassword);
             userRepository.updatePassword(principal.getName(), storeNewPassword);
+            refreshTokenRepository.deleteByUsername(principal.getName());
             return new CommandResult().Succeed();
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error!");

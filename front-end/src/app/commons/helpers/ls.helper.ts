@@ -75,7 +75,7 @@ export class LsHelper {
 
     const payload: string = currentToken.split('.')[1];
     const expired: number = JSON.parse(Base64.decode(payload)).exp;
-    return Math.floor(new Date().getTime() / 1000) >= expired;
+    return expired - Math.floor(new Date().getTime() / 1000) <= 150;
   }
 
   public static isExpiredRefreshToken(): boolean {

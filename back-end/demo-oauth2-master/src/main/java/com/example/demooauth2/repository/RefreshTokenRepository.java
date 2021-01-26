@@ -13,6 +13,6 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshTokenEntity
     @Query("select r from  RefreshTokenEntity r where r.refreshToken =:refreshToken")
     Optional<RefreshTokenEntity> findByRefreshToken(String refreshToken);
 
-    @Query("delete  from RefreshTokenEntity r where r.refreshToken =:username")
-    boolean deleteByUsername(String username);
+    @Query("delete  from RefreshTokenEntity r where r.username =:username")
+    void deleteByUsername(String username);
 }
