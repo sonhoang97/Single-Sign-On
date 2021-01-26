@@ -2,6 +2,7 @@ package com.example.demooauth2.controller.server;
 
 import com.example.demooauth2.modelEntity.PermissionEntity;
 import com.example.demooauth2.modelEntity.RoleEntity;
+import com.example.demooauth2.modelView.roles.RoleViewModel;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.relation.Role;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/roles")
@@ -76,6 +79,13 @@ public class RoleController {
     @PreAuthorize("hasAuthority('edit_permission_role')")
     public ResponseEntity<Object> RemovePermission(@PathVariable(value = "id") int roleId, @PathVariable(value = "permissionId") int permissionId) {
         CommandResult result = roleService.DeletePermission(roleId, permissionId);
+        return new ResponseEntity<>(result.getData(), result.getStatus());
+    }
+
+    @PostMapping("/{id}/updatePermissions")
+    @PreAuthorize("hasAuthority('edit_permission_role')")
+    public ResponseEntity<Object> updatePermissions(@PathVariable(value = "id") int roleId,@RequestBody RoleViewModel role) {
+        CommandResult result = roleService.UpdatePermissions(roleId, role);
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
 }

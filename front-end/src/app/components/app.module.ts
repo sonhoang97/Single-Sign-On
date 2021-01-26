@@ -30,7 +30,7 @@ import {
   FacebookLoginProvider,
 } from 'angularx-social-login';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { AddPermissionPopupComponent } from './admin/home-admin/role-admin/add-permission-popup/add-permission-popup.component';
+import { SortableModule } from 'ngx-bootstrap/sortable';
 const APP_COMPONENTS: any[] = [
   fromApp.AppComponent,
   fromApp.TopMenuComponent,
@@ -84,6 +84,7 @@ const APP_SHARED_COMPONENTS: any[] = [
     NgxPaginationModule,
     TypeaheadModule.forRoot(),
     MatSelectModule,
+    SortableModule.forRoot(),
   ],
   exports: [APP_POPUP_COMPONENTS],
   entryComponents: [APP_POPUP_COMPONENTS],

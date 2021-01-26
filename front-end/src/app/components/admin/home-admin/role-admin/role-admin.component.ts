@@ -35,7 +35,6 @@ export class RoleAdminComponent implements OnInit {
       (res) => {
         this.isLoading = false;
         this.lsRoles = res;
-        console.log(this.lsRoles);
       },
       (err) => {
         this.isLoading = false;
@@ -48,7 +47,6 @@ export class RoleAdminComponent implements OnInit {
     this.permissionService.getAllPermissions().subscribe(
       (res) => {
         this.lsAllPermissions = res;
-        console.log(res);
       },
       (err) => {
         console.log(err);
@@ -56,12 +54,13 @@ export class RoleAdminComponent implements OnInit {
     );
   }
 
-  addPermissionPopup(): void {
+  addPermissionPopup(role: Role): void {
     if(this.lsAllPermissions.length==0){
       return;
     }
     const initialState = {
-      lsAllPermissions: this.lsAllPermissions
+      lsAllPermissions: this.lsAllPermissions,
+      role: role
     };
     this.bsModalRef = this.modalService.show(
         AddPermissionPopupComponent,

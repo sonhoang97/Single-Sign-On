@@ -22,6 +22,5 @@ public class PermissionEntity implements Serializable {
     }
 
     public PermissionEntity() {
-        this.name = "test";
     }
 }

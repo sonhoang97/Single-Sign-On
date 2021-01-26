@@ -18,7 +18,7 @@ public class RoleViewModel {
     private Integer id;
     private Set<PermissionEntity> permissions;
     private List<String> usernames;
-
+    public RoleViewModel(){}
     public RoleViewModel(RoleEntity role) {
         this.usernames = new ArrayList<>();
         this.name = role.getName();
