@@ -13,16 +13,17 @@ import { UserProfile } from 'src/models/user/user-profile.model';
 })
 export class ProfileService {
   private apiURL = Config.getPath(PathController.Account);
-  private headers = new HttpHeaders({
-    'Content-type': 'application/json',
-    Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
-  });
+
   constructor(private http: HttpClient) {}
 
   public getProfile(): Observable<UserProfile> {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
     return this.http
       .get(this.apiURL + '/profile', {
-        headers: this.headers,
+        headers: headers,
       })
       .pipe(
         map((res: UserProfile) => {
@@ -37,6 +38,10 @@ export class ProfileService {
     email: string,
     phonenumber: string
   ): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
     let bodyProfile = {
       firstname,
       lastname,
@@ -45,7 +50,7 @@ export class ProfileService {
     };
     return this.http
       .put(this.apiURL + '/profile', JSON.stringify(bodyProfile), {
-        headers: this.headers,
+        headers: headers,
       })
       .pipe(
         map((res: any) => {
@@ -55,12 +60,16 @@ export class ProfileService {
   }
 
   public getUsersAdmin(searchString: string,status:number, sortType: number, pageIndex: number, pageSize: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
       const url = this.apiURL + '/getUsers/'+sortType+'/'+pageIndex+'/'+pageSize+'?searchString='+searchString+ '&status='+status;
       const urlNonStatus = this.apiURL + '/getUsers/'+sortType+'/'+pageIndex+'/'+pageSize+'?searchString='+searchString;
       if(status == -1){
       return this.http
         .get(urlNonStatus, {
-          headers: this.headers,
+          headers: headers,
         })
         .pipe(
           map((res: any) => {
@@ -70,7 +79,7 @@ export class ProfileService {
     } else {
       return this.http
         .get(url, {
-          headers: this.headers,
+          headers: headers,
         })
         .pipe(
           map((res: any) => {
@@ -81,12 +90,16 @@ export class ProfileService {
   }
 
   public banUser(username: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
     let body = {
       username
     };
     return this.http
       .post(this.apiURL + '/banUser', JSON.stringify(body), {
-        headers: this.headers,
+        headers: headers,
       })
       .pipe(
         map((res: any) => {
@@ -96,12 +109,16 @@ export class ProfileService {
   }
 
   public activeUser(username: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
     let body = {
       username
     };
     return this.http
       .post(this.apiURL + '/activeUser', JSON.stringify(body), {
-        headers: this.headers,
+        headers: headers,
       })
       .pipe(
         map((res: any) => {
