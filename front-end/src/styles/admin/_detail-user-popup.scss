@@ -19,7 +19,11 @@ detail-user-popup {
     }
   }
 
-  span .fa-trash:hover{
+  span .fa-trash:hover {
     color: $red;
+  }
+
+  .status {
+    height: 38px;
   }
 }

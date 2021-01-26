@@ -88,76 +88,29 @@
         />
       </div>
     </div>
-    <div class="row my-1">
-      <div class="col-md-4 h6 text-right py-0 my-auto pr-1 font-weight-bold">
-        Status:
-      </div>
-      <div
-        *ngIf="user.enabled"
-        class="col-md-auto font-weight-bold text-success"
-      >
-        Actived
-        <i
-          class="fas fa-sync-alt text-danger ml-3 cursor-pointer"
-          aria-hidden="true"
-          (click)="openModalBan(isBan)"
-        ></i>
-        <ng-template #isBan>
-          <div class="modal-body text-center">
-            <h6 class="font-weight-bold">Do you want to ban this user?</h6>
-            <button type="button" class="btn btn-default" (click)="banUser()">
-              Yes
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="modalRefBan.hide()"
-            >
-              Cancel
-            </button>
-          </div>
-        </ng-template>
-      </div>
-      <div
-        *ngIf="!user.enabled"
-        class="col-md-auto font-weight-bold text-danger"
-      >
-        Banned
-        <i
-          class="fas fa-sync-alt text-success ml-3 cursor-pointer"
-          aria-hidden="true"
-          (click)="openModalActive(isActive)"
-        ></i>
-        <ng-template #isActive>
-          <div class="modal-body text-center">
-            <h6 class="font-weight-bold">Do you want to active this user?</h6>
-            <button
-              type="button"
-              class="btn btn-default"
-              (click)="activeUser()"
-            >
-              Yes
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="modalRefActive.hide()"
-            >
-              Cancel
-            </button>
-          </div>
-        </ng-template>
-      </div>
-    </div>
-    <hr />
     <div class="row">
-      <div class="col-md-2 font-weight-bold mt-2">
-        Roles
-        <span class="text-muted h4 cursor-pointer ml-3 mt-1">
-          <i class="fa fa-plus text-success"></i>
-        </span>
+      <div class="col-md-4 h6 px-0 text-right my-auto pr-1 font-weight-bold">
+        Role:
       </div>
-      <div class="col-md">
+
+      <div class="form-group col-md-6 my-auto">
+        <select
+          [(ngModel)]="user.lsRoles[0].id"
+          id="status"
+          class="form-control"
+          class="form-control"
+          id="exampleFormControlSelect2"
+        >
+          <option
+            *ngFor="let rolee of lsAllRoles; index as i"
+            [value]="rolee.id"
+          >
+            {{ rolee.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- <div class="col-md">
         <ul class="list-group">
           <li
             class="list-group-item"
@@ -188,8 +141,68 @@
             </div>
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
+    <div class="row my-1 status">
+      <div class="col-md-4 h6 px-0 text-right my-auto pr-1 font-weight-bold">
+        Status:
+      </div>
+
+      <div *ngIf="user.enabled" class="col-md-2 my-auto font-weight-bold">
+        <div class="text-success">Actived</div>
+      </div>
+      <div *ngIf="user.enabled" class="col-md-4 my-auto text-right">
+        <i
+          class="btn btn-danger"
+          aria-hidden="true"
+          (click)="openModalBan(isBan)"
+          >Ban user</i
+        >
+      </div>
+
+      <ng-template #isBan>
+        <div class="modal-body text-center">
+          <h6 class="font-weight-bold">Are you sure to ban this user?</h6>
+          <button type="button" class="btn btn-danger" (click)="banUser()">
+            Yes
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="modalRefBan.hide()"
+          >
+            Cancel
+          </button>
+        </div>
+      </ng-template>
+
+      <div *ngIf="!user.enabled" class="col-md-1 my-auto font-weight-bold">
+        <div class="text-danger">Banned</div>
+      </div>
+
+      <div *ngIf="!user.enabled" class="col-md-5 my-auto text-right">
+        <i class="btn btn-info" aria-hidden="true" (click)="openModalBan(isBan)"
+          >Unban user</i
+        >
+      </div>
+      <ng-template #isBan>
+        <div class="modal-body text-center">
+          <h6 class="font-weight-bold">Are you sure to unban this user?</h6>
+          <button type="button" class="btn btn-info" (click)="banUser()">
+            Yes
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="modalRefBan.hide()"
+          >
+            Cancel
+          </button>
+        </div>
+      </ng-template>
+    </div>
+
+    <hr />
   </div>
   <hr />
   <div class="row">
@@ -237,7 +250,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="submit-btn" (click)="bsModalRef.hide()">
+    <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">
       Cancel
     </button>
   </div>

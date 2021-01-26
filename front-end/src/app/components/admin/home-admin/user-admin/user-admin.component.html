@@ -60,10 +60,10 @@
             {{ user.phonenumber }}
           </td>
           <td *ngIf="user.enabled" scope="col" class="align-middle">
-            <div class="btn btn-success">Active</div>
+            <div class="btn btn-success no-pointer">Active</div>
           </td>
           <td *ngIf="!user.enabled" scope="col" class="align-middle">
-            <div class="btn btn-danger">Banned</div>
+            <div class="btn btn-danger no-pointer">Banned</div>
           </td>
           <td class="py-auto">
             <div
