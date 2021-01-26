@@ -33,5 +33,20 @@ export class RoleService {
       );
   }
 
-  
+  public updateRole(role: Role): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
+
+    return this.http
+      .post(this.apiURL + '/'+role.id+'/updatePermissions', JSON.stringify(role), {
+        headers: headers,
+      })
+      .pipe(
+        map((res: any) => {
+          return res;
+        })
+      );
+  }
 }

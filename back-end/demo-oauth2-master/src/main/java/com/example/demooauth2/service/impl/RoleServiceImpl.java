@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 @Service
 public class RoleServiceImpl implements RoleService {
     @Autowired
@@ -126,6 +128,21 @@ public class RoleServiceImpl implements RoleService {
             return new CommandResult().SucceedWithData("Remove permission for role successful!");
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Remove permission for role fail!");
+        }
+    }
+
+    @Override
+    public CommandResult UpdatePermissions(int roleId, RoleViewModel roleViewModel){
+        try{
+            Optional<RoleEntity> existRole = roleRepository.findById(roleId);
+            if(!existRole.isPresent()) {
+                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
+            }
+            existRole.get().setPermissions(roleViewModel.getPermissions());
+            roleRepository.save(existRole.get());
+            return new CommandResult().Succeed();
+        }catch(Exception ex){
+            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Update permission for role fail!");
         }
     }
 }

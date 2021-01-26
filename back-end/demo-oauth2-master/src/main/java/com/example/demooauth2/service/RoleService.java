@@ -2,7 +2,11 @@ package com.example.demooauth2.service;
 
 import com.example.demooauth2.modelEntity.PermissionEntity;
 import com.example.demooauth2.modelEntity.RoleEntity;
+import com.example.demooauth2.modelView.roles.RoleViewModel;
 import com.example.demooauth2.responseModel.CommandResult;
+
+import java.util.List;
+import java.util.Set;
 
 public interface RoleService {
     CommandResult CreateNew(RoleEntity permission) ;
@@ -21,4 +25,5 @@ public interface RoleService {
 
     CommandResult getAllRoles();
 
+    CommandResult UpdatePermissions(int roleId, RoleViewModel roleViewModel);
 }
