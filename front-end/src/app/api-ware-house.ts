@@ -16,7 +16,6 @@ export class ApiWareHouse {
     return this.apiEndPoint;
   }
 
-
   private appVersion: string;
   public get Version(): string {
     return this.appVersion;
@@ -28,7 +27,7 @@ export class ApiWareHouse {
     if (environment.production) {
       this.domain = 'none';
       this.protocol = 'http://';
-      this.apiEndPoint = 'none/api/';
+      this.apiEndPoint = 'sso-sys.ap-southeast-1.elasticbeanstalk.com/api/';
     } else {
       this.domain = 'none';
       this.protocol = 'http://';
