@@ -45,9 +45,13 @@ export class AuthService {
     });
 
     return this.http
-      .post('http://localhost:8083/oauth/token', body.toString(), {
-        headers: headers,
-      })
+      .post(
+        'http://sso-sys.ap-southeast-1.elasticbeanstalk.com/oauth/token',
+        body.toString(),
+        {
+          headers: headers,
+        }
+      )
       .pipe(
         map((res: TokenPassword) => {
           LsHelper.saveTokenToStorage(res);
@@ -67,9 +71,13 @@ export class AuthService {
     });
 
     return this.http
-      .post('http://localhost:8083/oauth/token', body.toString(), {
-        headers: headers,
-      })
+      .post(
+        'http://sso-sys.ap-southeast-1.elasticbeanstalk.com/oauth/token',
+        body.toString(),
+        {
+          headers: headers,
+        }
+      )
       .pipe(
         map((res: TokenPassword) => {
           return res;
@@ -77,15 +85,21 @@ export class AuthService {
       );
   }
 
-  public changePassword(currentPassword: string, newPassword: string, confirmPassword: string): Observable<any>{
+  public changePassword(
+    currentPassword: string,
+    newPassword: string,
+    confirmPassword: string
+  ): Observable<any> {
     let headers = new HttpHeaders({
       'Content-type': 'application/json',
       Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
     });
 
     let bodyPassword = {
-      currentPassword,newPassword,confirmPassword
-    }
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    };
 
     return this.http
       .post(this.apiURL + '/changePassword', JSON.stringify(bodyPassword), {

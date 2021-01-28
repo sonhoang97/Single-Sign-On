@@ -1,5 +1,9 @@
 profile {
-
+  div {
+    h5 {
+      color: #6a6a6a;
+    }
+  }
   .profile-img {
     text-align: center;
   }
@@ -40,13 +44,14 @@ profile {
     font-size: 18px;
     width: 200px;
     &:hover {
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+        rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
       background-color: #3931af;
       color: white;
     }
   }
 
-  span .fa-trash:hover{
+  span .fa-trash:hover {
     color: $red;
   }
   .proile-rating {
@@ -72,22 +77,21 @@ profile {
   }
 
   .profile-work p {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
-    color: #1eb98b;
+    color: black;
     cursor: pointer;
     margin: 3px;
     padding-left: 5px;
     &:hover {
       padding-left: 10px;
-
     }
   }
 
   p.selected-item {
-      background-color: #1eb98b;
-      border-radius: 5px;
-      color:white;
+    background-color: #dcdcdc;
+    border-radius: 5px;
+    color: black;
   }
 
   .profile-tab p {
@@ -95,7 +99,7 @@ profile {
     color: #0062cc;
   }
 
-  .bg-category{
-    background-color:  #212121;
+  .bg-category {
+    background-color: #212121;
   }
 }

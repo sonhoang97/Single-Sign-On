@@ -4,7 +4,10 @@ html {
 }
 
 body {
-  height: 100%;
+  .mh-100 {
+    min-height: 100vh;
+  }
+  height: 100vh;
   margin: 0;
   font-family: $font-family;
   font-size: $font-default;
@@ -12,7 +15,28 @@ body {
   background-image: url(../assets/img/bgr4.jpg);
   app-root {
   }
-  .cursor-pointer{
+  .cursor-pointer {
     cursor: pointer;
+  }
+
+  .text-h2 {
+    color: #353535;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .btn-16 {
+  }
+  .btn-long {
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-weight: bold;
+    font-size: 18px;
+    width: 200px;
+  }
+  .navText {
+    :hover {
+      border-bottom: 1px #353535;
+    }
   }
 }

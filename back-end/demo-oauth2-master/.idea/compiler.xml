@@ -10,7 +10,7 @@
         <module name="demo-oauth2" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="11">
       <module name="demo-oauth2" target="9" />
     </bytecodeTargetLevel>
   </component>

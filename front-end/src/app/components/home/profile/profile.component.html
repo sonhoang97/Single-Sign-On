@@ -1,7 +1,7 @@
-<div class="container-fluid bg-white">
+<div class="container-fluid bg-white mh-100">
   <div class="row">
-    <div class="col-md-2 bg-category">
-      <div class="profile-img my-2">
+    <div class="col-md-2 bg-white shadow mh-100">
+      <!-- <div class="profile-img my-2">
         <img
           src="https://lh3.googleusercontent.com/-eo_sqZiF0-8/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucm8QZ9qLHXGJOW-tPMCtrDxBXlUTg/s96-c/photo.jpg"
           alt=""
@@ -10,32 +10,32 @@
           Change Photo
           <input type="file" name="file" />
         </div>
-      </div>
+      </div> -->
       <div class="profile-work my-3">
-        <h5 class="font-weight-bold text-white">Account</h5>
-        <p (click)="typeSelect = 1" [class.selected-item]="typeSelect==1">
+        <h5 class="font-weight-bold text-black">Account</h5>
+        <p (click)="typeSelect = 1" [class.selected-item]="typeSelect == 1">
           <i class="fa fa-user" aria-hidden="true"></i> User profile
         </p>
-        <p (click)="typeSelect = 2" [class.selected-item]="typeSelect==2">
+        <p (click)="typeSelect = 2" [class.selected-item]="typeSelect == 2">
           <i class="fab fa-500px" aria-hidden="true"></i> Password
         </p>
-        <p (click)="typeSelect = 3" [class.selected-item]="typeSelect==3">
+        <p (click)="typeSelect = 3" [class.selected-item]="typeSelect == 3">
           <i class="fas fa-key" aria-hidden="true"></i> Settings Token
         </p>
         <hr style="border-top: 1px solid rgba(235, 233, 233, 0.1)" />
-        <h5 class="font-weight-bold text-white">Configure</h5>
-        <p (click)="typeSelect = 4" [class.selected-item]="typeSelect==4">
+        <h5 class="font-weight-bold text-black">Configure</h5>
+        <p (click)="typeSelect = 4" [class.selected-item]="typeSelect == 4">
           <i class="fas fa-box" aria-hidden="true"></i> Credentials
         </p>
         <!-- <p (click)="typeSelect = 5">
             <i class="fas fa-boxes" aria-hidden="true"></i> Client Scope
           </p> -->
-        <p (click)="typeSelect = 6" [class.selected-item]="typeSelect==6">
+        <p (click)="typeSelect = 6" [class.selected-item]="typeSelect == 6">
           <i class="fas fa-box-open" aria-hidden="true"></i> Create Credential
         </p>
       </div>
     </div>
-    <div class="col-md-10 py-4">
+    <div class="col-md-10 py-4 px-5">
       <user-profile
         [userProfile]="userProfile"
         *ngIf="typeSelect == 1"
