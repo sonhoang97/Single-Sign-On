@@ -1,109 +1,111 @@
-<div class="container-fluid">
-  <div class="row pt-2">
-    <div class="col-12 col-md-4">
-      <div class="form-group">
-        <label class="text-muted">Search for</label>
-        <input
-          type="text"
-          placeholder="Username,Email"
-          class="form-control"
-          [(ngModel)]="searchString"
-        />
+<div class="container-fluid mh-100">
+  <div class="container-fluid">
+    <div class="row pt-2">
+      <div class="col-12 col-md-4">
+        <div class="form-group">
+          <label class="text-muted">Search for</label>
+          <input
+            type="text"
+            placeholder="Username,Email"
+            class="form-control"
+            [(ngModel)]="searchString"
+          />
+        </div>
       </div>
-    </div>
-    <div class="col-12 col-md-1">
-      <div class="form-group">
-        <label class="text-muted"> Status</label>
-        <select [(ngModel)]="status" id="status" class="form-control">
-          <option value="-1" selected>All</option>
-          <option value="1">Normal</option>
-          <option value="0">Banned</option>
-        </select>
+      <div class="col-12 col-md-1">
+        <div class="form-group">
+          <label class="text-muted"> Status</label>
+          <select [(ngModel)]="status" id="status" class="form-control">
+            <option value="-1" selected>All</option>
+            <option value="1">Normal</option>
+            <option value="0">Banned</option>
+          </select>
+        </div>
       </div>
-    </div>
-    <div class="col-4 col-md-auto ml-auto ml-md-0 d-flex align-items-end">
-      <div class="form-group w-100">
-        <button
-          class="btn btn-primary w-100 form-control"
-          (click)="searchUsers()"
-        >
-          <i class="icon icon-search icon-14"> </i>
-          Search
-        </button>
+      <div class="col-4 col-md-auto ml-auto ml-md-0 d-flex align-items-end">
+        <div class="form-group w-100">
+          <button
+            class="btn btn-primary w-100 form-control"
+            (click)="searchUsers()"
+          >
+            <i class="icon icon-search icon-14"> </i>
+            Search
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="container-fluid">
-  <div class="row no-gutters table-responsive-xl table-container">
-    <table class="table table-bordered table-striped table-hover">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">Username</th>
-          <th scope="col">Email</th>
-          <th scope="col">First Name</th>
-          <th scope="col">Last Name</th>
-          <th scope="col">Phone Number</th>
-          <th scope="col">Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody *ngIf="!isLoading">
-        <tr *ngFor="let user of users | paginate: config">
-          <td scope="col" class="align-middle">
-            {{ user.username }}
-          </td>
-          <td scope="col" class="align-middle">{{ user.email }}</td>
-          <td scope="col" class="align-middle">{{ user.firstname }}</td>
-          <td scope="col" class="align-middle">{{ user.lastname }}</td>
-          <td scope="col" class="align-middle">
-            {{ user.phonenumber }}
-          </td>
-          <td *ngIf="user.enabled" scope="col" class="align-middle">
-            <div class="btn btn-success no-pointer">Active</div>
-          </td>
-          <td *ngIf="!user.enabled" scope="col" class="align-middle">
-            <div class="btn btn-danger no-pointer">Banned</div>
-          </td>
-          <td class="py-auto">
-            <div
-              class="row mx-auto cursor-pointer"
-              (click)="detailUserPopup(user)"
-            >
-              <button type="button" class="col-md-auto mx-auto btn btn-info">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-pencil"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"
-                  ></path>
-                </svg>
-                Edit
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="row">
-    <loading class="mx-auto" *ngIf="isLoading"></loading>
-  </div>
-  <div class="row">
-    <pagination-controls
-      class="col-md"
-      (pageChange)="pageChanged($event)"
-    ></pagination-controls>
-    <div class="col-auto ml-auto font-italic">
-      Showing {{ config.itemsPerPage * (config.currentPage - 1) + 1 }} -
-      {{ config.itemsPerPage * (config.currentPage - 1) + users.length }}/{{
-        config.totalItems
-      }}
+  <div class="container-fluid">
+    <div class="row no-gutters table-responsive-xl table-container">
+      <table class="table table-bordered table-striped table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody *ngIf="!isLoading">
+          <tr *ngFor="let user of users | paginate: config">
+            <td scope="col" class="align-middle">
+              {{ user.username }}
+            </td>
+            <td scope="col" class="align-middle">{{ user.email }}</td>
+            <td scope="col" class="align-middle">{{ user.firstname }}</td>
+            <td scope="col" class="align-middle">{{ user.lastname }}</td>
+            <td scope="col" class="align-middle">
+              {{ user.phonenumber }}
+            </td>
+            <td *ngIf="user.enabled" scope="col" class="align-middle">
+              <div class="btn btn-success no-pointer">Active</div>
+            </td>
+            <td *ngIf="!user.enabled" scope="col" class="align-middle">
+              <div class="btn btn-danger no-pointer">Banned</div>
+            </td>
+            <td class="py-auto">
+              <div
+                class="row mx-auto cursor-pointer"
+                (click)="detailUserPopup(user)"
+              >
+                <button type="button" class="col-md-auto mx-auto btn btn-info">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-pencil"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"
+                    ></path>
+                  </svg>
+                  Edit
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <loading class="mx-auto" *ngIf="isLoading"></loading>
+    </div>
+    <div class="row">
+      <pagination-controls
+        class="col-md"
+        (pageChange)="pageChanged($event)"
+      ></pagination-controls>
+      <div class="col-auto ml-auto font-italic">
+        Showing {{ config.itemsPerPage * (config.currentPage - 1) + 1 }} -
+        {{ config.itemsPerPage * (config.currentPage - 1) + users.length }}/{{
+          config.totalItems
+        }}
+      </div>
     </div>
   </div>
 </div>
