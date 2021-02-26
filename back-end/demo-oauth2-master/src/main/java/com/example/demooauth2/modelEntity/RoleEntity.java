@@ -1,5 +1,6 @@
 package com.example.demooauth2.modelEntity;
 
+import com.example.demooauth2.modelView.roles.RoleViewModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
@@ -43,6 +44,10 @@ public class RoleEntity implements Serializable {
         name = "test";
         permissions = new HashSet<>();
         permissions.add(new PermissionEntity());
+    }
+    public RoleEntity(RoleViewModel newRole) {
+        name = newRole.getName();
+        permissions = newRole.getPermissions();
     }
 
     public void addNewPermisison(PermissionEntity permission) {

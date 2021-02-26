@@ -1,0 +1,83 @@
+<div class="modal-header">
+  <div class="h4 font-weight-bold m-0">Create new role</div>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="bsModalRef.hide()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-auto h6 py-0 my-auto pr-1">
+        Role name:
+      </div>
+      <div class="col-md-4 text-left text-muted">
+        <input
+          type="text"
+          class="form-control"
+          aria-label="Small"
+          aria-describedby="inputGroup-sizing-sm"
+          [(ngModel)]="newRole.name"
+        />
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <pre class="h5">Current Permissions</pre>
+      </div>
+      <div class="col-md-6 text-center">
+        <pre class="h5">All Permissions</pre>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md table-permissions m-2 scrollbar sbId">
+        <bs-sortable
+          [(ngModel)]="newRole.permissions"
+          fieldName="name"
+          itemClass="sortable-item"
+          itemActiveClass="sortable-item-active"
+          placeholderItem="Drag here"
+          placeholderClass="placeholderStyle"
+          wrapperClass="sortable-wrapper"
+        ></bs-sortable>
+      </div>
+      <div class="col-md table-permissions m-2 scrollbar sbId">
+        <bs-sortable
+          [(ngModel)]="lsAllPermissions"
+          fieldName="name"
+          itemClass="sortable-item"
+          itemActiveClass="sortable-item-active"
+          placeholderItem="Drag here"
+          placeholderClass="placeholderStyle"
+          wrapperClass="sortable-wrapper"
+        ></bs-sortable>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="openModalConfirm(isCreate)" [disabled]="!newRole.name">Create</button>
+    <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">
+      Cancel
+    </button>
+    <ng-template #isCreate>
+        <div class="modal-body text-center">
+          <h6 class="font-weight-bold">Are you sure to create role {{newRole.name}}?</h6>
+          <button type="button" class="btn btn-danger mx-2" (click)="createNewRole()">
+            Yes
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary mx-2"
+            (click)="modalRefConfirm.hide()"
+          >
+            Cancel
+          </button>
+        </div>
+      </ng-template>
+  </div>
+</div>

@@ -32,6 +32,22 @@ export class ProfileService {
       );
   }
 
+  public getUser(username: string): Observable<UserProfile> {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
+    return this.http
+      .get(this.apiURL + '/user?username='+username, {
+        headers: headers,
+      })
+      .pipe(
+        map((res: UserProfile) => {
+          return res;
+        })
+      );
+  }
+
   public updateProfile(
     firstname: string,
     lastname: string,

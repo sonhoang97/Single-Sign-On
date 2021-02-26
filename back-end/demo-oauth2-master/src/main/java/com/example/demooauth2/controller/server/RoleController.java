@@ -20,9 +20,9 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    @PostMapping("")
-    @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<Object> CreateNew(@RequestBody RoleEntity role) {
+    @PostMapping("/create")
+    @PreAuthorize("hasAuthority('edit_role')")
+    public ResponseEntity<Object> CreateNew(@RequestBody RoleViewModel role) {
         CommandResult result = roleService.CreateNew(role);
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }

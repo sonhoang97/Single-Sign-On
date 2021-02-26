@@ -37,6 +37,13 @@ public class AccountController {
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 
+    @GetMapping("/user")
+    @PreAuthorize("hasAuthority('read_user')")
+    public ResponseEntity<Object> getUser(@RequestParam(defaultValue = "") String username){
+        CommandResult result = userService.getUser(username);
+        return new ResponseEntity<>(result.getData(),result.getStatus());
+    }
+
     @GetMapping("/getUsers/{sortType}/{pageIndex}/{pageSize}")
     @PreAuthorize("hasAuthority('read_user')")
     public ResponseEntity<Object> getUsers(

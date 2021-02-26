@@ -23,7 +23,6 @@ export class AddPermissionPopupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.getTheRestOfPermission();
   }
 
@@ -53,5 +52,4 @@ export class AddPermissionPopupComponent implements OnInit {
       }
     );
   }
-  
 }

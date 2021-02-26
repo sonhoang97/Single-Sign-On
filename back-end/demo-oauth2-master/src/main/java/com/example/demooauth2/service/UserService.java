@@ -17,6 +17,8 @@ public interface UserService {
 
     CommandResult getProfile(Principal principal);
 
+    CommandResult getUser(String username);
+
     CommandResult changePassword(Principal principal, Map<String, String> bodyPassword);
 
     CommandResult updateProfile(Principal principal, Map<String, String> bodyProfile);

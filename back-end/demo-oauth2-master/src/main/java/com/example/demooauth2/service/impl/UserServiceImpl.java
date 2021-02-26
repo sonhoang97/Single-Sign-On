@@ -115,6 +115,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public CommandResult getUser(String username){
+        if(username.isEmpty()){
+            return new CommandResult(HttpStatus.NOT_FOUND);
+        }
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+        if (!userEntity.isPresent()) {
+            return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user");
+        }
+        UserProfileViewModel userViewModel = new UserProfileViewModel(userEntity.get());
+        return new CommandResult().SucceedWithData(userViewModel);
+    }
+
+    @Override
     public CommandResult changePassword(Principal principal, Map<String, String> bodyPassword) {
         try {
             if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {

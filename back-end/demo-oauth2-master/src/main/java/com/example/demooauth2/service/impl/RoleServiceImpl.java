@@ -22,14 +22,15 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     PermissionRepository permissionRepository;
     @Override
-    public CommandResult CreateNew(RoleEntity role) {
+    public CommandResult CreateNew(RoleViewModel role) {
         try {
             Optional<RoleEntity> existRole = roleRepository.findByName(role.getName());
             if(existRole.isPresent()) {
                 return new CommandResult(HttpStatus.CONFLICT, "Role name is duplicate");
             }
-            roleRepository.save(role);
-            return  new CommandResult().SucceedWithData("Create new role successful!");
+            RoleEntity newRole = new RoleEntity(role);
+            roleRepository.save(newRole);
+            return  new CommandResult().Succeed();
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Create new role fail!");
         }
