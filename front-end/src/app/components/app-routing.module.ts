@@ -10,9 +10,8 @@ import { HomeAdminComponent } from './admin/home-admin/home-admin.component';
 import { AdminValidGuard } from './guards/admin-valid.guard';
 import { CallbackFacebookComponent } from './home/login-form/callback-facebook/callback-facebook.component';
 const routes: Routes = [
-  { path: 'login', component: LoginFormComponent },
+  { path: '', component: LoginFormComponent },
   { path: 'register', component: RegisterFormComponent },
-  { path: '', component: HomeMenuComponent },
   { path: 'doc', component: ApiDocComponent },
   {
     path: 'profile',

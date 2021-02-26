@@ -17,10 +17,10 @@ export class AdminValidGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> | boolean {
     const authorities = LsHelper.getAuthoritiesFromToken();
-    if (authorities.includes("ROLE_admin")) {
+    if (authorities.includes("ROLE_admin") || authorities.includes("read_adminpage")) {
       return true;
     } else {
-      this.router.navigate(['']);
+      this.router.navigate(['/profile']);
       return false;
     }
   }

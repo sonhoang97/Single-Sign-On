@@ -34,16 +34,13 @@ public class RoleEntity implements Serializable {
     private Set<PermissionEntity> permissions;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "role_user", joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "user_id", referencedColumnName = "id")})
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private Set<UserEntity> users;
 
     public RoleEntity() {
-        name = "test";
-        permissions = new HashSet<>();
-        permissions.add(new PermissionEntity());
+//        name = "test";
+//        permissions = new HashSet<>();
+//        permissions.add(new PermissionEntity());
     }
     public RoleEntity(RoleViewModel newRole) {
         name = newRole.getName();

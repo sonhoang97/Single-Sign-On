@@ -21,16 +21,17 @@ public class RoleServiceImpl implements RoleService {
     RoleRepository roleRepository;
     @Autowired
     PermissionRepository permissionRepository;
+
     @Override
     public CommandResult CreateNew(RoleViewModel role) {
         try {
             Optional<RoleEntity> existRole = roleRepository.findByName(role.getName());
-            if(existRole.isPresent()) {
+            if (existRole.isPresent()) {
                 return new CommandResult(HttpStatus.CONFLICT, "Role name is duplicate");
             }
             RoleEntity newRole = new RoleEntity(role);
             roleRepository.save(newRole);
-            return  new CommandResult().Succeed();
+            return new CommandResult().Succeed();
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Create new role fail!");
         }
@@ -40,11 +41,11 @@ public class RoleServiceImpl implements RoleService {
     public CommandResult Update(int id, RoleEntity newRole) {
         try {
             Optional<RoleEntity> existRole = roleRepository.findById(id);
-            if(!existRole.isPresent()) {
+            if (!existRole.isPresent()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
             }
             roleRepository.save(newRole);
-            return  new CommandResult().SucceedWithData("Update role successful!");
+            return new CommandResult().SucceedWithData("Update role successful!");
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Update role fail!");
         }
@@ -54,7 +55,7 @@ public class RoleServiceImpl implements RoleService {
     public CommandResult getAll() {
         try {
             List<RoleEntity> data = roleRepository.findAll();
-            return  new CommandResult().SucceedWithData(data);
+            return new CommandResult().SucceedWithData(data);
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Get role fail!");
 
@@ -64,10 +65,9 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public CommandResult GetSingleById(int id) {
         try {
-           Optional<RoleEntity> role = roleRepository.findById(id);
-            return  new CommandResult().SucceedWithData(role);
-        }
-        catch (Exception ex) {
+            Optional<RoleEntity> role = roleRepository.findById(id);
+            return new CommandResult().SucceedWithData(role);
+        } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Get role fail!");
 
         }
@@ -77,14 +77,18 @@ public class RoleServiceImpl implements RoleService {
     public CommandResult Delete(int id) {
         try {
             Optional<RoleEntity> existRole = roleRepository.findById(id);
-            if(!existRole.isPresent()) {
+            if (!existRole.isPresent()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
             }
-            if(existRole.get().getName().equals("ROLE_admin") || existRole.get().getId()==1)
+            if (existRole.get().getName().equals("ROLE_admin") || existRole.get().getId() == 1) {
+                return new CommandResult(HttpStatus.UNAUTHORIZED, "Cannot remove Role Admin");
+            }
+            if (!existRole.get().getUsers().isEmpty()) {
+                return new CommandResult(HttpStatus.UNAUTHORIZED, "Have someone have this role!");
+            }
             roleRepository.delete(existRole.get());
-            return  new CommandResult().SucceedWithData("Delete role successful!");
-        }
-        catch (Exception ex) {
+            return new CommandResult().SucceedWithData("Delete role successful!");
+        } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Get role fail!");
 
         }
@@ -94,7 +98,7 @@ public class RoleServiceImpl implements RoleService {
     public CommandResult getAllRoles() {
         try {
             List<RoleViewModel> data = roleRepository.getAllRoles();
-            return  new CommandResult().SucceedWithData(data);
+            return new CommandResult().SucceedWithData(data);
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Get role fail!");
 
@@ -104,14 +108,14 @@ public class RoleServiceImpl implements RoleService {
     public CommandResult AddPermission(int roleId, int permissionId) {
         try {
             Optional<RoleEntity> existRole = roleRepository.findById(roleId);
-            if(!existRole.isPresent()) {
+            if (!existRole.isPresent()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
             }
             PermissionEntity permission = permissionRepository.getOne(permissionId);
             existRole.get().addNewPermisison(permission);
 
             roleRepository.save(existRole.get());
-            return  new CommandResult().SucceedWithData("Add permission for role successful!");
+            return new CommandResult().SucceedWithData("Add permission for role successful!");
         } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Add new permission for role fail!");
         }
@@ -120,7 +124,7 @@ public class RoleServiceImpl implements RoleService {
     public CommandResult DeletePermission(int roleId, int permissionId) {
         try {
             Optional<RoleEntity> existRole = roleRepository.findById(roleId);
-            if(!existRole.isPresent()) {
+            if (!existRole.isPresent()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
             }
             PermissionEntity permission = permissionRepository.getOne(permissionId);
@@ -133,16 +137,16 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public CommandResult UpdatePermissions(int roleId, RoleViewModel roleViewModel){
-        try{
+    public CommandResult UpdatePermissions(int roleId, RoleViewModel roleViewModel) {
+        try {
             Optional<RoleEntity> existRole = roleRepository.findById(roleId);
-            if(!existRole.isPresent()) {
+            if (!existRole.isPresent()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
             }
             existRole.get().setPermissions(roleViewModel.getPermissions());
             roleRepository.save(existRole.get());
             return new CommandResult().Succeed();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Update permission for role fail!");
         }
     }

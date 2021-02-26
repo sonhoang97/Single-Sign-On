@@ -56,6 +56,7 @@
           placeholderItem="Drag here"
           placeholderClass="placeholderStyle"
           wrapperClass="sortable-wrapper"
+          
         ></bs-sortable>
       </div>
       <div class="col-md table-permissions m-2 scrollbar sbId">
@@ -67,12 +68,18 @@
           placeholderItem="Drag here"
           placeholderClass="placeholderStyle"
           wrapperClass="sortable-wrapper"
+          
         ></bs-sortable>
       </div>
     </div>
-
+    <div class="row">
+      <button type="button" class="col-auto btn btn-primary ml-auto m-2" [disabled]="role.usernames.length != 0 || !isAdmin()">
+        Remove
+      </button>
+      <i class="align-middle fas fa-info-circle"  tooltip="Chắc chắn rằng không còn user nào đang có role này. Không thể xoá role Admin"></i>
+    </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="submit()">
+      <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="!isAdmin()">
         Save
       </button>
       <button

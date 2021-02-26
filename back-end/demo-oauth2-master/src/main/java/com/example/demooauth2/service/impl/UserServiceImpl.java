@@ -92,9 +92,7 @@ public class UserServiceImpl implements UserService {
         }
         Optional<RoleEntity> role = roleRepository.findByName("ROLE_user");
         if (role.isPresent()) {
-            Set<RoleEntity> rolesDefault = new HashSet<>();
-            rolesDefault.add(role.get());
-            userDto.setRoles(rolesDefault);
+            userDto.setRole(role.get());
         }
         userRepository.save(userDto);
         return new CommandResult().Succeed();
@@ -198,7 +196,7 @@ public class UserServiceImpl implements UserService {
             if (!userEntity.isPresent()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user");
             }
-            userEntity.get().AddNewRole(existRole.get());
+            userEntity.get().setRole(existRole.get());
             userRepository.save(userEntity.get());
             return new CommandResult().Succeed();
         } catch (Exception ex) {
@@ -206,27 +204,27 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public CommandResult RemoveRole(Principal principal, String username, int roleId) {
-        try {
-            if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
-                return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");
-            }
-            Optional<RoleEntity> existRole = roleRepository.findById(roleId);
-            if (!existRole.isPresent()) {
-                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
-            }
-            Optional<UserEntity> userEntity = userRepository.findByUsername(username);
-            if (!userEntity.isPresent()) {
-                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user: " + username);
-            }
-            userEntity.get().RemoveRole(existRole.get());
-            userRepository.save(userEntity.get());
-            return new CommandResult().Succeed();
-        } catch (Exception ex) {
-            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error!");
-        }
-    }
+//    @Override
+//    public CommandResult RemoveRole(Principal principal, String username, int roleId) {
+//        try {
+//            if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
+//                return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");
+//            }
+//            Optional<RoleEntity> existRole = roleRepository.findById(roleId);
+//            if (!existRole.isPresent()) {
+//                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
+//            }
+//            Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+//            if (!userEntity.isPresent()) {
+//                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user: " + username);
+//            }
+//            userEntity.get().RemoveRole(existRole.get());
+//            userRepository.save(userEntity.get());
+//            return new CommandResult().Succeed();
+//        } catch (Exception ex) {
+//            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error!");
+//        }
+//    }
 
     @Override
     public CommandResult banUser(String username){

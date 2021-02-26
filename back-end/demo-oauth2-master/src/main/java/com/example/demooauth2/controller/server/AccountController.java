@@ -77,14 +77,14 @@ public class AccountController {
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
 
-    @PostMapping("/removeRole")
-    @PreAuthorize("hasAuthority('edit_role_user')")
-    public ResponseEntity<Object> RemoveRole(Principal principal,@RequestBody Map<String, String> bodyRole){
-        String username = bodyRole.get("username");
-        int roleId = Integer.parseInt(bodyRole.get("roleId"));
-        CommandResult result = userService.RemoveRole(principal, username,roleId);
-        return new ResponseEntity<>(result.getData(), result.getStatus());
-    }
+//    @PostMapping("/removeRole")
+//    @PreAuthorize("hasAuthority('edit_role_user')")
+//    public ResponseEntity<Object> RemoveRole(Principal principal,@RequestBody Map<String, String> bodyRole){
+//        String username = bodyRole.get("username");
+//        int roleId = Integer.parseInt(bodyRole.get("roleId"));
+//        CommandResult result = userService.RemoveRole(principal, username,roleId);
+//        return new ResponseEntity<>(result.getData(), result.getStatus());
+//    }
 
     @PostMapping("/banUser")
     @PreAuthorize("hasAuthority('edit_user')")
