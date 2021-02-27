@@ -55,6 +55,7 @@ const APP_COMPONENTS: any[] = [
 const APP_POPUP_COMPONENTS: any[] = [
   fromApp.DetailUserPopupComponent,
   fromApp.AddPermissionPopupComponent,
+  fromApp.CreateRolePopupComponent
 ];
 
 const APP_SHARED_COMPONENTS: any[] = [

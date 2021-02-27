@@ -46,7 +46,7 @@ export class AuthService {
 
     return this.http
       .post(
-        'http://sso-sys.ap-southeast-1.elasticbeanstalk.com/oauth/token',
+        'http://localhost:8083/oauth/token',
         body.toString(),
         {
           headers: headers,
@@ -72,7 +72,7 @@ export class AuthService {
 
     return this.http
       .post(
-        'http://sso-sys.ap-southeast-1.elasticbeanstalk.com/oauth/token',
+        'http://localhost:8083/oauth/token',
         body.toString(),
         {
           headers: headers,
