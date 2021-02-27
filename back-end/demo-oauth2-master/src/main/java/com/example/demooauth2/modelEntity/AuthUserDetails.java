@@ -17,12 +17,11 @@ public class AuthUserDetails extends UserEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        getRoles().forEach(role -> {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-            role.getPermissions().forEach(permission -> {
+            grantedAuthorities.add(new SimpleGrantedAuthority(getRole().getName()));
+            getRole().getPermissions().forEach(permission -> {
                 grantedAuthorities.add(new SimpleGrantedAuthority(permission.getName()));
             });
-        });
+
         return grantedAuthorities;
     }
 

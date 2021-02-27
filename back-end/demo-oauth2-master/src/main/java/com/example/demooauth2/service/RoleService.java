@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface RoleService {
-    CommandResult CreateNew(RoleEntity permission) ;
+    CommandResult CreateNew(RoleViewModel permission) ;
 
     CommandResult Update(int id, RoleEntity newRole);
 

@@ -3,6 +3,7 @@ package com.example.demooauth2.controller;
 import com.example.demooauth2.modelEntity.PermissionEntity;
 import com.example.demooauth2.modelEntity.RoleEntity;
 import com.example.demooauth2.modelEntity.UserEntity;
+import com.example.demooauth2.modelView.roles.RoleViewModel;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.PermissionService;
 import com.example.demooauth2.service.RoleService;
@@ -69,7 +70,7 @@ public class RoleControllerTest {
     @Test
     public void createNewTest() throws Exception {
         RoleEntity permissionEx = new RoleEntity();
-        Mockito.when(roleService.CreateNew(Mockito.any(RoleEntity.class))).thenReturn(new CommandResult().SucceedWithData("Create new role successful!"));
+        Mockito.when(roleService.CreateNew(Mockito.any(RoleViewModel.class))).thenReturn(new CommandResult().SucceedWithData("Create new role successful!"));
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
