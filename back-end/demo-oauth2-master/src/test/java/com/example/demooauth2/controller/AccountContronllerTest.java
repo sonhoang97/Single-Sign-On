@@ -1,5 +1,6 @@
 package com.example.demooauth2.controller;
 
+import com.example.demooauth2.modelEntity.PasswordEntity;
 import com.example.demooauth2.modelEntity.PermissionEntity;
 import com.example.demooauth2.modelEntity.UserEntity;
 import com.example.demooauth2.responseModel.CommandResult;
@@ -16,11 +17,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -48,7 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerTest {
+public class AccountContronllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -107,7 +110,7 @@ public class UserControllerTest {
 
 //    @Test
 //    public void  testAddRoleSuccess() throws Exception {
-//        Mockito.when(userService.addRole(Mockito.any(Principal.class), Mockito.anyInt())).thenReturn(new CommandResult().Succeed());
+//        Mockito.when(userService.addRole(Mockito.any(Principal.class),Mockito.anyString(), Mockito.anyInt())).thenReturn(new CommandResult().Succeed());
 //
 //        MvcResult mvcResult =  mockMvc.perform(post("/api/account/roles/0")
 //                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
@@ -115,7 +118,7 @@ public class UserControllerTest {
 //                .andExpect(status().isOk())
 //                .andDo(print())
 //                .andReturn();
-//        Mockito.verify(userService, Mockito.times(1)).addRole(Mockito.any(Principal.class), Mockito.anyInt());
+//        Mockito.verify(userService, Mockito.times(1)).addRole(Mockito.any(Principal.class),Mockito.anyString(), Mockito.anyInt());
 //        Mockito.verifyNoMoreInteractions(userService);
 //
 //    }
@@ -125,32 +128,131 @@ public class UserControllerTest {
 //
 //    }
 
-//    @Test
-//    public void testGetProfile() throws  Exception {
-//        UserEntity usr = new UserEntity();
-//
-//
-//        Mockito.when(userService.findByUsername("krish")).thenReturn(usr);
-//
-//        MvcResult mvcResult =  mockMvc.perform(get("/api/account/profile")
-//                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish")))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
-//        MockHttpServletResponse res = mvcResult.getResponse();
-//
-//        Mockito.verify(userService, Mockito.times(1)).findByUsername("krish");
-//        Mockito.verifyNoMoreInteractions(userService);
-//    }
+    @Test
+    public void testGetProfile() throws  Exception {
+        UserEntity usr = new UserEntity();
+        Mockito.when(userService.getProfile(Mockito.any(Principal.class))).thenReturn(new CommandResult().SucceedWithData(usr));
+
+        MvcResult mvcResult =  mockMvc.perform(get("/api/account/profile")
+                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish")))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
+        MockHttpServletResponse res = mvcResult.getResponse();
+
+        Mockito.verify(userService, Mockito.times(1)).getProfile(Mockito.any(Principal.class));
+        Mockito.verifyNoMoreInteractions(userService);
+    }
+
+    @Test
+    public void updateProfile() throws  Exception {
+        UserEntity usr = new UserEntity();
+        Mockito.when(userService.updateProfile(Mockito.any(Principal.class), Mockito.anyMap())).thenReturn(new CommandResult().SucceedWithData(usr));
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        String requestJson = mapper.writeValueAsString(usr);
+
+        MvcResult mvcResult =  mockMvc.perform(put("/api/account/profile")
+                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish")).content(requestJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
+        MockHttpServletResponse res = mvcResult.getResponse();
+
+        Mockito.verify(userService, Mockito.times(1)).updateProfile(Mockito.any(Principal.class),Mockito.anyMap());
+        Mockito.verifyNoMoreInteractions(userService);
+    }
+
+
+    @Test
+    public void unAuthorUpdateProfile() throws Exception {
+        UserEntity usr = new UserEntity();
+        Mockito.when(userService.updateProfile(Mockito.any(Principal.class), Mockito.anyMap())).thenReturn(new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        String requestJson = mapper.writeValueAsString(usr);
+
+        MvcResult mvcResult =  mockMvc.perform(put("/api/account/profile")
+                .content(requestJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
+
+        Mockito.verify(userService, Mockito.times(0)).updateProfile(Mockito.any(Principal.class),Mockito.anyMap());
+        Mockito.verifyNoMoreInteractions(userService);
+    }
+
+
+    @Test
+    public void changePasswordSuccess() throws Exception {
+        Mockito.when(userService.changePassword(Mockito.any(Principal.class),Mockito.anyMap())).thenReturn(new CommandResult().Succeed());
+
+        PasswordEntity password = new PasswordEntity("password");
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+
+        String requestJson = mapper.writeValueAsString(password);
+
+
+        MvcResult mvcResult =  mockMvc.perform(post("/api/account/changePassword")
+                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
+                .content(requestJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Mockito.verify(userService, Mockito.times(1)).changePassword(Mockito.any(Principal.class),Mockito.anyMap());
+        Mockito.verifyNoMoreInteractions(userService);
+    }
+
+    @Test
+    public void unAuthorChangePassword() throws Exception {
+        Mockito.when(userService.changePassword(Mockito.any(Principal.class),Mockito.anyMap())).thenReturn(new CommandResult().Succeed());
+
+        PasswordEntity password = new PasswordEntity("password");
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+
+        String requestJson = mapper.writeValueAsString(password);
+
+
+        MvcResult mvcResult =  mockMvc.perform(post("/api/account/changePassword")
+                .content(requestJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
+
+        Mockito.verify(userService, Mockito.times(0)).changePassword(Mockito.any(Principal.class),Mockito.anyMap());
+        Mockito.verifyNoMoreInteractions(userService);
+    }
+
+    @Test
+    public void getUsersSuccess() throws Exception {
+        Mockito.when(userService.getAllUsers(Mockito.any(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt())).thenReturn(new CommandResult().Succeed());
+
+        PasswordEntity password = new PasswordEntity("password");
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+
+        String requestJson = mapper.writeValueAsString(password);
+
+
+        MvcResult mvcResult =  mockMvc.perform(get("/api/account/getUsers/1/1/1")
+                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish")))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Mockito.verify(userService, Mockito.times(1)).getAllUsers(Mockito.any(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt());
+        Mockito.verifyNoMoreInteractions(userService);
+    }
 
     private String getAccessToken(String username, String password) throws Exception {
 
-        // EntityLogin entityLogin = new EntityLogin("luuadmin","admin", "password");
-        //... more
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-//
-//        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        // String requestJson = mapper.writeValueAsString(entityLogin);
 
         MockHttpServletResponse response = mockMvc
                 .perform(post("/oauth/token")
@@ -161,18 +263,12 @@ public class UserControllerTest {
                         .param("username", username)
                         .param("password", password)
                         .param("grant_type", "password")
-//                        .content(buildUrlEncodedFormEntity(
-//                                "username", username,
-//                                "password", password,
-//                                "grant_type", "password"
-//                        ))
                         )
-                        // .content(requestJson))
                         .andDo(print()) //
                 .andReturn().getResponse();
 
         return new ObjectMapper()
-                .readValue(response.getContentAsByteArray(), OAuthToken.class)
+                .readValue(response.getContentAsByteArray(),AccountContronllerTest.OAuthToken.class)
                 .accessToken;
     }
     @JsonIgnoreProperties(ignoreUnknown = true)
