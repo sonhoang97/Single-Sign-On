@@ -26,7 +26,6 @@ public class AccountController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody UserEntity userRegister){
-        userRegister.setPassword(new BCryptPasswordEncoder().encode(userRegister.getPassword()));
         CommandResult result = userService.registerNewUserAccount(userRegister);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
@@ -57,7 +56,8 @@ public class AccountController {
     }
 
    @PutMapping("/profile")
-    public ResponseEntity<Object> updateProfile(Principal principal,@RequestBody Map<String, String> bodyProfile){
+   @PreAuthorize("hasAuthority('edit_profile')")
+   public ResponseEntity<Object> updateProfile(Principal principal,@RequestBody Map<String, String> bodyProfile){
 
         CommandResult result = userService.updateProfile(principal,bodyProfile);
         return new ResponseEntity<>(result.getData(),result.getStatus());

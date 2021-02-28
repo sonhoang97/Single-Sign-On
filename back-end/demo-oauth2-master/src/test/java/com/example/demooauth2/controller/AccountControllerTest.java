@@ -1,7 +1,6 @@
 package com.example.demooauth2.controller;
 
 import com.example.demooauth2.modelEntity.PasswordEntity;
-import com.example.demooauth2.modelEntity.PermissionEntity;
 import com.example.demooauth2.modelEntity.UserEntity;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.OAuth2Service;
@@ -10,14 +9,11 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,7 +22,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -36,10 +31,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -51,19 +43,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AccountContronllerTest {
+public class AccountControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private UserService userService;
-
-    @MockBean
-    private OAuth2Service oAuth2Service;
-
-    @Before
-    public void init() {
-    }
 
  //   @Test
 //
@@ -94,8 +79,7 @@ public class AccountContronllerTest {
     @Test
     public void testRegisterSuccess() throws  Exception {
         UserEntity usr = new UserEntity();
-
-
+        usr.setPassword("password");
         Mockito.when(userService.registerNewUserAccount(Mockito.any(UserEntity.class))).thenReturn(new CommandResult().Succeed());
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
@@ -107,7 +91,20 @@ public class AccountContronllerTest {
         Mockito.verify(userService, Mockito.times(1)).registerNewUserAccount(Mockito.any(UserEntity.class));
         Mockito.verifyNoMoreInteractions(userService);
     }
+@Test
+    public void testRegisterFail() throws  Exception {
+        UserEntity usr = new UserEntity();
+        Mockito.when(userService.registerNewUserAccount(Mockito.any(UserEntity.class))).thenReturn(new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "BAD REQUEST"));
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        String requestJson = mapper.writeValueAsString(usr);
+        MvcResult mvcResult =  mockMvc.perform(post("/api/account/register").content(requestJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError()).andReturn();
 
+        Mockito.verify(userService, Mockito.times(1)).registerNewUserAccount(Mockito.any(UserEntity.class));
+        Mockito.verifyNoMoreInteractions(userService);
+    }
 //    @Test
 //    public void  testAddRoleSuccess() throws Exception {
 //        Mockito.when(userService.addRole(Mockito.any(Principal.class),Mockito.anyString(), Mockito.anyInt())).thenReturn(new CommandResult().Succeed());
@@ -129,7 +126,7 @@ public class AccountContronllerTest {
 //    }
 
     @Test
-    public void testGetProfile() throws  Exception {
+    public void testGetProfileSuccess() throws  Exception {
         UserEntity usr = new UserEntity();
         Mockito.when(userService.getProfile(Mockito.any(Principal.class))).thenReturn(new CommandResult().SucceedWithData(usr));
 
@@ -144,7 +141,7 @@ public class AccountContronllerTest {
     }
 
     @Test
-    public void updateProfile() throws  Exception {
+    public void updateProfileSuccess() throws  Exception {
         UserEntity usr = new UserEntity();
         Mockito.when(userService.updateProfile(Mockito.any(Principal.class), Mockito.anyMap())).thenReturn(new CommandResult().SucceedWithData(usr));
 
@@ -183,6 +180,24 @@ public class AccountContronllerTest {
         Mockito.verifyNoMoreInteractions(userService);
     }
 
+    @Test
+    public void unAuthorGetProfile() throws Exception {
+        UserEntity usr = new UserEntity();
+        Mockito.when(userService.updateProfile(Mockito.any(Principal.class), Mockito.anyMap())).thenReturn(new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        String requestJson = mapper.writeValueAsString(usr);
+
+        MvcResult mvcResult =  mockMvc.perform(get("/api/account/profile")
+                .content(requestJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
+
+        Mockito.verify(userService, Mockito.times(0)).updateProfile(Mockito.any(Principal.class),Mockito.anyMap());
+        Mockito.verifyNoMoreInteractions(userService);
+    }
 
     @Test
     public void changePasswordSuccess() throws Exception {
@@ -268,7 +283,7 @@ public class AccountContronllerTest {
                 .andReturn().getResponse();
 
         return new ObjectMapper()
-                .readValue(response.getContentAsByteArray(),AccountContronllerTest.OAuthToken.class)
+                .readValue(response.getContentAsByteArray(), AccountControllerTest.OAuthToken.class)
                 .accessToken;
     }
     @JsonIgnoreProperties(ignoreUnknown = true)

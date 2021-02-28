@@ -28,7 +28,7 @@ public class RoleController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasAuthority('edit_role')")
 
     public ResponseEntity<Object> Update(@PathVariable(value = "id") int roleId,
                                          @RequestBody RoleEntity role) {
