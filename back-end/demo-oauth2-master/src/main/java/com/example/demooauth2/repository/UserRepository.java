@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<UserEntity, Integer>  {
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     Optional<UserEntity> findByUsername(String username);
 
@@ -47,17 +47,22 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer>  {
     @Transactional
     @Modifying
     @Query("update UserEntity set firstname=:firstname, lastname = :lastname, email = :email, phonenumber = :phonenumber where username=:username")
-    void updateProfile(String username,String firstname, String lastname, String email, String phonenumber);
+    void updateProfile(String username, String firstname, String lastname, String email, String phonenumber);
 
-    @Query("Select NEW com.example.demooauth2.modelView.users.UserProfileViewModel(u) from UserEntity u WHERE (u.username LIKE %?1% OR u.email LIKE %?1%) AND u.enabled=?2")
-    List<UserProfileViewModel> getAllUsers(String searchString,boolean status, Pageable pageable);
+    @Query("Select NEW com.example.demooauth2.modelView.users.UserProfileViewModel(u) from UserEntity u WHERE (" +
+            "((u.username LIKE %?1% OR u.email LIKE %?1%) AND ?2 is null AND ?3 = 0)" +
+            "OR ((u.username LIKE %?1% OR u.email LIKE %?1%) AND (?2 is not null and u.enabled=?2) AND (?3 =0))" +
+            "OR ((u.username LIKE %?1% OR u.email LIKE %?1%) AND (?2 is null) AND (?3 <> 0 AND u.role.id = ?3))" +
+            "OR ((u.username LIKE %?1% OR u.email LIKE %?1%) AND (?2 is not null and u.enabled=?2) AND (?3 <> 0 AND u.role.id = ?3))" +
+            ")")
+    List<UserProfileViewModel> getAllUsers(String searchString, Boolean status, int roleId, Pageable pageable);
 
-    @Query("Select NEW com.example.demooauth2.modelView.users.UserProfileViewModel(u) from UserEntity u WHERE u.username LIKE %?1% OR u.email LIKE %?1%")
-    List<UserProfileViewModel> getAllUsersNonStatus(String searchString, Pageable pageable);
+    @Query("Select COUNT(u) from UserEntity u WHERE (" +
+            "((u.username LIKE %?1% OR u.email LIKE %?1%) AND ?2 is null AND ?3 = 0)" +
+            "OR ((u.username LIKE %?1% OR u.email LIKE %?1%) AND (?2 is not null and u.enabled=?2) AND (?3 =0))" +
+            "OR ((u.username LIKE %?1% OR u.email LIKE %?1%) AND (?2 is null) AND (?3 <> 0 AND u.role.id = ?3))" +
+            "OR ((u.username LIKE %?1% OR u.email LIKE %?1%) AND (?2 is not null and u.enabled=?2) AND (?3 <> 0 AND u.role.id = ?3))" +
+            ")")
+    int countSearchUsers(String searchString, Boolean status, int roleId);
 
-    @Query("Select COUNT(u) from UserEntity u WHERE (u.username LIKE %?1% OR u.email LIKE %?1%) AND u.enabled=?2")
-    int countSearchUsers(String searchString, boolean status);
-
-    @Query("Select COUNT(u) from UserEntity u WHERE u.username LIKE %?1% OR u.email LIKE %?1%")
-    int countSearchUsersNonStatus(String searchString);
 }
