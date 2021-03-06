@@ -119,12 +119,14 @@
         <div class="text-success">Actived</div>
       </div>
       <div *ngIf="user.enabled" class="col-md-4 my-auto text-right">
-        <i
+        <button
+          [disabled]="!haveBanUser()"
           class="btn btn-danger"
           aria-hidden="true"
           (click)="openModalBan(isBan)"
-          >Ban user</i
         >
+          Ban user
+        </button>
       </div>
 
       <ng-template #isBan>
@@ -148,8 +150,12 @@
       </div>
 
       <div *ngIf="!user.enabled" class="col-md-5 my-auto text-right">
-        <i class="btn btn-info" aria-hidden="true" (click)="openModalBan(isBan)"
-          >Unban user</i
+        <button
+          [disabled]="!haveBanUser()"
+          class="btn btn-info"
+          aria-hidden="true"
+          (click)="openModalBan(isBan)"
+          >Unban user</button
         >
       </div>
       <ng-template #isBan>
@@ -220,7 +226,7 @@
     <button
       type="button"
       class="btn btn-primary"
-      [disabled]="selectedRoleId == user.role.id"
+      [disabled]="selectedRoleId == user.role.id || haveEditUser()"
       (click)="editRole()"
     >
       Save
@@ -230,4 +236,3 @@
     </button>
   </div>
 </div>
-

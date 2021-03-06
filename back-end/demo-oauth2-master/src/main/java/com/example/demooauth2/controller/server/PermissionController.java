@@ -22,14 +22,14 @@ public class PermissionController {
       return new ResponseEntity<>(result.getData(),result.getStatus());
   }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('admin')")
-
-    public ResponseEntity<Object> Update(@PathVariable (value = "id") int permissionId,
-                                         @RequestBody PermissionEntity newPermissionEntity) {
-        CommandResult result = permissionService.Update(permissionId, newPermissionEntity);
-        return new ResponseEntity<>(result.getData(),result.getStatus());
-    }
+//    @PutMapping("/{id}")
+//    @PreAuthorize("hasRole('admin')")
+//
+//    public ResponseEntity<Object> Update(@PathVariable (value = "id") int permissionId,
+//                                         @RequestBody PermissionEntity newPermissionEntity) {
+//        CommandResult result = permissionService.Update(permissionId, newPermissionEntity);
+//        return new ResponseEntity<>(result.getData(),result.getStatus());
+//    }
     @GetMapping("")
     @PreAuthorize("hasAuthority('read_permission')")
     public ResponseEntity<Object> GetAll(){
@@ -37,10 +37,10 @@ public class PermissionController {
       return  new ResponseEntity<>(result.getData(),result.getStatus());
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<Object> Delete(@PathVariable (value = "id" )int permissionId) {
-        CommandResult result = permissionService.Delete(permissionId);
-        return new ResponseEntity<>(result.getData(), result.getStatus());
-    }
+//    @DeleteMapping("/{id}")
+//    @PreAuthorize("hasRole('admin')")
+//    public ResponseEntity<Object> Delete(@PathVariable (value = "id" )int permissionId) {
+//        CommandResult result = permissionService.Delete(permissionId);
+//        return new ResponseEntity<>(result.getData(), result.getStatus());
+//    }
 }

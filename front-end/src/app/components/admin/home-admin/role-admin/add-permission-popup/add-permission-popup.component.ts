@@ -17,7 +17,7 @@ export class AddPermissionPopupComponent implements OnInit {
 
   restOfPermissions: Permission[] = [];
 
-  lsAuthorities: string[] = [];
+  authorities: string[] = [];
   constructor(
     public bsModalRef: BsModalRef,
     private roleService: RoleService,
@@ -26,7 +26,6 @@ export class AddPermissionPopupComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTheRestOfPermission();
-    this.isAdmin();
   }
 
   getTheRestOfPermission(): void {
@@ -56,10 +55,15 @@ export class AddPermissionPopupComponent implements OnInit {
     );
   }
 
-  isAdmin(): any{
-    this.lsAuthorities = LsHelper.getAuthoritiesFromToken();
-    if(this.lsAuthorities.includes("ROLE_admin")){
-      return true;
-    } return false;
+  // isAdmin(): any{
+  //   this.lsAuthorities = LsHelper.getAuthoritiesFromToken();
+  //   if(this.lsAuthorities.includes("ROLE_admin")){
+  //     return true;
+  //   } return false;
+  // }
+
+  haveEditRole(): any {
+    if (this.authorities.includes('edit_role')) return true;
+    return false;
   }
 }

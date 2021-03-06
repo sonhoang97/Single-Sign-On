@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { LsHelper } from 'src/app/commons/helpers/ls.helper';
 import { Role } from 'src/models/role/role.model';
 import { UserProfile } from 'src/models/user/user-profile.model';
 import { User } from 'src/models/user/user.model';
@@ -12,6 +13,7 @@ import { DetailUserPopupComponent } from './detail-user-popup/detail-user-popup.
   templateUrl: './user-admin.component.html',
 })
 export class UserAdminComponent implements OnInit {
+  @Input() authorities = [];
   bsModalRef: BsModalRef;
   lsAllRoles: Role[] = [];
   selectedRoleId = 0;
@@ -24,6 +26,8 @@ export class UserAdminComponent implements OnInit {
   pageSize = 10;
   totalCount: number;
   searchString: string = '';
+
+
   constructor(
     private profileService: ProfileService,
     private modalService: BsModalService,
@@ -81,6 +85,7 @@ export class UserAdminComponent implements OnInit {
   detailUserPopup(user: UserProfile): void {
     const initialState = {
       user,
+      authorities: this.authorities
     };
     this.bsModalRef = this.modalService.show(DetailUserPopupComponent, {
       initialState,
@@ -110,4 +115,5 @@ export class UserAdminComponent implements OnInit {
     this.selectedRoleId = newValue;
     console.log(this.selectedRoleId);
   }
+
 }

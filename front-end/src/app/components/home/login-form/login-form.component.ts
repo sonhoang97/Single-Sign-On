@@ -10,6 +10,8 @@ import {
   GoogleLoginProvider,
 } from 'angularx-social-login';
 import { User } from 'src/models/user/user.model';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { DemoLoginWithSSOPopupComponent } from './demo-login-with-ssopopup/demo-login-with-ssopopup.component';
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
@@ -23,11 +25,13 @@ export class LoginFormComponent implements OnInit {
   user: SocialUser;
   loggedInFb: boolean;
   userRigister: User = new User();
+  bsModalRef: BsModalRef;
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
     private router: Router,
-    private socialAuthService: SocialAuthService
+    private socialAuthService: SocialAuthService,
+    private modalService: BsModalService,
   ) {}
 
   ngOnInit(): void {
@@ -101,6 +105,19 @@ export class LoginFormComponent implements OnInit {
           console.log(err);
         }
       );
+    });
+  }
+
+  loginWithSSO(): void {
+    const initialState = {
+    };
+    this.bsModalRef = this.modalService.show(DemoLoginWithSSOPopupComponent, {
+      initialState,
+      class: 'gray modal-lg',
+    });
+
+    this.bsModalRef.content.event.subscribe((res: any) => {
+     
     });
   }
 }

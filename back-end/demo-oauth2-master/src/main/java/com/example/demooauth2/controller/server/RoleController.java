@@ -83,7 +83,7 @@ public class RoleController {
     }
 
     @PostMapping("/{id}/updatePermissions")
-    @PreAuthorize("hasAuthority('edit_permission_role')")
+    @PreAuthorize("hasAuthority('edit_role')")
     public ResponseEntity<Object> updatePermissions(@PathVariable(value = "id") int roleId,@RequestBody RoleViewModel role) {
         CommandResult result = roleService.UpdatePermissions(roleId, role);
         return new ResponseEntity<>(result.getData(), result.getStatus());

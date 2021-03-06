@@ -14,6 +14,7 @@ import { RoleService } from 'src/services/role/role.service';
 })
 export class DetailUserPopupComponent implements OnInit {
   user: UserProfile = new UserProfile();
+  authorities = [];
   lsAllRoles: Role[] = [];
   modalRefBan: BsModalRef;
   modalRefActive: BsModalRef;
@@ -105,5 +106,15 @@ export class DetailUserPopupComponent implements OnInit {
 
   triggerEvent(item: boolean) {
     this.event.emit({ data: item });
+  }
+
+  haveEditUser(): any {
+    if (this.authorities.includes('edit_user')) return true;
+    return false;
+  }
+
+  haveBanUser(): any{
+    if (this.authorities.includes('ban_user')) return true;
+    return false;
   }
 }
