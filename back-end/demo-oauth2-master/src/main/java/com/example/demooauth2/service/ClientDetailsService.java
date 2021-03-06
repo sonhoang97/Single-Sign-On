@@ -18,4 +18,6 @@ public interface ClientDetailsService {
     CommandResult removeClientDetail(String clientId, Principal principal);
 
     CommandResult getClientsByUserId(Principal principal);
+
+    CommandResult getAllClients(String searchString,int sortType, int pageIndex, int pageSize);
 }

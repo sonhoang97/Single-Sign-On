@@ -74,12 +74,12 @@
     </div>
     <div class="row">
       <i class="icon-tooltip fas fa-info-circle"  tooltip="Chắc chắn rằng không còn user nào đang có role này. Không thể xoá role Admin"></i>
-      <button type="button" class="col-auto btn btn-primary m-2" [disabled]="role.usernames.length != 0 || !isAdmin()">
+      <button type="button" class="col-auto btn btn-primary m-2" [disabled]="role.usernames.length != 0 || !haveEditRole()">
         Remove
       </button>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="!isAdmin()">
+      <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="!haveEditRole()">
         Save
       </button>
       <button

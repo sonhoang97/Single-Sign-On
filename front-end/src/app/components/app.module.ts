@@ -50,12 +50,15 @@ const APP_COMPONENTS: any[] = [
   fromApp.CallbackFacebookComponent,
   fromApp.RoleAdminComponent,
   fromApp.UserAdminComponent,
+  fromApp.CallbackSsoComponent,
+  fromApp.CredentialsAdminComponent
 ];
 
 const APP_POPUP_COMPONENTS: any[] = [
   fromApp.DetailUserPopupComponent,
   fromApp.AddPermissionPopupComponent,
-  fromApp.CreateRolePopupComponent
+  fromApp.CreateRolePopupComponent,
+  fromApp.DemoLoginWithSSOPopupComponent
 ];
 
 const APP_SHARED_COMPONENTS: any[] = [

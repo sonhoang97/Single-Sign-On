@@ -1,6 +1,7 @@
 package com.example.demooauth2.modelView.clientDetail;
 
 import com.example.demooauth2.modelEntity.ClientDetailEntity;
+import com.example.demooauth2.modelEntity.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,7 @@ public class ClientDetailViewModel {
     private List<String> authorizeGrantType;
     private LocalDateTime createdAt;
     private List<String> additionalInformation;
+    private String creater;
     public ClientDetailViewModel(){}
 
     public ClientDetailViewModel(String clientId, String clientSecret){
@@ -38,6 +40,7 @@ public class ClientDetailViewModel {
         this.authorizeGrantType = clientDetailEntity.getAuthorizedGrantTypes();
         this.createdAt = clientDetailEntity.getCreatedAt();
         this.additionalInformation = clientDetailEntity.getAdditionalInformation();
+        this.creater = clientDetailEntity.getUser().getUsername();
     }
     public boolean isValid(){
         return this.clientId != null;
