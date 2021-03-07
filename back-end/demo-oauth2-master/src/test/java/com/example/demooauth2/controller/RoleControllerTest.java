@@ -3,6 +3,7 @@ package com.example.demooauth2.controller;
 import com.example.demooauth2.modelEntity.PermissionEntity;
 import com.example.demooauth2.modelEntity.RoleEntity;
 import com.example.demooauth2.modelEntity.UserEntity;
+import com.example.demooauth2.modelView.clientDetail.ClientDetailViewModel;
 import com.example.demooauth2.modelView.roles.RoleViewModel;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.PermissionService;
@@ -30,6 +31,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.Base64Utils;
 
 import javax.management.relation.Role;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +70,7 @@ public class RoleControllerTest {
         Mockito.verifyNoMoreInteractions(roleService);
     }
     @Test
-    public void createNewTest() throws Exception {
+    public void createNewTestSuccess() throws Exception {
         RoleEntity permissionEx = new RoleEntity();
         Mockito.when(roleService.CreateNew(Mockito.any(RoleViewModel.class))).thenReturn(new CommandResult().SucceedWithData("Create new role successful!"));
 
@@ -89,7 +91,7 @@ public class RoleControllerTest {
     }
 
     @Test
-    public  void updateTest() throws  Exception {
+    public  void updateTestSuccess() throws  Exception {
         PermissionEntity permissionEx = new PermissionEntity("test");
         Mockito.when(roleService.Update(Mockito.anyInt(),Mockito.any(RoleEntity.class))).thenReturn(new CommandResult().SucceedWithData("Update role successful!"));
         ObjectMapper mapper = new ObjectMapper();
@@ -129,6 +131,44 @@ public class RoleControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andDo(print())
                 .andReturn();
+    }
+
+    @Test
+    public void addPermissionToRoleSuccess() throws Exception  {
+        PermissionEntity permissionEx = new PermissionEntity("test");
+        Mockito.when(roleService.AddPermission(Mockito.anyInt(), Mockito.anyInt())).thenReturn(new CommandResult().SucceedWithData("Delete role successful!"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        String requestJson = mapper.writeValueAsString(permissionEx);
+        MvcResult mvcResult =  mockMvc.perform(post("/api/roles/0/permissions/0")
+                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+    }
+
+    @Test
+    public void deletePermissionToRoleSuccess() throws Exception  {
+        PermissionEntity permissionEx = new PermissionEntity("test");
+        Mockito.when(roleService.DeletePermission(Mockito.anyInt(), Mockito.anyInt())).thenReturn(new CommandResult().SucceedWithData("Delete role successful!"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        String requestJson = mapper.writeValueAsString(permissionEx);
+        MvcResult mvcResult =  mockMvc.perform(delete("/api/roles/0/permissions/0")
+                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
     }
     private String getAccessToken(String username, String password) throws Exception {
 

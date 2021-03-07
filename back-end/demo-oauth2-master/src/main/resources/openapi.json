@@ -93,8 +93,8 @@
           "accountNonLocked": {
             "type": "boolean"
           },
-          "permission": {
-            "$ref": "#/components/schemas/permission"
+          "role": {
+            "$ref": "#/components/schemas/role"
           }
         }
       }
@@ -153,24 +153,6 @@
           }
         }
       ],
-      "put": {
-        "tags": [
-          "Permission"
-        ],
-        "summary": "Update permission by id",
-        "responses": {
-          "200": {
-            "description": "A message of server",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
       "get": {
         "tags": [
           "Permission"
@@ -183,24 +165,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/permission"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Permission"
-        ],
-        "summary": "delete a permission by ID",
-        "responses": {
-          "200": {
-            "description": "return a message",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
                 }
               }
             }
@@ -434,6 +398,142 @@
           "Account"
         ],
         "summary": "remove role of user",
+        "responses": {
+          "200": {
+            "description": "a message from server",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/register": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Register new account",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "a message from server",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/profile": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "get user profile",
+        "responses": {
+          "200": {
+            "description": "user profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/user": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "return list user",
+        "responses": {
+          "200": {
+            "description": "A Json array of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/user"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/getUsers/{sortType}/{pageIndex}/{pageSize}": {
+      "parameters": [
+        {
+          "name": "sortType",
+          "in": "path",
+          "required": true,
+          "description": "sortType list response",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "pageIndex",
+          "in": "path",
+          "required": true,
+          "description": "index page response",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "pageSize",
+          "in": "path",
+          "required": true,
+          "description": "size page response",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "return list user",
+        "responses": {
+          "200": {
+            "description": "A Json array of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/user"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/changePassword": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "change password",
         "responses": {
           "200": {
             "description": "a message from server",

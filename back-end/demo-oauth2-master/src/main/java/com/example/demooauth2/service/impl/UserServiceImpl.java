@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -82,20 +83,25 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public CommandResult registerNewUserAccount(UserEntity userDto) {
-        if (findByUsername(userDto.getUsername()) != null) {
-            if (!userDto.isLoggedInFb()) {
-                return new CommandResult(HttpStatus.CONFLICT, "Username has existed!");
-            } else {
-                userRepository.updatePassword(userDto.getUsername(), userDto.getPassword());
-                return new CommandResult().Succeed();
+        try {
+            userDto.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
+            if (findByUsername(userDto.getUsername()) != null) {
+                if (!userDto.isLoggedInFb()) {
+                    return new CommandResult(HttpStatus.CONFLICT, "Username has existed!");
+                } else {
+                    userRepository.updatePassword(userDto.getUsername(), userDto.getPassword());
+                    return new CommandResult().Succeed();
+                }
             }
+            Optional<RoleEntity> role = roleRepository.findByName("ROLE_user");
+            if (role.isPresent()) {
+                userDto.setRole(role.get());
+            }
+            userRepository.save(userDto);
+            return new CommandResult().Succeed();
+        } catch (Exception ex) {
+            return new CommandResult(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
-        Optional<RoleEntity> role = roleRepository.findByName("ROLE_user");
-        if (role.isPresent()) {
-            userDto.setRole(role.get());
-        }
-        userRepository.save(userDto);
-        return new CommandResult().Succeed();
     }
 
     @Override
