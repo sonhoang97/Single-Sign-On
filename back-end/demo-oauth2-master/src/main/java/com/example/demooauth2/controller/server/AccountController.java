@@ -50,8 +50,9 @@ public class AccountController {
                                            @PathVariable(value = "pageIndex") int pageIndex,
                                            @PathVariable(value = "pageSize") int pageSize,
                                            @RequestParam(required = false, defaultValue = "-1") int status,
+                                           @RequestParam(required = false, defaultValue = "0") int roleId,
                                            @RequestParam(required = false, defaultValue = "") String searchString){
-        CommandResult result = userService.getAllUsers(searchString,status,sortType,pageIndex,pageSize);
+        CommandResult result = userService.getAllUsers(searchString,status,roleId,sortType,pageIndex,pageSize);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 
@@ -69,26 +70,17 @@ public class AccountController {
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 
-    @PostMapping("/addRole")
-    @PreAuthorize("hasAuthority('edit_role_user')")
-    public ResponseEntity<Object> AddNewRole(Principal principal,@RequestBody Map<String, String> bodyRole){
+    @PostMapping("/editRole")
+    @PreAuthorize("hasAuthority('edit_user')")
+    public ResponseEntity<Object> editRole(Principal principal,@RequestBody Map<String, String> bodyRole){
         String username = bodyRole.get("username");
         int roleId = Integer.parseInt(bodyRole.get("roleId"));
-        CommandResult result = userService.addRole(principal, username,roleId);
+        CommandResult result = userService.editRole(principal, username,roleId);
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
 
-//    @PostMapping("/removeRole")
-//    @PreAuthorize("hasAuthority('edit_role_user')")
-//    public ResponseEntity<Object> RemoveRole(Principal principal,@RequestBody Map<String, String> bodyRole){
-//        String username = bodyRole.get("username");
-//        int roleId = Integer.parseInt(bodyRole.get("roleId"));
-//        CommandResult result = userService.RemoveRole(principal, username,roleId);
-//        return new ResponseEntity<>(result.getData(), result.getStatus());
-//    }
-
     @PostMapping("/banUser")
-    @PreAuthorize("hasAuthority('edit_user')")
+    @PreAuthorize("hasAuthority('ban_user')")
     public ResponseEntity<Object> banUser(@RequestBody Map<String, String> body){
         String username = body.get("username");
         CommandResult result = userService.banUser(username);
@@ -96,7 +88,7 @@ public class AccountController {
     }
 
     @PostMapping("/activeUser")
-    @PreAuthorize("hasAuthority('edit_user')")
+    @PreAuthorize("hasAuthority('ban_user')")
     public ResponseEntity<Object> activeUser(@RequestBody Map<String, String> body){
         String username = body.get("username");
         CommandResult result = userService.activeUser(username);

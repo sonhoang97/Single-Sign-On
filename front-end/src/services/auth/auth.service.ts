@@ -60,6 +60,34 @@ export class AuthService {
       );
   }
 
+  public loginSSO(code: string): Observable<TokenPassword> {
+    let body = new URLSearchParams();
+    body.append('code', code);
+    body.append('grant_type', 'authorization_code');
+    body.append('redirect_uri', 'http://localhost:4200/oauth/callback');
+
+
+    let headers = new HttpHeaders({
+      'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+      Authorization: 'Basic ' + btoa('mobile:pin'),
+    });
+
+    return this.http
+      .post(
+        'http://localhost:8083/oauth/token',
+        body.toString(),
+        {
+          headers: headers,
+        }
+      )
+      .pipe(
+        map((res: TokenPassword) => {
+          LsHelper.saveTokenToStorage(res);
+          return res;
+        })
+      );
+  }
+
   public getTokenByRefreshToken(): Observable<TokenPassword> {
     let body = new URLSearchParams();
     body.append('grant_type', 'refresh_token');

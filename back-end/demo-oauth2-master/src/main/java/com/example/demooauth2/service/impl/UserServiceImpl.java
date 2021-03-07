@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommandResult getAllUsers(String searchString, int status, int sortType, int pageIndex, int pageSize) {
+    public CommandResult getAllUsers(String searchString, int status,int roleId, int sortType, int pageIndex, int pageSize) {
         Sort sortable = Sort.by("username").ascending();
         if (sortType == 0) {
             sortable = Sort.by("username").ascending();
@@ -56,17 +56,17 @@ public class UserServiceImpl implements UserService {
         List<UserProfileViewModel> users;
         int totalSize;
         if (status == -1) {
-            users = userRepository.getAllUsersNonStatus(searchString, pageable);
-            totalSize = userRepository.countSearchUsersNonStatus(searchString);
+            users = userRepository.getAllUsers(searchString, null,roleId, pageable);
+            totalSize = userRepository.countSearchUsers(searchString, null,roleId);
 
 
         } else if(status == 0 || status ==1 ) {
             if(status ==0){
-            users = userRepository.getAllUsers(searchString, false, pageable);
-            totalSize = userRepository.countSearchUsers(searchString,false);
+            users = userRepository.getAllUsers(searchString, false,roleId, pageable);
+            totalSize = userRepository.countSearchUsers(searchString,false,roleId);
             } else {
-                users = userRepository.getAllUsers(searchString, true, pageable);
-                totalSize = userRepository.countSearchUsers(searchString,true);
+                users = userRepository.getAllUsers(searchString, true,roleId, pageable);
+                totalSize = userRepository.countSearchUsers(searchString,true,roleId);
             }
         } else {
             return new CommandResult(HttpStatus.BAD_REQUEST, "Fail Status!");
@@ -189,7 +189,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommandResult addRole(Principal principal, String username, int roleId) {
+    public CommandResult editRole(Principal principal, String username, int roleId) {
         try {
             if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
                 return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");

@@ -73,13 +73,13 @@
       </div>
     </div>
     <div class="row">
-      <button type="button" class="col-auto btn btn-primary ml-auto m-2" [disabled]="role.usernames.length != 0 || !isAdmin()">
+      <i class="icon-tooltip fas fa-info-circle"  tooltip="Chắc chắn rằng không còn user nào đang có role này. Không thể xoá role Admin"></i>
+      <button type="button" class="col-auto btn btn-primary m-2" [disabled]="role.usernames.length != 0 || !haveEditRole()">
         Remove
       </button>
-      <i class="align-middle fas fa-info-circle"  tooltip="Chắc chắn rằng không còn user nào đang có role này. Không thể xoá role Admin"></i>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="!isAdmin()">
+      <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="!haveEditRole()">
         Save
       </button>
       <button

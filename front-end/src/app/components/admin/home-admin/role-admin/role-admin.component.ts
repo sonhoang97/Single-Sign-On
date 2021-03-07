@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Permission } from 'src/models/role/permission.model';
 import { Role } from 'src/models/role/role.model';
@@ -12,6 +12,7 @@ import { CreateRolePopupComponent } from './create-role-popup/create-role-popup.
   templateUrl: './role-admin.component.html',
 })
 export class RoleAdminComponent implements OnInit {
+  @Input() authorities = [];
   lsRoles: Role[] = [];
   isLoading = true;
 
@@ -62,6 +63,7 @@ export class RoleAdminComponent implements OnInit {
     const initialState = {
       lsAllPermissions: this.lsAllPermissions,
       role: role,
+      authorities: this.authorities,
     };
     this.bsModalRef = this.modalService.show(AddPermissionPopupComponent, {
       initialState,
@@ -70,9 +72,10 @@ export class RoleAdminComponent implements OnInit {
   }
 
   createRolePopup(): void {
- 
+    if (!this.haveEditRole()) return;
     const initialState = {
       lsAllPermissions: this.lsAllPermissions,
+      authorities: this.authorities,
     };
     this.bsModalRef = this.modalService.show(CreateRolePopupComponent, {
       initialState,
@@ -82,6 +85,10 @@ export class RoleAdminComponent implements OnInit {
     this.bsModalRef.content.event.subscribe((res: any) => {
       this.getAllRoles();
     });
+  }
 
+  haveEditRole(): any {
+    if (this.authorities.includes('edit_role')) return true;
+    return false;
   }
 }

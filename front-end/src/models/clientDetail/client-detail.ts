@@ -7,5 +7,6 @@ export class ClientDetail{
     scope: string[];
     authorizeGrantType: string[];
     createdAt: Date;
-    additionalInformation=[];
+    additionalInformation = [];
+    creater: string;
 }

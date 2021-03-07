@@ -2,6 +2,8 @@ package com.example.demooauth2.repository;
 
 import com.example.demooauth2.modelEntity.ClientDetailEntity;
 import com.example.demooauth2.modelView.clientDetail.ClientDetailViewModel;
+import com.example.demooauth2.modelView.users.UserProfileViewModel;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -36,4 +38,9 @@ public interface ClientDetailRepository extends JpaRepository<ClientDetailEntity
     @Query ("delete from ClientDetailEntity where clientId=:clientId")
     void deleteClientDetail(String clientId);
 
+    @Query("Select NEW com.example.demooauth2.modelView.clientDetail.ClientDetailViewModel(c) from ClientDetailEntity c WHERE c.clientId LIKE %?1% OR c.user.username LIKE %?1%")
+    List<ClientDetailViewModel> getAllClients(String searchString, Pageable pageable);
+
+    @Query("Select count(c) from ClientDetailEntity c WHERE c.clientId LIKE %?1% OR c.user.username LIKE %?1%")
+    int countSearchClients(String searchString);
 }

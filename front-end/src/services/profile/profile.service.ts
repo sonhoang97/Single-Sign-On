@@ -38,7 +38,7 @@ export class ProfileService {
       Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
     });
     return this.http
-      .get(this.apiURL + '/user?username='+username, {
+      .get(this.apiURL + '/user?username=' + username, {
         headers: headers,
       })
       .pipe(
@@ -75,34 +75,42 @@ export class ProfileService {
       );
   }
 
-  public getUsersAdmin(searchString: string,status:number, sortType: number, pageIndex: number, pageSize: number): Observable<any> {
+  public getUsersAdmin(
+    searchString: string,
+    status: number,
+    roleId: number,
+    sortType: number,
+    pageIndex: number,
+    pageSize: number
+  ): Observable<any> {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
     });
-      const url = this.apiURL + '/getUsers/'+sortType+'/'+pageIndex+'/'+pageSize+'?searchString='+searchString+ '&status='+status;
-      const urlNonStatus = this.apiURL + '/getUsers/'+sortType+'/'+pageIndex+'/'+pageSize+'?searchString='+searchString;
-      if(status == -1){
-      return this.http
-        .get(urlNonStatus, {
-          headers: headers,
+    const url =
+      this.apiURL +
+      '/getUsers/' +
+      sortType +
+      '/' +
+      pageIndex +
+      '/' +
+      pageSize +
+      '?searchString=' +
+      searchString +
+      '&status=' +
+      status +
+      '&roleId=' +
+      roleId;
+
+    return this.http
+      .get(url, {
+        headers: headers,
+      })
+      .pipe(
+        map((res: any) => {
+          return res;
         })
-        .pipe(
-          map((res: any) => {
-            return res;
-          })
-        );
-    } else {
-      return this.http
-        .get(url, {
-          headers: headers,
-        })
-        .pipe(
-          map((res: any) => {
-            return res;
-          })
-        );
-    }
+      );
   }
 
   public banUser(username: string): Observable<any> {
@@ -111,7 +119,7 @@ export class ProfileService {
       Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
     });
     let body = {
-      username
+      username,
     };
     return this.http
       .post(this.apiURL + '/banUser', JSON.stringify(body), {
@@ -130,10 +138,30 @@ export class ProfileService {
       Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
     });
     let body = {
-      username
+      username,
     };
     return this.http
       .post(this.apiURL + '/activeUser', JSON.stringify(body), {
+        headers: headers,
+      })
+      .pipe(
+        map((res: any) => {
+          return res;
+        })
+      );
+  }
+
+  public editRole(username: string, roleId: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
+    let bodyRole = {
+      username,
+      roleId,
+    };
+    return this.http
+      .post(this.apiURL + '/editRole', JSON.stringify(bodyRole), {
         headers: headers,
       })
       .pipe(

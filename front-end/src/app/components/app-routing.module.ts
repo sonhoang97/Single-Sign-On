@@ -9,6 +9,7 @@ import { ProfileComponent } from './home/profile/profile.component';
 import { HomeAdminComponent } from './admin/home-admin/home-admin.component';
 import { AdminValidGuard } from './guards/admin-valid.guard';
 import { CallbackFacebookComponent } from './home/login-form/callback-facebook/callback-facebook.component';
+import { CallbackSsoComponent } from './home/login-form/callback-sso/callback-sso.component';
 const routes: Routes = [
   { path: '', component: LoginFormComponent },
   { path: 'register', component: RegisterFormComponent },
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'auth/facebook/callback',
     component: CallbackFacebookComponent,
+  },
+  {
+    path: 'oauth/callback',
+    component: CallbackSsoComponent,
   },
 ];
 
