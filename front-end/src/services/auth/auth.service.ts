@@ -13,7 +13,7 @@ import { TokenPassword } from 'src/models/token/tokenPassword';
 })
 export class AuthService {
   private apiURL = Config.getPath(PathController.Account);
-  private apiURLAuthorize = Config.getPathAuthorize();
+  private apiURLAuthorize = Config.getPathToken();
 
   constructor(private http: HttpClient) {}
 

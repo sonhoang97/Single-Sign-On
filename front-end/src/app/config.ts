@@ -15,12 +15,18 @@ export class Config {
     return apiCluster;
   }
 
-  public static getPathAuthorize(): string {
+  public static getPathToken(): string {
     const apiCluster: string =
       this.apiWareHouse.Protocol + this.apiWareHouse.ApiEndPointOAuth2;
     return apiCluster + 'oauth/token';
   }
 
+  public static getPathAuthorizeAuthorize(): string {
+    const apiCluster: string =
+      this.apiWareHouse.Protocol + this.apiWareHouse.ApiEndPointOAuth2;
+    return apiCluster + 'oauth/authorize';
+  }
+    
   public static getDomain(): string {
     return this.apiWareHouse.Domain;
   }
