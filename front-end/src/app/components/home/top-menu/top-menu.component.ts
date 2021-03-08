@@ -31,7 +31,7 @@ export class TopMenuComponent implements OnInit {
 
   haveAdminpage(): any{
     this.authorities = LsHelper.getAuthoritiesFromToken();
-    if (this.authorities.includes('read_adminpage')) return true;
+    if (this.authorities?.includes('read_adminpage')) return true;
     return false;
   }
 }
