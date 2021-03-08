@@ -87,7 +87,7 @@ public class PermissionControllerTest {
     }
 
     @Test
-    public  void getAllTest() throws Exception {
+    public  void getAllTestSuccess() throws Exception {
        List<PermissionEntity> permissions = new ArrayList<PermissionEntity>();
        permissions.add(new PermissionEntity());
         Mockito.when(permissionService.getAll()).thenReturn(new CommandResult().SucceedWithData(permissions));

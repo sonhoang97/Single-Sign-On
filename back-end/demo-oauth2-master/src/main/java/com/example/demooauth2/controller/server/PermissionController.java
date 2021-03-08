@@ -15,7 +15,7 @@ public class PermissionController {
    private PermissionService permissionService;
 
   @PostMapping("" )
-  @PreAuthorize("hasRole('admin')")
+  @PreAuthorize("hasAuthority('edit_permission_role')")
 
   public ResponseEntity<Object> CreateNew(@RequestBody PermissionEntity permissionEntity) {
       CommandResult result = permissionService.CreateNew(permissionEntity);

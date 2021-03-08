@@ -1,13 +1,13 @@
 package com.example.demooauth2;
 
-import com.example.demooauth2.controller.UserControllerTest;
+import com.example.demooauth2.controller.AccountControllerTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        UserControllerTest.class
+        AccountControllerTest.class
 })
 public class DemoOauth2ApplicationTests {
 
