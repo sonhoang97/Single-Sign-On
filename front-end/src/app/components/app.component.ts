@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   checkToken(): void {
     if (LsHelper.isExpiredRefreshToken()) {
       LsHelper.removeTokenStorage();
-      this.router.navigate(['login']);
+      this.router.navigate(['']);
       return;
     }
     if (LsHelper.isExpiredToken()) {
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
       },
       (err) => {
         LsHelper.removeTokenStorage();
-        this.router.navigate(['login']);
+        this.router.navigate(['']);
         console.log(err);
       }
     );

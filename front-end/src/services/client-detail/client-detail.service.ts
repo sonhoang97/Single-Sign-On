@@ -10,25 +10,29 @@ import { TokenPassword } from 'src/models/token/tokenPassword';
 import { ClientDetail } from 'src/models/clientDetail/client-detail';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ClientDetailService {
   private apiURL = Config.getPath(PathController.Client);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  public register(clientId: string,redirectUri: string[]): Observable<ClientDetail> {
+  public register(
+    clientId: string,
+    redirectUri: string[]
+  ): Observable<ClientDetail> {
     let headers = new HttpHeaders({
       'Content-type': 'application/json',
       Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
     });
 
     let clientDetail = {
-      clientId,redirectUri
-    }
+      clientId,
+      redirectUri,
+    };
 
     return this.http
-      .post(this.apiURL + '/createClientDetail',JSON.stringify(clientDetail), {
+      .post(this.apiURL + '/createClientDetail', JSON.stringify(clientDetail), {
         headers: headers,
       })
       .pipe(
@@ -44,11 +48,11 @@ export class ClientDetailService {
     });
 
     let clientDetail = {
-      clientId
-    }
+      clientId,
+    };
 
     return this.http
-      .post(this.apiURL + '/deleteClientDetail',JSON.stringify(clientDetail), {
+      .post(this.apiURL + '/deleteClientDetail', JSON.stringify(clientDetail), {
         headers: headers,
       })
       .pipe(
@@ -57,18 +61,22 @@ export class ClientDetailService {
         })
       );
   }
-  public updateClient(clientId:string, redirectUri: string[]): Observable<any> {
+  public updateClient(
+    clientId: string,
+    redirectUri: string[]
+  ): Observable<any> {
     let headers = new HttpHeaders({
       'Content-type': 'application/json',
       Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
     });
 
     let clientDetail = {
-      clientId,redirectUri
-    }
+      clientId,
+      redirectUri,
+    };
 
     return this.http
-      .post(this.apiURL + '/updateRedirectUri',JSON.stringify(clientDetail), {
+      .post(this.apiURL + '/updateRedirectUri', JSON.stringify(clientDetail), {
         headers: headers,
       })
       .pipe(
@@ -77,18 +85,49 @@ export class ClientDetailService {
         })
       );
   }
-  public updateClientSecret(clientId:string): Observable<any> {
+  public updateClientSecret(clientId: string): Observable<any> {
     let headers = new HttpHeaders({
       'Content-type': 'application/json',
       Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
     });
 
     let clientDetail = {
-      clientId
-    }
+      clientId,
+    };
 
     return this.http
-      .post(this.apiURL + '/updateClientSecret',JSON.stringify(clientDetail), {
+      .post(this.apiURL + '/updateClientSecret', JSON.stringify(clientDetail), {
+        headers: headers,
+      })
+      .pipe(
+        map((res: any) => {
+          return res;
+        })
+      );
+  }
+
+  public getClients(
+    searchString: string,
+    sortType: number,
+    pageIndex: number,
+    pageSize: number
+  ): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: 'bearer ' + LsHelper.getTokenFromStorage(),
+    });
+    const url =
+      this.apiURL +
+      '/getClients/' +
+      sortType +
+      '/' +
+      pageIndex +
+      '/' +
+      pageSize +
+      '?searchString=' +
+      searchString;
+    return this.http
+      .get(url, {
         headers: headers,
       })
       .pipe(

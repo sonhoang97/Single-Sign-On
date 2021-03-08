@@ -6,6 +6,7 @@ import com.example.demooauth2.service.ClientDetailsService;
 import com.example.demooauth2.service.impl.ClientDetailsSeviceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -45,6 +46,17 @@ public class ClientDetailController {
     @GetMapping("/getClientsByUserId")
     public ResponseEntity<Object> getClientsByUserId(Principal principal){
         CommandResult result = ClientDetailsSevice.getClientsByUserId(principal);
+        return new ResponseEntity<>(result.getData(),result.getStatus());
+    }
+
+    @GetMapping("/getClients/{sortType}/{pageIndex}/{pageSize}")
+    @PreAuthorize("hasAuthority('read_client')")
+    public ResponseEntity<Object> getClients(
+            @PathVariable(value = "sortType") int sortType,
+            @PathVariable(value = "pageIndex") int pageIndex,
+            @PathVariable(value = "pageSize") int pageSize,
+            @RequestParam(required = false, defaultValue = "") String searchString){
+        CommandResult result = ClientDetailsSevice.getAllClients(searchString, sortType,pageIndex,pageSize);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 }

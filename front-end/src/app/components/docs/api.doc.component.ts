@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Config } from '../../config';
+import { PathController } from '../../commons/consts/path-controller.const';
+
 declare const SwaggerUIBundle: any;
 @Component({
   selector: 'app-swagger-ui',
@@ -15,7 +18,8 @@ export class ApiDocComponent implements OnInit {
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset,
       ],
-      url: 'http://localhost:8083/api/doc',
+
+      url: Config.getPath(PathController.Doc),
       docExpansion: 'none',
       operationsSorter: 'alpha',
     });

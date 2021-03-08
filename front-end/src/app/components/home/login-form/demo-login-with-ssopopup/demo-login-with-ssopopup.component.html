@@ -1,0 +1,46 @@
+<div class="modal-header">
+  <p class="h4 font-weight-bold pull-left">Demo Login With SSO</p>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="bsModalRef.hide()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container-fluid">
+    <div class="row my-2">
+      <div class="col-md-3 m-auto font-weight-bold">
+        Client Id <span class="text-danger"> *</span>
+      </div>
+      <div class="col-md-9">
+        <input type="text" class="form-control" [(ngModel)]="clientId"/>
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-md-3 m-auto font-weight-bold">
+        Client Secret <span class="text-danger"> *</span>
+      </div>
+      <div class="col-md-9">
+        <input type="text" class="form-control" [(ngModel)]="clientSecret" />
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-md-3 m-auto font-weight-bold">
+        Redirect Uri <span class="text-danger"> *</span>
+      </div>
+      <div class="col-md-9">
+        <input type="text" class="form-control" [(ngModel)]="redirectUri"/>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-info" (click)="loginWithThisCredential()">Login with this credential</button>
+  <button type="button" class="btn btn-primary">Login</button>
+  <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">
+    Cancel
+  </button>
+</div>

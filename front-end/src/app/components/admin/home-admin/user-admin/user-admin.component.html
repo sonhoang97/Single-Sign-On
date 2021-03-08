@@ -22,6 +22,25 @@
           </select>
         </div>
       </div>
+      <div class="col-12 col-md-2">
+        <div class="form-group">
+          <label class="text-muted">Role</label>
+          <select
+            [(ngModel)]="selectedRoleId"
+            (ngModelChange)="onChange($event)"
+            id="roleId"
+            class="form-control"
+          >
+            <option value="0" selected>All</option>
+            <option
+              *ngFor="let role of lsAllRoles"
+              [value]="role.id"
+            >
+              {{ role.name }}
+            </option>
+          </select>
+        </div>
+      </div>
       <div class="col-4 col-md-auto ml-auto ml-md-0 d-flex align-items-end">
         <div class="form-group w-100">
           <button
@@ -40,18 +59,21 @@
       <table class="table table-bordered table-striped table-hover">
         <thead class="thead-dark">
           <tr>
+            <th>#</th>
             <th scope="col">Username</th>
             <th scope="col">Email</th>
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
             <th scope="col">Phone Number</th>
+            <th scope="col">Role Name</th>
             <th scope="col">Status</th>
             <th></th>
           </tr>
         </thead>
         <tbody *ngIf="!isLoading">
-          <tr *ngFor="let user of users | paginate: config">
-            <td scope="col" class="align-middle">
+          <tr *ngFor="let user of users | paginate: config;index as i">
+            <td scope="col" class="align-middle">{{i+1+(config.currentPage-1)*10}}</td>
+            <td scope="col" class="align-middle font-weight-bold">
               {{ user.username }}
             </td>
             <td scope="col" class="align-middle">{{ user.email }}</td>
@@ -60,6 +82,7 @@
             <td scope="col" class="align-middle">
               {{ user.phonenumber }}
             </td>
+            <td scope="col">{{ user.role.name }}</td>
             <td *ngIf="user.enabled" scope="col" class="align-middle">
               <div class="btn btn-success no-pointer">Active</div>
             </td>

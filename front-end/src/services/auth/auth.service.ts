@@ -13,6 +13,7 @@ import { TokenPassword } from 'src/models/token/tokenPassword';
 })
 export class AuthService {
   private apiURL = Config.getPath(PathController.Account);
+  private apiURLAuthorize = Config.getPathAuthorize();
 
   constructor(private http: HttpClient) {}
 
@@ -46,7 +47,35 @@ export class AuthService {
 
     return this.http
       .post(
-        'http://sso-sys.ap-southeast-1.elasticbeanstalk.com/oauth/token',
+        this.apiURLAuthorize,
+        body.toString(),
+        {
+          headers: headers,
+        }
+      )
+      .pipe(
+        map((res: TokenPassword) => {
+          LsHelper.saveTokenToStorage(res);
+          return res;
+        })
+      );
+  }
+
+  public loginSSO(code: string): Observable<TokenPassword> {
+    let body = new URLSearchParams();
+    body.append('code', code);
+    body.append('grant_type', 'authorization_code');
+    body.append('redirect_uri', 'http://ng-sso-manager.s3-website-ap-southeast-1.amazonaws.com/oauth/callback');
+
+
+    let headers = new HttpHeaders({
+      'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+      Authorization: 'Basic ' + btoa('mobile:pin'),
+    });
+
+    return this.http
+      .post(
+        this.apiURLAuthorize,
         body.toString(),
         {
           headers: headers,
@@ -72,7 +101,7 @@ export class AuthService {
 
     return this.http
       .post(
-        'http://sso-sys.ap-southeast-1.elasticbeanstalk.com/oauth/token',
+        this.apiURLAuthorize,
         body.toString(),
         {
           headers: headers,

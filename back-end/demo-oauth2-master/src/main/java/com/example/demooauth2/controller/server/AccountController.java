@@ -26,7 +26,6 @@ public class AccountController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody UserEntity userRegister){
-        userRegister.setPassword(new BCryptPasswordEncoder().encode(userRegister.getPassword()));
         CommandResult result = userService.registerNewUserAccount(userRegister);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
@@ -37,6 +36,13 @@ public class AccountController {
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 
+    @GetMapping("/user")
+    @PreAuthorize("hasAuthority('read_user')")
+    public ResponseEntity<Object> getUser(@RequestParam(defaultValue = "") String username){
+        CommandResult result = userService.getUser(username);
+        return new ResponseEntity<>(result.getData(),result.getStatus());
+    }
+
     @GetMapping("/getUsers/{sortType}/{pageIndex}/{pageSize}")
     @PreAuthorize("hasAuthority('read_user')")
     public ResponseEntity<Object> getUsers(
@@ -44,13 +50,16 @@ public class AccountController {
                                            @PathVariable(value = "pageIndex") int pageIndex,
                                            @PathVariable(value = "pageSize") int pageSize,
                                            @RequestParam(required = false, defaultValue = "-1") int status,
+                                           @RequestParam(required = false, defaultValue = "0") int roleId,
                                            @RequestParam(required = false, defaultValue = "") String searchString){
-        CommandResult result = userService.getAllUsers(searchString,status,sortType,pageIndex,pageSize);
+        CommandResult result = userService.getAllUsers(searchString,status,roleId,sortType,pageIndex,pageSize);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 
    @PutMapping("/profile")
-    public ResponseEntity<Object> updateProfile(Principal principal,@RequestBody Map<String, String> bodyProfile){
+   @PreAuthorize("hasAuthority('edit_profile')")
+   public ResponseEntity<Object> updateProfile(Principal principal,@RequestBody Map<String, String> bodyProfile){
+
         CommandResult result = userService.updateProfile(principal,bodyProfile);
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
@@ -61,26 +70,17 @@ public class AccountController {
         return new ResponseEntity<>(result.getData(),result.getStatus());
     }
 
-    @PostMapping("/addRole")
-    @PreAuthorize("hasAuthority('edit_role_user')")
-    public ResponseEntity<Object> AddNewRole(Principal principal,@RequestBody Map<String, String> bodyRole){
+    @PostMapping("/editRole")
+    @PreAuthorize("hasAuthority('edit_user')")
+    public ResponseEntity<Object> editRole(Principal principal,@RequestBody Map<String, String> bodyRole){
         String username = bodyRole.get("username");
         int roleId = Integer.parseInt(bodyRole.get("roleId"));
-        CommandResult result = userService.addRole(principal, username,roleId);
-        return new ResponseEntity<>(result.getData(), result.getStatus());
-    }
-
-    @PostMapping("/removeRole")
-    @PreAuthorize("hasAuthority('edit_role_user')")
-    public ResponseEntity<Object> RemoveRole(Principal principal,@RequestBody Map<String, String> bodyRole){
-        String username = bodyRole.get("username");
-        int roleId = Integer.parseInt(bodyRole.get("roleId"));
-        CommandResult result = userService.RemoveRole(principal, username,roleId);
+        CommandResult result = userService.editRole(principal, username,roleId);
         return new ResponseEntity<>(result.getData(), result.getStatus());
     }
 
     @PostMapping("/banUser")
-    @PreAuthorize("hasAuthority('edit_user')")
+    @PreAuthorize("hasAuthority('ban_user')")
     public ResponseEntity<Object> banUser(@RequestBody Map<String, String> body){
         String username = body.get("username");
         CommandResult result = userService.banUser(username);
@@ -88,7 +88,7 @@ public class AccountController {
     }
 
     @PostMapping("/activeUser")
-    @PreAuthorize("hasAuthority('edit_user')")
+    @PreAuthorize("hasAuthority('ban_user')")
     public ResponseEntity<Object> activeUser(@RequestBody Map<String, String> body){
         String username = body.get("username");
         CommandResult result = userService.activeUser(username);

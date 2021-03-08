@@ -9,5 +9,5 @@ export class UserProfile {
   public lastname: string;
   public lsClientDetail: ClientDetail[];
   public enabled: boolean;
-  public lsRoles: Role[];
+  public role: Role;
 }

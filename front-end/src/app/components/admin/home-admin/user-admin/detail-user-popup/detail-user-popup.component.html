@@ -93,13 +93,13 @@
         Role:
       </div>
 
-      <div class="form-group col-md-6 my-auto" *ngIf="user.lsRoles.length > 0">
+      <div class="form-group col-md-6 my-auto">
         <select
-          [(ngModel)]="user.lsRoles[0].id"
+          [ngModel]="user.role.id"
+          (ngModel)="(selectedRoleId)"
+          (ngModelChange)="onChange($event)"
           id="status"
           class="form-control"
-          class="form-control"
-          id="exampleFormControlSelect2"
         >
           <option
             *ngFor="let rolee of lsAllRoles; index as i"
@@ -109,39 +109,6 @@
           </option>
         </select>
       </div>
-
-      <!-- <div class="col-md">
-        <ul class="list-group">
-          <li
-            class="list-group-item"
-            *ngFor="let role of user.lsRoles; index as i"
-            id="item_{{ i }}"
-          >
-            <div class="row my-2">
-              <div class="col-8">
-                <select
-                  [(ngModel)]="role.id"
-                  id="status"
-                  class="form-control"
-                  disabled
-                >
-                  <option
-                    *ngFor="let rolee of lsAllRoles; index as i"
-                    [value]="rolee.id"
-                  >
-                    {{ rolee.name }}
-                  </option>
-                </select>
-              </div>
-              <div class="col-auto my-1 cursor-pointer" id="delRole_{{ i }}">
-                <span class="text-muted h4" id="delRole_{{ i }}">
-                  <i class="fas fa-trash" id="delRole_{{ i }}"></i>
-                </span>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div> -->
     </div>
     <div class="row my-1 status">
       <div class="col-md-4 h6 px-0 text-right my-auto pr-1 font-weight-bold">
@@ -152,23 +119,25 @@
         <div class="text-success">Actived</div>
       </div>
       <div *ngIf="user.enabled" class="col-md-4 my-auto text-right">
-        <i
+        <button
+          [disabled]="!haveBanUser()"
           class="btn btn-danger"
           aria-hidden="true"
           (click)="openModalBan(isBan)"
-          >Ban user</i
         >
+          Ban user
+        </button>
       </div>
 
       <ng-template #isBan>
         <div class="modal-body text-center">
           <h6 class="font-weight-bold">Are you sure to ban this user?</h6>
-          <button type="button" class="btn btn-danger" (click)="banUser()">
+          <button type="button" class="btn btn-danger mx-1" (click)="banUser()">
             Yes
           </button>
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-secondary mx-1"
             (click)="modalRefBan.hide()"
           >
             Cancel
@@ -181,8 +150,12 @@
       </div>
 
       <div *ngIf="!user.enabled" class="col-md-5 my-auto text-right">
-        <i class="btn btn-info" aria-hidden="true" (click)="openModalBan(isBan)"
-          >Unban user</i
+        <button
+          [disabled]="!haveBanUser()"
+          class="btn btn-info"
+          aria-hidden="true"
+          (click)="openModalBan(isBan)"
+          >Unban user</button
         >
       </div>
       <ng-template #isBan>
@@ -250,7 +223,15 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="selectedRoleId == user.role.id || !haveEditUser()"
+      (click)="editRole()"
+    >
+      Save
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">
       Cancel
     </button>
   </div>

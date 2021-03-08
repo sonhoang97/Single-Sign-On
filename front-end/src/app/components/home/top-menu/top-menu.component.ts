@@ -9,6 +9,7 @@ import { AuthService } from 'src/services/auth/auth.service';
 })
 export class TopMenuComponent implements OnInit {
   userNameDisplay: string;
+  authorities = [];
   isAuthenticated = false;
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -25,10 +26,12 @@ export class TopMenuComponent implements OnInit {
 
   logOut(): void {
     LsHelper.removeTokenStorage();
-    this.refresh();
+    this.router.navigate(['']);
   }
 
-  refresh(): void {
-    window.location.reload();
+  haveAdminpage(): any{
+    this.authorities = LsHelper.getAuthoritiesFromToken();
+    if (this.authorities?.includes('read_adminpage')) return true;
+    return false;
   }
 }

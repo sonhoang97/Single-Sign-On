@@ -3,10 +3,12 @@ export * from './home/top-menu/top-menu.component';
 export * from './home/footer/footer.component';
 export * from './home/login-form/login-form.component';
 export * from './home/register-form/register-form.component';
-export * from './home/login-form/callback-facebook/callback-facebook.component'
+export * from './home/login-form/callback-facebook/callback-facebook.component';
 export * from './shared/loading/loading.component';
 export * from './shared/password-strength-bar/password-strength-bar.component';
 export * from './home/home-menu/home-menu.component';
 export * from './docs/api.doc.component';
 export * from './home/profile/index';
 export * from './admin/index';
+export * from './home/login-form/demo-login-with-ssopopup/demo-login-with-ssopopup.component';
+export * from './home/login-form/callback-sso/callback-sso.component';

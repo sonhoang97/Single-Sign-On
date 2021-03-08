@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <p class="h4 font-weight-bold pull-left">{{ role.name }}</p>
+  <p class="h4 font-weight-bold pull-left m-0">{{ role.name }}</p>
   <button
     type="button"
     class="close pull-right"
@@ -11,6 +11,33 @@
 </div>
 <div class="modal-body">
   <div class="container">
+    <!-- <div class="row">
+      <div class="col-md border-client" *ngIf="role.usernames.length != 0">
+        <table class="table table-sm table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">
+                Username
+                <i class="fa fa-sort mx-2" aria-hidden="true"></i>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let username of role.usernames; index as i">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ username }}</td>
+              <td scope="col" class="align-middle  ml-auto">
+                <div class="btn btn-success no-pointer" (click)="detailUserPopup(username)">Detail</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <hr /> -->
+
     <div class="row">
       <div class="col-md-6 text-center">
         <pre class="h5">Current Permissions</pre>
@@ -29,6 +56,7 @@
           placeholderItem="Drag here"
           placeholderClass="placeholderStyle"
           wrapperClass="sortable-wrapper"
+          
         ></bs-sortable>
       </div>
       <div class="col-md table-permissions m-2 scrollbar sbId">
@@ -40,16 +68,27 @@
           placeholderItem="Drag here"
           placeholderClass="placeholderStyle"
           wrapperClass="sortable-wrapper"
+          
         ></bs-sortable>
       </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="submit()">
-      Save
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">
-      Cancel
-    </button>
+    <div class="row">
+      <i class="icon-tooltip fas fa-info-circle"  tooltip="Chắc chắn rằng không còn user nào đang có role này. Không thể xoá role Admin"></i>
+      <button type="button" class="col-auto btn btn-primary m-2" [disabled]="role.usernames.length != 0 || !haveEditRole()">
+        Remove
+      </button>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="!haveEditRole()">
+        Save
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="bsModalRef.hide()"
+      >
+        Cancel
+      </button>
+    </div>
   </div>
 </div>

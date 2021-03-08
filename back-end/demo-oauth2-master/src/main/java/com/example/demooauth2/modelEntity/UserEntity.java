@@ -19,19 +19,18 @@ import java.util.Set;
 public class UserEntity implements Serializable {
 
     public UserEntity() {
-        this.id = 0;
-        this.username = "test";
-        this.password = "test";
-        this.email ="test";
-        this.firstname = "test";
-        this.lastname ="test";
-        this.phonenumber = "0";
-        this.enabled = true;
-        this.accountNonExpired = true;
-        this.credentialsNonExpired =true;
-        this.accountNonLocked = true;
-        this.loggedInFb = false;
-        this.roles = new HashSet<>();
+//        this.id = 0;
+//        this.username = "test";
+//        this.password = "test";
+//        this.email ="test";
+//        this.firstname = "test";
+//        this.lastname ="test";
+//        this.phonenumber = "0";
+//        this.enabled = true;
+//        this.accountNonExpired = true;
+//        this.credentialsNonExpired =true;
+//        this.accountNonLocked = true;
+//        this.loggedInFb = false;
     }
 
     public UserEntity(UserEntity user) {
@@ -46,15 +45,7 @@ public class UserEntity implements Serializable {
         this.credentialsNonExpired = user.isCredentialsNonExpired();
         this.accountNonLocked = user.isAccountNonLocked();
         this.loggedInFb = user.isLoggedInFb();
-        this.roles = user.getRoles();
-    }
-
-    public void AddNewRole(RoleEntity role) {
-        this.roles.add((role));
-    }
-
-    public void RemoveRole(RoleEntity role) {
-        this.roles.remove((role));
+        this.role = user.getRole();
     }
 
     @Id
@@ -97,11 +88,9 @@ public class UserEntity implements Serializable {
 
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "role_user", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "role_id", referencedColumnName = "id")})
-    private Set<RoleEntity> roles;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private RoleEntity role;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

@@ -4,11 +4,16 @@ import com.example.demooauth2.commons.Messages;
 import com.example.demooauth2.modelEntity.ClientDetailEntity;
 import com.example.demooauth2.modelEntity.UserEntity;
 import com.example.demooauth2.modelView.clientDetail.ClientDetailViewModel;
+import com.example.demooauth2.modelView.pageList.PageList;
+import com.example.demooauth2.modelView.users.UserProfileViewModel;
 import com.example.demooauth2.repository.ClientDetailRepository;
 import com.example.demooauth2.repository.UserRepository;
 import com.example.demooauth2.responseModel.CommandResult;
 import com.example.demooauth2.service.ClientDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -163,5 +168,23 @@ public class ClientDetailsSeviceImpl implements ClientDetailsService {
             return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Something wrong!");
 
         }
+    }
+
+    @Override
+    public CommandResult getAllClients(String searchString,int sortType, int pageIndex, int pageSize){
+        Sort sortable = Sort.by("clientId").ascending();
+        if (sortType == 0) {
+            sortable = Sort.by("clientId").ascending();
+        }
+        if (sortType == 1) {
+            sortable = Sort.by("clientId").descending();
+        }
+        Pageable pageable = PageRequest.of(pageIndex, pageSize, sortable);
+        List<ClientDetailViewModel> clients;
+        clients = clientDetailRepository.getAllClients(searchString, pageable);
+        int totalSize = clientDetailRepository.countSearchClients(searchString);
+
+        PageList<ClientDetailViewModel> result = new PageList<>(clients, pageIndex, pageSize, totalSize);
+        return new CommandResult().SucceedWithData(result);
     }
 }

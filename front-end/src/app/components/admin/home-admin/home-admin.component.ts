@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
+import { LsHelper } from 'src/app/commons/helpers/ls.helper';
 
 @Component({
   selector: 'home-admin',
@@ -10,7 +11,16 @@ export class HomeAdminComponent implements OnInit {
   color: ThemePalette = 'accent';
   checked = false;
   disabled = false;
+  
+  authorities = [];
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getAuthorities();
+   }
+  
+  getAuthorities(): void{
+    this.authorities = LsHelper.getAuthoritiesFromToken();
+  }
+  
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Messages } from 'src/app/commons/consts/message.const';
+import { LsHelper } from 'src/app/commons/helpers/ls.helper';
 import { Permission } from 'src/models/role/permission.model';
 import { Role } from 'src/models/role/role.model';
 import { RoleService } from 'src/services/role/role.service';
@@ -16,6 +17,7 @@ export class AddPermissionPopupComponent implements OnInit {
 
   restOfPermissions: Permission[] = [];
 
+  authorities: string[] = [];
   constructor(
     public bsModalRef: BsModalRef,
     private roleService: RoleService,
@@ -23,7 +25,6 @@ export class AddPermissionPopupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.getTheRestOfPermission();
   }
 
@@ -53,5 +54,16 @@ export class AddPermissionPopupComponent implements OnInit {
       }
     );
   }
-  
+
+  // isAdmin(): any{
+  //   this.lsAuthorities = LsHelper.getAuthoritiesFromToken();
+  //   if(this.lsAuthorities.includes("ROLE_admin")){
+  //     return true;
+  //   } return false;
+  // }
+
+  haveEditRole(): any {
+    if (this.authorities.includes('edit_role')) return true;
+    return false;
+  }
 }

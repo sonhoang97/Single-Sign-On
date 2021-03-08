@@ -2,18 +2,18 @@
   <div class="row">
     <div class="col-md-2 shadow p-3 mb-5 bg-white">
       <div class="profile-work my-3">
-        <h5 class="font-weight-bold text-black">Account</h5>
+        <h5 class="font-weight-bold text-black">Manage</h5>
         <p (click)="typeSelect = 1" [class.selected-item]="typeSelect == 1">
-          <i class="fa fa-user" aria-hidden="true"></i> Role
+          <i class="fab fa-500px" aria-hidden="true"></i> Role
         </p>
         <p (click)="typeSelect = 2" [class.selected-item]="typeSelect == 2">
-          <i class="fab fa-500px" aria-hidden="true"></i> API Approve
+          <i class="fa fa-certificate" aria-hidden="true"></i> Credentials
         </p>
         <p (click)="typeSelect = 3" [class.selected-item]="typeSelect == 3">
-          <i class="fab fa-500px" aria-hidden="true"></i> User
+          <i class="fa fa-user" aria-hidden="true"></i> User
         </p>
         <hr style="border-top: 1px solid rgba(235, 233, 233, 0.1)" />
-        <h5 class="font-weight-bold text-black">Configure</h5>
+        <h5 class="font-weight-bold text-black">For Development</h5>
         <p (click)="typeSelect = 4" [class.selected-item]="typeSelect == 4">
           <i class="fas fa-box" aria-hidden="true"></i> API key
         </p>
@@ -22,10 +22,13 @@
     <div class="col-md-10 py-4 px-4">
       <app-swagger-ui *ngIf="typeSelect == 4"></app-swagger-ui>
       <div *ngIf="typeSelect == 1">
-        <role-admin></role-admin>
+        <role-admin [authorities]="authorities"></role-admin>
+      </div>
+      <div *ngIf="typeSelect == 2">
+        <credentials-admin [authorities]="authorities"></credentials-admin>
       </div>
       <div *ngIf="typeSelect == 3">
-        <user-admin></user-admin>
+        <user-admin [authorities]="authorities"></user-admin>
       </div>
     </div>
   </div>

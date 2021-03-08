@@ -17,15 +17,17 @@ public interface UserService {
 
     CommandResult getProfile(Principal principal);
 
+    CommandResult getUser(String username);
+
     CommandResult changePassword(Principal principal, Map<String, String> bodyPassword);
 
     CommandResult updateProfile(Principal principal, Map<String, String> bodyProfile);
 
-    CommandResult addRole(Principal principal,String username, int roleId);
+    CommandResult editRole(Principal principal,String username, int roleId);
 
-    CommandResult RemoveRole(Principal principal,String username, int roleId);
+//    CommandResult RemoveRole(Principal principal,String username, int roleId);
 
-    CommandResult getAllUsers(String searchString,int status,int sortType, int pageIndex, int pageSize);
+    CommandResult getAllUsers(String searchString,int status,int roleId,int sortType, int pageIndex, int pageSize);
 
     CommandResult banUser(String username);
 

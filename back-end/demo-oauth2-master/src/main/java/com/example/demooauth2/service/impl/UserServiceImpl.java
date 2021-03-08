@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommandResult getAllUsers(String searchString, int status, int sortType, int pageIndex, int pageSize) {
+    public CommandResult getAllUsers(String searchString, int status,int roleId, int sortType, int pageIndex, int pageSize) {
         Sort sortable = Sort.by("username").ascending();
         if (sortType == 0) {
             sortable = Sort.by("username").ascending();
@@ -55,17 +56,17 @@ public class UserServiceImpl implements UserService {
         List<UserProfileViewModel> users;
         int totalSize;
         if (status == -1) {
-            users = userRepository.getAllUsersNonStatus(searchString, pageable);
-            totalSize = userRepository.countSearchUsersNonStatus(searchString);
+            users = userRepository.getAllUsers(searchString, null,roleId, pageable);
+            totalSize = userRepository.countSearchUsers(searchString, null,roleId);
 
 
         } else if(status == 0 || status ==1 ) {
             if(status ==0){
-            users = userRepository.getAllUsers(searchString, false, pageable);
-            totalSize = userRepository.countSearchUsers(searchString,false);
+            users = userRepository.getAllUsers(searchString, false,roleId, pageable);
+            totalSize = userRepository.countSearchUsers(searchString,false,roleId);
             } else {
-                users = userRepository.getAllUsers(searchString, true, pageable);
-                totalSize = userRepository.countSearchUsers(searchString,true);
+                users = userRepository.getAllUsers(searchString, true,roleId, pageable);
+                totalSize = userRepository.countSearchUsers(searchString,true,roleId);
             }
         } else {
             return new CommandResult(HttpStatus.BAD_REQUEST, "Fail Status!");
@@ -82,22 +83,25 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public CommandResult registerNewUserAccount(UserEntity userDto) {
-        if (findByUsername(userDto.getUsername()) != null) {
-            if (!userDto.isLoggedInFb()) {
-                return new CommandResult(HttpStatus.CONFLICT, "Username has existed!");
-            } else {
-                userRepository.updatePassword(userDto.getUsername(), userDto.getPassword());
-                return new CommandResult().Succeed();
+        try {
+            userDto.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
+            if (findByUsername(userDto.getUsername()) != null) {
+                if (!userDto.isLoggedInFb()) {
+                    return new CommandResult(HttpStatus.CONFLICT, "Username has existed!");
+                } else {
+                    userRepository.updatePassword(userDto.getUsername(), userDto.getPassword());
+                    return new CommandResult().Succeed();
+                }
             }
+            Optional<RoleEntity> role = roleRepository.findByName("ROLE_user");
+            if (role.isPresent()) {
+                userDto.setRole(role.get());
+            }
+            userRepository.save(userDto);
+            return new CommandResult().Succeed();
+        } catch (Exception ex) {
+            return new CommandResult(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
-        Optional<RoleEntity> role = roleRepository.findByName("ROLE_user");
-        if (role.isPresent()) {
-            Set<RoleEntity> rolesDefault = new HashSet<>();
-            rolesDefault.add(role.get());
-            userDto.setRoles(rolesDefault);
-        }
-        userRepository.save(userDto);
-        return new CommandResult().Succeed();
     }
 
     @Override
@@ -112,6 +116,19 @@ public class UserServiceImpl implements UserService {
         }
 
         return new CommandResult().SucceedWithData(user);
+    }
+
+    @Override
+    public CommandResult getUser(String username){
+        if(username.isEmpty()){
+            return new CommandResult(HttpStatus.NOT_FOUND);
+        }
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+        if (!userEntity.isPresent()) {
+            return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user");
+        }
+        UserProfileViewModel userViewModel = new UserProfileViewModel(userEntity.get());
+        return new CommandResult().SucceedWithData(userViewModel);
     }
 
     @Override
@@ -172,7 +189,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommandResult addRole(Principal principal, String username, int roleId) {
+    public CommandResult editRole(Principal principal, String username, int roleId) {
         try {
             if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
                 return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");
@@ -185,7 +202,7 @@ public class UserServiceImpl implements UserService {
             if (!userEntity.isPresent()) {
                 return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user");
             }
-            userEntity.get().AddNewRole(existRole.get());
+            userEntity.get().setRole(existRole.get());
             userRepository.save(userEntity.get());
             return new CommandResult().Succeed();
         } catch (Exception ex) {
@@ -193,27 +210,27 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public CommandResult RemoveRole(Principal principal, String username, int roleId) {
-        try {
-            if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
-                return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");
-            }
-            Optional<RoleEntity> existRole = roleRepository.findById(roleId);
-            if (!existRole.isPresent()) {
-                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
-            }
-            Optional<UserEntity> userEntity = userRepository.findByUsername(username);
-            if (!userEntity.isPresent()) {
-                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user: " + username);
-            }
-            userEntity.get().RemoveRole(existRole.get());
-            userRepository.save(userEntity.get());
-            return new CommandResult().Succeed();
-        } catch (Exception ex) {
-            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error!");
-        }
-    }
+//    @Override
+//    public CommandResult RemoveRole(Principal principal, String username, int roleId) {
+//        try {
+//            if (!(principal instanceof Authentication) || !((Authentication) principal).isAuthenticated()) {
+//                return new CommandResult(HttpStatus.UNAUTHORIZED, "Unauthenticated");
+//            }
+//            Optional<RoleEntity> existRole = roleRepository.findById(roleId);
+//            if (!existRole.isPresent()) {
+//                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find role");
+//            }
+//            Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+//            if (!userEntity.isPresent()) {
+//                return new CommandResult(HttpStatus.NOT_FOUND, "Can not find user: " + username);
+//            }
+//            userEntity.get().RemoveRole(existRole.get());
+//            userRepository.save(userEntity.get());
+//            return new CommandResult().Succeed();
+//        } catch (Exception ex) {
+//            return new CommandResult(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error!");
+//        }
+//    }
 
     @Override
     public CommandResult banUser(String username){
