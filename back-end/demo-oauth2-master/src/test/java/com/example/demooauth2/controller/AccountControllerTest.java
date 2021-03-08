@@ -246,7 +246,7 @@ public class AccountControllerTest {
 
     @Test
     public void getUsersSuccess() throws Exception {
-        Mockito.when(userService.getAllUsers(Mockito.any(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt())).thenReturn(new CommandResult().Succeed());
+        Mockito.when(userService.getAllUsers(Mockito.any(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt())).thenReturn(new CommandResult().Succeed());
 
         PasswordEntity password = new PasswordEntity("password");
 
@@ -262,7 +262,7 @@ public class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Mockito.verify(userService, Mockito.times(1)).getAllUsers(Mockito.any(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt());
+        Mockito.verify(userService, Mockito.times(1)).getAllUsers(Mockito.any(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt(),Mockito.anyInt());
         Mockito.verifyNoMoreInteractions(userService);
     }
 
