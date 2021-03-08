@@ -79,7 +79,7 @@ public class RoleControllerTest {
 
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         String requestJson = mapper.writeValueAsString(permissionEx);
-        MvcResult mvcResult =  mockMvc.perform(post("/api/roles")
+        MvcResult mvcResult =  mockMvc.perform(post("/api/roles/create")
                 .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))

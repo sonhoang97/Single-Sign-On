@@ -46,45 +46,45 @@ public class PermissionControllerTest {
     @MockBean
     private PermissionService permissionService;
 
-    @Test
-    public void createNewTest() throws Exception {
-        PermissionEntity permissionEx = new PermissionEntity("test");
-        Mockito.when(permissionService.CreateNew(Mockito.any(PermissionEntity.class))).thenReturn(new CommandResult().SucceedWithData("Create new permission successful!"));
+//    @Test
+//    public void createNewTest() throws Exception {
+//        PermissionEntity permissionEx = new PermissionEntity("test");
+//        Mockito.when(permissionService.CreateNew(Mockito.any(PermissionEntity.class))).thenReturn(new CommandResult().SucceedWithData("Create new permission successful!"));
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+//
+//        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+//        String requestJson = mapper.writeValueAsString(permissionEx);
+//        MvcResult mvcResult =  mockMvc.perform(post("/api/permissions")
+//                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(requestJson))
+//                .andExpect(status().isOk())
+//                .andDo(print())
+//                .andReturn();
+//        Assert.assertEquals("Create new permission successful!",mvcResult.getResponse().getContentAsString());
+//
+//    }
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        String requestJson = mapper.writeValueAsString(permissionEx);
-        MvcResult mvcResult =  mockMvc.perform(post("/api/permissions")
-                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn();
-        Assert.assertEquals("Create new permission successful!",mvcResult.getResponse().getContentAsString());
-
-    }
-
-    @Test
-    public  void updateTest() throws  Exception {
-        PermissionEntity permissionEx = new PermissionEntity("test");
-        Mockito.when(permissionService.Update(Mockito.anyInt(),Mockito.any(PermissionEntity.class))).thenReturn(new CommandResult().SucceedWithData("Update permission successful!"));
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        String requestJson = mapper.writeValueAsString(permissionEx);
-
-        MvcResult mvcResult =  mockMvc.perform(put("/api/permissions/0")
-                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn();
-        Assert.assertEquals("Update permission successful!",mvcResult.getResponse().getContentAsString());
-    }
+//    @Test
+//    public  void updateTest() throws  Exception {
+//        PermissionEntity permissionEx = new PermissionEntity("test");
+//        Mockito.when(permissionService.Update(Mockito.anyInt(),Mockito.any(PermissionEntity.class))).thenReturn(new CommandResult().SucceedWithData("Update permission successful!"));
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+//        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+//        String requestJson = mapper.writeValueAsString(permissionEx);
+//
+//        MvcResult mvcResult =  mockMvc.perform(put("/api/permissions/0")
+//                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(requestJson))
+//                .andExpect(status().isOk())
+//                .andDo(print())
+//                .andReturn();
+//        Assert.assertEquals("Update permission successful!",mvcResult.getResponse().getContentAsString());
+//    }
 
     @Test
     public  void getAllTestSuccess() throws Exception {
@@ -103,21 +103,21 @@ public class PermissionControllerTest {
                 .andReturn();
        
     }
-
-    @Test
-    public void deleteTest() throws Exception  {
-        PermissionEntity permissionEx = new PermissionEntity("test");
-        Mockito.when(permissionService.Delete(Mockito.anyInt())).thenReturn(new CommandResult().SucceedWithData("Delete permission successful!"));
-
-        MvcResult mvcResult =  mockMvc.perform(delete("/api/permissions/0")
-                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn();
-
-        Assert.assertEquals("Delete permission successful!", mvcResult.getResponse().getContentAsString());
-    }
+//
+//    @Test
+//    public void deleteTest() throws Exception  {
+//        PermissionEntity permissionEx = new PermissionEntity("test");
+//        Mockito.when(permissionService.Delete(Mockito.anyInt())).thenReturn(new CommandResult().SucceedWithData("Delete permission successful!"));
+//
+//        MvcResult mvcResult =  mockMvc.perform(delete("/api/permissions/0")
+//                .header("Authorization", "Bearer " +  getAccessToken("krish", "krish"))
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andDo(print())
+//                .andReturn();
+//
+//        Assert.assertEquals("Delete permission successful!", mvcResult.getResponse().getContentAsString());
+//    }
     private String getAccessToken(String username, String password) throws Exception {
 
         MockHttpServletResponse response = mockMvc
