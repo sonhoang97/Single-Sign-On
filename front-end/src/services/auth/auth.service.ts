@@ -13,6 +13,7 @@ import { TokenPassword } from 'src/models/token/tokenPassword';
 })
 export class AuthService {
   private apiURL = Config.getPath(PathController.Account);
+  private apiURLAuthorize = Config.getPathAuthorize();
 
   constructor(private http: HttpClient) {}
 
@@ -46,7 +47,7 @@ export class AuthService {
 
     return this.http
       .post(
-        'http://localhost:8083/oauth/token',
+        this.apiURLAuthorize,
         body.toString(),
         {
           headers: headers,
@@ -64,7 +65,7 @@ export class AuthService {
     let body = new URLSearchParams();
     body.append('code', code);
     body.append('grant_type', 'authorization_code');
-    body.append('redirect_uri', 'http://localhost:4200/oauth/callback');
+    body.append('redirect_uri', 'http://ng-sso-manager.s3-website-ap-southeast-1.amazonaws.com/oauth/callback');
 
 
     let headers = new HttpHeaders({
@@ -74,7 +75,7 @@ export class AuthService {
 
     return this.http
       .post(
-        'http://localhost:8083/oauth/token',
+        this.apiURLAuthorize,
         body.toString(),
         {
           headers: headers,
@@ -100,7 +101,7 @@ export class AuthService {
 
     return this.http
       .post(
-        'http://localhost:8083/oauth/token',
+        this.apiURLAuthorize,
         body.toString(),
         {
           headers: headers,

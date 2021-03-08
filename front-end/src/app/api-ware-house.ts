@@ -16,6 +16,11 @@ export class ApiWareHouse {
     return this.apiEndPoint;
   }
 
+  private apiEndPointOAuth2: string;
+  public get ApiEndPointOAuth2(): string {
+    return this.apiEndPointOAuth2;
+  }
+
   private appVersion: string;
   public get Version(): string {
     return this.appVersion;
@@ -28,10 +33,12 @@ export class ApiWareHouse {
       this.domain = 'none';
       this.protocol = 'http://';
       this.apiEndPoint = 'sso-sys.ap-southeast-1.elasticbeanstalk.com/api/';
+      this.apiEndPointOAuth2 = 'sso-sys.ap-southeast-1.elasticbeanstalk.com/';
     } else {
       this.domain = 'none';
       this.protocol = 'http://';
       this.apiEndPoint = 'localhost:8083/api/';
+      this.apiEndPointOAuth2 = 'localhost:8083/';
     }
   }
 }
