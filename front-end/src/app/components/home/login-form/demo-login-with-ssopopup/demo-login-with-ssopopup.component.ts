@@ -17,7 +17,7 @@ export class DemoLoginWithSSOPopupComponent implements OnInit {
   constructor(public bsModalRef: BsModalRef) {}
 
   ngOnInit(): void {
-    this.apiURLAuthorize = Config.getPathToken();
+    this.apiURLAuthorize = Config.getPathAuthorizeAuthorize();
   }
 
   login(): void {

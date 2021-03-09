@@ -1,0 +1,15 @@
+# Created at 2021-03-08T22:36:19.377
+WARNING: An illegal reflective access operation has occurred
+
+# Created at 2021-03-08T22:36:19.384
+WARNING: Illegal reflective access by com.fasterxml.jackson.databind.util.ClassUtil (file:/C:/Users/son.nguyen/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.11.2/jackson-databind-2.11.2.jar) to field java.time.LocalDateTime.date
+
+# Created at 2021-03-08T22:36:19.389
+WARNING: Please consider reporting this to the maintainers of com.fasterxml.jackson.databind.util.ClassUtil
+
+# Created at 2021-03-08T22:36:19.393
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+
+# Created at 2021-03-08T22:36:19.397
+WARNING: All illegal access operations will be denied in a future release
+
