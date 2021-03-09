@@ -13,12 +13,10 @@ export class DemoLoginWithSSOPopupComponent implements OnInit {
   responseType = 'code';
   scope = 'READ,WRITE';
   redirect: string;
-  apiURLAuthorize: string;
+  apiURLAuthorize = Config.getPathAuthorizeAuthorize();
   constructor(public bsModalRef: BsModalRef) {}
 
-  ngOnInit(): void {
-    this.apiURLAuthorize = Config.getPathAuthorizeAuthorize();
-  }
+  ngOnInit(): void {}
 
   login(): void {
     this.redirect =
@@ -32,8 +30,10 @@ export class DemoLoginWithSSOPopupComponent implements OnInit {
   loginWithThisCredential(): void {
     this.clientId = 'mobile';
     this.clientSecret = 'pin';
-    this.redirectUri = 'http://ng-sso-manager.s3-website-ap-southeast-1.amazonaws.com/oauth/callback';
-    this.redirect =this.apiURLAuthorize+
+    this.redirectUri =
+      'http://ng-sso-manager.s3-website-ap-southeast-1.amazonaws.com/oauth/callback';
+    this.redirect =
+      this.apiURLAuthorize +
       '?response_type=code&client_id=' +
       this.clientId +
       '&redirect_uri=' +

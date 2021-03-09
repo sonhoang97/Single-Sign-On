@@ -7,11 +7,11 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8083/api",
+      "url": "http://sso-sys.ap-southeast-1.elasticbeanstalk.com/api",
       "description": "Resource server"
     },
     {
-      "url": "http://localhost:8083/oauth",
+      "url": "http://sso-sys.ap-southeast-1.elasticbeanstalk.com/oauth",
       "description": "Auth server"
     }
   ],
@@ -27,11 +27,11 @@
         "description": "This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)",
         "flows": {
           "authorizationCode": {
-            "authorizationUrl": "http://localhost:8083/oauth/authorize",
-            "tokenUrl": "http://localhost:8083/oauth/token",
+            "authorizationUrl": "http://sso-sys.ap-southeast-1.elasticbeanstalk.com/oauth/authorize",
+            "tokenUrl": "http://sso-sys.ap-southeast-1.elasticbeanstalk.com/oauth/token",
             "scopes": {
-              "read": "read your pets",
-              "write": "modify pets in your account"
+              "read": "read ",
+              "write": "modify "
             }
           }
         }
